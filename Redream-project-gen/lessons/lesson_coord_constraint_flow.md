@@ -2,7 +2,8 @@
 name: 坐标约束判断流程（Figma → .red）
 date: 2026-04-23
 status: ✅ 已落地（处理流程）
-source: Mengmeng plistlib 实战
+source: RED Tool 实战（CLI 驱动版仍适用）
+scope: 所有生成 .red 的工作流，映射逻辑由 Python/工具代码执行
 ---
 
 # Lesson: 从 Figma 布局推导 .red 坐标约束
@@ -132,6 +133,6 @@ CLI 命令直接接受 `position` 和 `contentSize` 的 `"x,y,xUnit,yUnit,corner
 
 ## 关联
 
-- `references/figma-to-red-plistlib.md` — 坐标系统章节
+- `references/figma-to-red-cli-driven.md` — 坐标系统章节
 - `references/cocosbase.md` — 坐标/单位基础
 - `references/cli-modify.md` — position / contentSize 格式

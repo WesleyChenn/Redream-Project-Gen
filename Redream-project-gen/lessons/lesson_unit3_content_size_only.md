@@ -2,7 +2,8 @@
 name: unit=3 只能用于 contentSize 的高度
 date: 2026-04-23
 status: ✅ 已落地（硬规则）
-source: Mengmeng plistlib 实战
+source: RED Tool 实战（CLI 驱动版仍适用）
+scope: 所有生成 .red 的工作流
 ---
 
 # Lesson: unit=3 的使用范围
@@ -63,5 +64,5 @@ contentSize = [100, 200, 2, 3, F, F]
 ## 关联
 
 - `references/cocosbase.md` — unit 定义与坐标系
-- `references/figma-to-red-plistlib.md` — 坐标系统规则
+- `references/figma-to-red-cli-driven.md` — 坐标系统规则
 - `lessons/lesson_unit2_auto_convert.md` — unit=2 的自动归一化

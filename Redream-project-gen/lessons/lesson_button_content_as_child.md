@@ -2,7 +2,8 @@
 name: 按钮内容必须作为触控层的子节点
 date: 2026-04-21
 status: ✅ 已落地（交互规则）
-source: Mengmeng plistlib 实战
+source: RED Tool 实战（CLI 驱动版仍适用）
+scope: 所有生成 .red 的工作流
 ---
 
 # Lesson: 按钮点击缩放时内容要跟随
@@ -69,6 +70,6 @@ CLI 不会自动合并兄弟节点 → 触控层子节点。构建 Figma → .re
 
 ## 关联
 
-- `references/figma-to-red-plistlib.md` — 按钮结构章节
+- `references/figma-to-red-cli-driven.md` — 按钮结构章节
 - `references/red-node-patterns.md` — 按钮节点模式 B1-B4
 - `lessons/lesson_button_as_container.md` — 按钮作为容器节点

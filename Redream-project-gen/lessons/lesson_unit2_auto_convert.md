@@ -2,7 +2,8 @@
 name: 子节点不能用 unit=2（Redream 自动转 unit=0）
 date: 2026-04-23
 status: ✅ 已落地（红灯规则）
-source: Mengmeng plistlib 实战
+source: RED Tool 实战（CLI 驱动版仍适用）
+scope: 所有生成 .red 的工作流，不论 plistlib 手写还是 CLI 驱动
 ---
 
 # Lesson: 子节点不能用 unit=2
@@ -51,5 +52,5 @@ py = cy  # u=0
 ## 关联
 
 - `references/cocosbase.md` — 坐标系/单位/锚点基础
-- `references/figma-to-red-plistlib.md` — plistlib 生成规范
+- `references/figma-to-red-cli-driven.md` — RED Tool 坐标规则章节
 - `lessons/lesson_unit3_content_size_only.md` — unit=3 只能用于 contentSize

@@ -42,22 +42,30 @@
 ✅/❌ component_ref 未写 layoutSizingHorizontal/Vertical
 ✅/❌ overrides 字段名与组件内文字节点名 100% 匹配
 ✅/❌ RECTANGLE 仅用于无组件的纯图片/装饰色块
-✅/❌ 角标均已找到父本，与父本在同一 NONE 容器内，未平铺在 AL 容器中
+✅/❌ 角标均已找到父本,并按 v20 按钮分组规则归属：
+      - 父本是按钮(按钮_xxx FRAME 或按钮类 component_ref)→ 角标作为按钮 children
+      - 非按钮 component_ref(如 Tab 状态切换)+ 装饰 → 统一用 按钮_xxx FRAME 包装(做法 B)
 ✅/❌ 叠加结构父容器 h/w = 主体组件 h/w（不含附加元素高度）
 ```
 
-## 【第四层：底板分离与按钮内容居中】
+## 【第四层：按钮与底板分离（v20）】
 
 ```
-✅/❌ 手搓按钮底板结构：大包装 FRAME + 底板_xxx FRAME + 底板_xxx形状 RECTANGLE + 内容区_ FRAME AL
-✅/❌ 外层容器底板（卡片/弹窗）：容器 FRAME + 底板_xxx RECTANGLE（不含"形状"，独立使用）
-✅/❌ 节点类型区分无误：FRAME 底板_xxx（按钮外壳透明）/ RECTANGLE 底板_xxx形状（按钮内层分级灰）/ RECTANGLE 底板_xxx（外层容器中深灰）
-✅/❌ 按钮内层 RECTANGLE 必须含"形状"后缀，外层容器 RECTANGLE 必须不含"形状"
-✅/❌ 所有手搓按钮内部均有 内容区_ FRAME（layoutMode: HORIZONTAL/VERTICAL，CENTER/CENTER）
-✅/❌ 内容区_ FRAME 的 w/h 与底板完全一致（constraints: SCALE/SCALE）
-✅/❌ 按钮内子元素（文字、图标等）均放在 内容区_ 内，不写估算 x/y
+✅/❌ 手搓按钮外壳命名为 按钮_xxx FRAME（不是 底板_xxx FRAME, 不是 RECT）
+✅/❌ 按钮内层底板为 底板_xxx RECTANGLE（不加"形状"后缀,父节点是 按钮_xxx FRAME）
+✅/❌ 外层容器底板（卡片/弹窗）为 底板_xxx RECTANGLE,父节点非按钮（组_/容器_/弹窗_）
+✅/❌ 装按钮的容器命名为 组_xxx / 容器_xxx / 弹窗_xxx（禁止用 底板_ 开头）
+✅/❌ 组件库按钮（圆形按钮_/方形按钮_/椭圆按钮_）通过 component_ref 引用,未走 按钮_ 前缀
+✅/❌ 按钮内子元素（文字/图标/装饰）全部作为按钮 FRAME 的 children
+✅/❌ 装饰附件（角标/徽章/底标/倒计时）与按钮兄弟平级错误,必须在按钮 children 内
+✅/❌ component_ref + 装饰场景用做法 B（父按钮 FRAME 包装 component_ref + 装饰）
+✅/❌ 内容区_ FRAME 的 w/h 与按钮底板完全一致（如使用）
 ✅/❌ 无"一层底"（FRAME 同时有 fill 和 children）
 ✅/❌ layoutPositioning: ABSOLUTE 仅在 AL 容器内
+✅/❌ 无嵌套按钮：任何 按钮_xxx FRAME 的 children 递归里不再出现 按钮_ 开头的 FRAME
+✅/❌ 手搓替换 component_ref 后,所有 底板_xxx 仍为 RECTANGLE,无 底板_xxx FRAME
+✅/❌ 所有 按钮_xxx FRAME 尺寸 = 主体尺寸(不为装饰溢出而扩大),同组按钮 FRAME 尺寸统一便于对齐
+✅/❌ 装饰（角标/徽章/底标）允许视觉溢出按钮 FRAME(负坐标或 y+h 超出按钮h 都 OK),溢出区域不触发点击是可接受的
 ```
 
 ## 【第五层：布局与约束】
@@ -91,7 +99,7 @@
 ## 【第七层：Overflow 滚动】
 
 ```
-✅/❌ 父容器：overflow + clipsContent: true + primaryAxisSizingMode: FIXED
+✅/❌ 父容器：overflow + clip_content: true + primaryAxisSizingMode: FIXED
 ✅/❌ 子容器：primaryAxisSizingMode: AUTO，是父容器直接 child
 ✅/❌ 子容器 h > 父容器 h
 ✅/❌ 子容器 w 已显式指定
@@ -103,11 +111,13 @@
 ```
 ✅/❌ 所有 name 前缀在枚举白名单内
 ✅/❌ 无非白名单前缀（顶部_/底部_/主体_/区域_/面板_/切图_ 等）
-✅/❌ 无残留 切图_底板_ 前缀（方案A: 简化为 底板_）
+✅/❌ 无残留 切图_底板_ 前缀（v18 老命名）
+✅/❌ 无残留 底板_xxx 形状后缀（v19 老命名,v20 不需要）
+✅/❌ 无"底板_xxx FRAME"当按钮用（v19 老命名,v20 改为 按钮_xxx）
 ✅/❌ 浮层_ 屏幕 layers[0] = 遮罩_浮层背景 RECTANGLE 1080×2400
 ✅/❌ 界面_ 屏幕有全屏背景时 layers[0] = 背景_xxx RECTANGLE 1080×2400
 ✅/❌ 背景/遮罩未被放进中间弹性区容器内部
-✅/❌ 导航按钮统一 导航_项N
+✅/❌ 导航按钮统一 导航_项N（每项独立按钮,不整栏合并）
 ✅/❌ TEXT 无多余 w
 ✅/❌ 无 stroke 属性
 ✅/❌ 手搓节点 fill 全部省略（无 hex、无 transparent）

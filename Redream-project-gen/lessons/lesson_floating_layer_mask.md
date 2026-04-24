@@ -2,7 +2,8 @@
 name: 浮层屏幕必须有放穿透层 + 遮罩_背景
 date: 2026-04-23
 status: ✅ 已落地（结构规则）
-source: Mengmeng plistlib 实战
+source: RED Tool 实战（CLI 驱动版仍适用）
+scope: 所有生成 .red 的工作流
 ---
 
 # Lesson: 浮层屏幕必须屏蔽底层交互
@@ -85,6 +86,6 @@ CLI 命令格式以 `references/cli-modify.md` 为准。
 
 ## 关联
 
-- `references/figma-to-red-plistlib.md` — 浮层屏幕章节
+- `references/figma-to-red-cli-driven.md` — 浮层屏幕章节
 - `references/node-tree-standards.md` — 弹窗标准结构（3.2 节）
 - `phase1-figma-json/00_core_rules.md` — 浮层遮罩铁律

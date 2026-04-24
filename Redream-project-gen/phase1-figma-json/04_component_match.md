@@ -88,55 +88,60 @@ component_ref 节点不写 layoutSizingHorizontal/Vertical。
 - 非正方形组件以高度为基准：`scale = 目标h / 原始h`，宽度 = `原始w × scale`
 - 前提：S3 已确认组件库内部 constraints 为 SCALE/SCALE（可缩放）
 
-### 规则4.5：component_ref 叠加结构
+### 规则4.5：component_ref 叠加结构（v20 做法 B 唯一版）
 
-当一个 component_ref 视觉上有「贴边附加元素」（角标、倒计时条、徽章等），**必须**新建一个专属 NONE 小组将主体和附加元素一起包裹。
+当 component_ref 视觉上有「贴边附加元素」（角标、倒计时条、徽章等）时，**统一使用做法 B**：
 
-**专属小组强制规则：**
-- 即使外层已经是 NONE 大容器，仍然必须新建专属小组，不允许角标和主体裸放在大容器中
-- 命名规则：`组_[主体名]` 或 `组_[主体名]含角标`
+**做法 B：`按钮_xxx` FRAME 包装**
+- component_ref 和装饰都作为外层 `按钮_xxx` FRAME 的 children
+- 外层按钮 FRAME 是真正的触控层，装饰随按钮一起响应点击反馈
+- 无论主体 component_ref 是"按钮类组件"（椭圆按钮/方形按钮/圆形按钮/矩形按钮）还是"Tab 状态切换类组件"（导航栏_状态切换_选中等），一律用此包装法
 
-**专属小组尺寸原则（核心）：**
+**命名规则：**
+- 包装层一律用 `按钮_[主体名]`（如 `按钮_活动紫罐`、`按钮_Tab_Weekly`）
+- **禁止**用 `组_xxx` NONE 容器包裹按钮+装饰（装饰不会响应点击反馈）
+
+**包装层尺寸原则（核心）：**
 
 ```
-专属小组对外 w/h = 主体组件 w/h（与同行/同列其他元素对齐的尺寸）
-附加元素溢出靠绝对坐标实现，不撑大专属小组
+包装层对外 w/h = 主体组件 w/h（与同行/同列其他元素对齐的尺寸）
+附加元素溢出靠绝对坐标实现,不撑大包装层
 主体组件通过 x/y 偏移给附加元素让出空间
 ```
 
-验证方式：专属小组的 h/w 填入 AL 容器后，所有同行/同列兄弟元素对齐是否正确。
+验证方式：包装层的 h/w 填入父 AL 容器后,所有同行/同列兄弟元素对齐是否正确。
 
 **附加元素约束铁律：**
 ```
-❌ 禁止：附加元素使用 RIGHT、CENTER 约束，或写负数坐标
-✅ 强制：附加元素一律 LEFT/TOP，x/y 全部为正数
+❌ 禁止：附加元素使用 RIGHT、CENTER 约束,或写负数坐标
+✅ 强制：附加元素一律 LEFT/TOP,x/y 全部为正数
          Figma 的 RIGHT/CENTER 约束会覆盖 x 值导致元素飞出
 ```
 
-**附加元素位置确认方法（居中验证，防止误判）：**
+**附加元素位置确认方法（居中验证,防止误判）：**
 ```
 同时量测：父本宽度 W_parent、附加元素宽度 W_child
 居中期望值 x = (W_parent - W_child) / 2
 实际量测 x_actual（相对父本左边缘）
-若 |x_actual - x| < 10px → 居中，x 用计算值
-若偏差 > 10px → 左/右对齐，x 用量测值
-（无论哪种情况，constraints 都写 LEFT/TOP）
+若 |x_actual - x| < 10px → 居中,x 用计算值
+若偏差 > 10px → 左/右对齐,x 用量测值
+（无论哪种情况,constraints 都写 LEFT/TOP）
 ```
 
-**四种常见叠加场景的专属小组写法：**
+**四种常见叠加场景的包装层写法：**
 
-| 场景 | 专属小组 w/h | 主体 x/y | 附加元素 x/y | 附加元素 constraints |
+| 场景 | 包装层 w/h | 主体 x/y | 附加元素 x/y | 附加元素 constraints |
 |---|---|---|---|---|
 | 右上角角标溢出顶部 | w=主体w, h=主体h | x=0, y=角标h/2 | x=主体w-角标w/2, y=0 | LEFT/TOP |
 | 角标正上方居中 | w=主体w, h=主体h | x=0, y=溢出量 | x=(主体w-角标w)/2, y=0 | LEFT/TOP |
 | 底标/倒计时下方居中 | w=主体w, h=主体h | x=0, y=0 | x=(主体w-附加w)/2, y=主体h+间距 | LEFT/TOP |
-| 右上角内侧（不溢出） | w=主体w, h=主体h | x=0, y=0 | x=主体w-角标w-偏移, y=偏移 | LEFT/TOP |
+| 右上角内侧（不溢出）| w=主体w, h=主体h | x=0, y=0 | x=主体w-角标w-偏移, y=偏移 | LEFT/TOP |
 
 **正确示例（右上角角标）：**
 ```json
-✅ 专属小组 h = 主体 h，角标溢出顶部，主体往下偏移让位
+✅ 按钮_xxx FRAME 包装（做法 B），装饰与按钮一起响应点击反馈
 {
-  "type": "FRAME", "name": "组_活动_花朵", "w": 170, "h": 231,
+  "type": "FRAME", "name": "按钮_活动花朵", "w": 170, "h": 231,
   "layoutMode": "NONE",
   "children": [
     {
@@ -160,10 +165,13 @@ component_ref 节点不写 layoutSizingHorizontal/Vertical。
     }
   ]
 }
+```
 
-✅ 专属小组 h = 主体 h，倒计时溢出底部
+**正确示例（Tab 状态切换 + 倒计时底标）：**
+```json
+✅ 按钮_xxx FRAME 包装（做法 B），倒计时底标作为按钮 children
 {
-  "type": "FRAME", "name": "组_Tab_Weekly", "w": 219, "h": 99,
+  "type": "FRAME", "name": "按钮_Tab_Weekly", "w": 219, "h": 99,
   "layoutMode": "NONE",
   "children": [
     {
@@ -183,55 +191,60 @@ component_ref 节点不写 layoutSizingHorizontal/Vertical。
 ```
 
 ```json
-❌ 错误1：专属小组h包含附加元素（撑大了，破坏同行对齐）
-{ "type": "FRAME", "name": "组_Tab_Weekly", "w": 219, "h": 147 }
+❌ 错误1：包装层 h 包含附加元素（撑大了,破坏同行对齐）
+{ "type": "FRAME", "name": "按钮_Tab_Weekly", "w": 219, "h": 147 }
 
-❌ 错误2：附加元素与主体裸放在大NONE容器（没有专属小组）
+❌ 错误2：用 组_xxx 普通容器包裹,装饰不响应点击反馈
+{ "type": "FRAME", "name": "组_活动_花朵", "children": [
+  { "component_ref": "椭圆按钮_活动", "name": "活动_花朵" },
+  { "name": "角标_数字1" }   ← 应改用 按钮_活动花朵 FRAME 包装
+]}
+
+❌ 错误3：附加元素与主体裸放在大NONE容器（没有包装层）
 "组_地图内容".children: [
   { "component_ref": "椭圆按钮_活动", "name": "活动_花朵" },
-  { "name": "角标_数字1" }   ← 应该在专属小组内，不能和活动按钮平级
+  { "name": "角标_数字1" }   ← 必须在 按钮_ 包装层内,不能平级
 ]
 
-❌ 错误3：附加元素用了负数坐标或 RIGHT/CENTER 约束
+❌ 错误4：附加元素用了负数坐标或 RIGHT/CENTER 约束
 { "name": "角标_数字1", "x": 148, "y": -17,
   "constraints": { "horizontal": "RIGHT", "vertical": "TOP" } }
 ```
 
-### 规则5：底板分离（手搓节点专用）
+### 规则5：按钮与底板分离（v20 核心规则）
 
-**底板命名规范（节点类型 + 命名共同决定灰色层次，必须严格遵守）：**
+**命名规范（节点类型 + 命名前缀共同决定角色和灰度，必须严格遵守）：**
 
-| 节点类型 | 命名形式 | 用途 | 插件颜色 |
-|---|---|---|---|
-| `FRAME` | `底板_xxx` | **手搓按钮外壳**（透明包装） | 透明 |
-| `RECTANGLE` | `底板_xxx形状` | **按钮内层底板**（FRAME 底板_xxx 的子 RECTANGLE） | 按父 FRAME 后缀分级灰 |
-| `RECTANGLE` | `底板_xxx`（不含"形状"） | **外层容器底板**（卡片 / 弹窗 / 背景区域） | 中深灰 |
+| 节点类型 | 命名形式 | 用途 | 引擎识别 | 插件上色 |
+|---|---|---|---|---|
+| `FRAME` | `按钮_xxx` | **真正的按钮触控层** | REDNodeButton | 透明 |
+| `RECTANGLE` | `底板_xxx`（父是按钮）| **按钮内层装饰底板** | CCSprite | 最浅灰（按按钮后缀可分级） |
+| `RECTANGLE` | `底板_xxx`（父非按钮）| **外层容器底板** | CCSprite | 中深灰 |
+| `FRAME` | `组_xxx` / `容器_xxx` / `弹窗_xxx` | **装按钮的容器**（纯分组） | CCNode | 透明 |
 
-⚠️ **核心区分**：
-- FRAME `底板_xxx` 和 RECTANGLE `底板_xxx` 命名相同，靠**节点类型**区分
-- RECTANGLE `底板_xxx形状` ← 含"形状" = 按钮内层（依附外层 FRAME）
-- RECTANGLE `底板_xxx` ← 不含"形状" = 独立外层容器底板（不需要 FRAME 包装）
+⚠️ **核心识别逻辑**：
+- 引擎只识别 `按钮_xxx` **FRAME** 为触控层，其他任何命名都不是按钮
+- 两种 `底板_xxx` RECT（按钮内层 vs 外层容器）**靠父节点类型区分灰度**
+- **装按钮的容器禁止用 `底板_` 开头**（否则引擎没法识别）
+- **卡片 / 弹窗外壳禁止用 FRAME**，必须是 `底板_xxx` RECT
 
-⚠️ **FRAME `底板_xxx` 下的子 RECTANGLE 必须命名为 `底板_xxx形状`，不可省略"形状"后缀。**
-省略后缀会导致插件将其当作外层容器底板上中深灰，与按钮的层次对比丢失。
-
-**手搓按钮（在 NONE 父容器内）：**
+**手搓按钮（v20 新结构）：**
 ```json
 {
-  "type": "FRAME", "name": "底板_按钮", "w": 446, "h": 150,
+  "type": "FRAME", "name": "按钮_开始", "w": 446, "h": 150,
   "layoutMode": "NONE", "corner_radius": 75,
   "children": [
-    { "type": "RECTANGLE", "name": "底板_按钮形状", "x": 0, "y": 0, "w": 446, "h": 150,
+    { "type": "RECTANGLE", "name": "底板_开始", "x": 0, "y": 0, "w": 446, "h": 150,
       "corner_radius": 75,
       "constraints": { "horizontal": "SCALE", "vertical": "SCALE" } },
-    { "type": "FRAME", "name": "内容区_按钮",
+    { "type": "FRAME", "name": "内容区_开始",
       "x": 0, "y": 0, "w": 446, "h": 150,
       "layoutMode": "HORIZONTAL",
       "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
       "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER",
       "constraints": { "horizontal": "SCALE", "vertical": "SCALE" },
       "children": [
-        { "type": "TEXT", "name": "文本_按钮", "content": "Action",
+        { "type": "TEXT", "name": "文本_开始", "content": "Action",
           "font_size": 56, "font_weight": "Bold", "textAlignHorizontal": "CENTER" }
       ]
     }
@@ -239,7 +252,7 @@ component_ref 节点不写 layoutSizingHorizontal/Vertical。
 }
 ```
 
-**外层容器底板（如卡片 / 弹窗外壳，不走按钮结构）：**
+**外层容器底板（卡片 / 弹窗外壳，不走按钮结构）：**
 ```json
 {
   "type": "FRAME", "name": "容器_EasterPass卡",
@@ -248,7 +261,38 @@ component_ref 节点不写 layoutSizingHorizontal/Vertical。
     { "type": "RECTANGLE", "name": "底板_EasterPass卡", "x": 0, "y": 0, "w": 1042, "h": 544,
       "corner_radius": 30, "constraints": { "horizontal": "SCALE", "vertical": "SCALE" } },
     { "type": "TEXT", "name": "文本_EasterPass标题", ... },
-    { "type": "FRAME", "name": "底板_Activate", ... }   ← 卡内按钮是更浅灰，与外层容器形成层次差
+    { "type": "FRAME", "name": "按钮_Activate", ... }   ← 卡内按钮,与外层容器形成层次差
+  ]
+}
+```
+
+### 规则5.5：按钮分组（装饰一起响应按钮变换）
+
+**装饰附件必须作为按钮 FRAME 的 children**，角标、徽章、底标（倒计时 / 进度）、Popular 标签等都算。
+
+**正确（装饰作为按钮 children,一起响应点击反馈）：**
+```json
+{
+  "type": "FRAME", "name": "按钮_活动紫罐",
+  "w": 163, "h": 213, "layoutMode": "NONE",
+  "children": [
+    { "component_ref": "椭圆按钮_活动", "name": "活动_紫罐",
+      "x": 0, "y": 0, "w": 163, "h": 213,
+      "overrides": { "文本_时间": "2d 4h" },
+      "constraints": { "horizontal": "SCALE", "vertical": "SCALE" } },
+    { "type": "FRAME", "name": "角标_感叹号",
+      "x": 115, "y": 0, "w": 56, "h": 58, ... }
+  ]
+}
+```
+
+**错误（装饰和按钮兄弟关系，点击不跟随）：**
+```json
+{
+  "type": "FRAME", "name": "组_活动_紫罐",
+  "children": [
+    { "component_ref": "椭圆按钮_活动", "name": "活动_紫罐" },
+    { "type": "FRAME", "name": "角标_感叹号" }      ← ❌ 兄弟平级
   ]
 }
 ```
@@ -257,7 +301,7 @@ component_ref 节点不写 layoutSizingHorizontal/Vertical。
 
 **AL 父容器内，底板用 ABSOLUTE：**
 ```json
-{ "type": "RECTANGLE", "name": "底板_背景形状", "x": 0, "y": 0, "w": 1000, "h": 80,
+{ "type": "RECTANGLE", "name": "底板_背景", "x": 0, "y": 0, "w": 1000, "h": 80,
   "corner_radius": 12, "layoutPositioning": "ABSOLUTE" }
 ```
 ⚠️ `layoutPositioning: "ABSOLUTE"` 仅在 HORIZONTAL/VERTICAL 父容器内有效，NONE 父容器内不写。
@@ -273,7 +317,7 @@ VERTICAL 容器内的子 FRAME 必须加：`"layoutSizingHorizontal": "FILL"`
 
 ### 规则7：滚动容器（三条件缺一不可）
 ```json
-父容器：overflow + clipsContent:true + primaryAxisSizingMode:"FIXED"
+父容器：overflow + clip_content:true + primaryAxisSizingMode:"FIXED"
 子容器：primaryAxisSizingMode:"AUTO" + 显式写 w + layoutSizingHorizontal:"FILL"
 子容器 h 必须大于父容器 h
 ```
@@ -381,7 +425,7 @@ from_node 对照：
 
 命名白名单：全部合规 ✅
 fill 字段：手搓节点无 fill ✅
-手搓按钮内容区：全部使用 内容区_ FRAME + CENTER，无估算坐标 ✅
+手搓按钮内容区：按需使用 内容区_ FRAME(多子元素居中时) 或子元素直接作为按钮 children ✅
 ```
 
 ---
