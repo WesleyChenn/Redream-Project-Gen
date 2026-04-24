@@ -3,6 +3,12 @@ name: Redream-project-gen
 description: 游戏录屏/截图/PRD/Figma/Cocos 工程 → Redream 可运行工程（.red + .rebolt + 资源）端到端生成。当用户要求"从录屏/截图生成 Redream 工程"、"复刻游戏为 Redream 项目"、"Cocos 项目转 Redream"、"Figma 转 .red/.rebolt"、"给 Redream 项目出工程结构图"、"分析游戏 UI 并落地 Redream"时激活此 skill。涵盖三阶段管线：游戏分析（Figma 低保真原型 + 骨架清单）、工程结构图（HTML CCB 卡片图）、CLI 落地（.red/.rebolt/资源/动画/发布）。
 ---
 
+> **2026-04-23 整合版**：本仓库是 Mengmeng + WesleyChenn 的联合整合版。
+> - **phase1（截图 → Figma JSON）**：Mengmeng 的实战版 `phase1-figma-json/`（7 份，1372 行）+ WesleyChenn 的方法论 `phases/phase1-analyze-game.md`
+> - **phase2（结构图 HTML）**：WesleyChenn 的 CCB 卡片图方案
+> - **phase3（.red / .rebolt 落地）**：WesleyChenn 的 CLI First 方案
+> - **plistlib 兜底**：`references/figma-to-red-plistlib.md`（未拿到 CLI 二进制的成员使用，CLI 到位后降级为历史参考）
+>
 > **2026-04-22 更新**：同步引擎组 `ai_dev_skill` commit `9a8b53f`（2026-04-09 基线）。CLI 版本锚定 **Redream CLI 1.3.4**（DMG `Redream-9.6.0.0-alpha`）。核心规范已与引擎组权威版对齐。
 >
 > **2026-04-21**：CLI 表面、selector 硬规则、new-scene 工作流、rebolt 校验语义升级。详见 `references/test-results-rebolt-commands.md`。
@@ -14,9 +20,11 @@ description: 游戏录屏/截图/PRD/Figma/Cocos 工程 → Redream 可运行工
 | 文件 | 内容 | 何时加载 |
 |------|------|---------|
 | **SKILL.md**（本文件） | 阶段路由 + 通用铁律 + 工程约定 | 始终 |
-| **phases/phase1-analyze-game.md** | 游戏分析（录屏 → Figma 原型 + skeleton.json + ccb-split-plan.md） | 用户要求"分析游戏/出低保真原型" |
+| **phases/phase1-analyze-game.md** | 游戏分析方法论（录屏 → Figma 原型 + skeleton.json + ccb-split-plan.md） | 用户要求"分析游戏/出低保真原型" |
+| **phase1-figma-json/**（目录，7 份）| phase1 具体 JSON 格式规范（命名白名单/底板分离/constraints/组件匹配/自检） | 与 phase1-analyze-game.md 并用：方法论 + 具体规则 |
 | **phases/phase2-structure-diagram.md** | HTML 工程结构图（CCB 卡片 + stub/dyn 连线） | 用户要求"出结构图/画 CCB 层级图" |
 | **phases/phase3-implement-redream.md** | Redream CLI 落地（.red/.rebolt/资源/发布） | 用户要求"生成 .red / 落地 Redream 工程 / 发布" |
+| **references/figma-to-red-plistlib.md** | ⚠️ plistlib 兜底方案（CLI 不可用时临时使用）| 未拿到 CLI 二进制的成员临时使用 |
 
 ### CLI 权威文档（阶段 3 必查）
 
@@ -331,6 +339,19 @@ A：按 `references/test-results-rebolt-commands.md` 仲裁链：当前 binary `
 
 ## 版本日志
 
+- **2026-04-23**：**Mengmeng + WesleyChenn 联合整合版**。
+  - 新增 `phase1-figma-json/` 目录（7 份 Mengmeng 4.22 版 JSON 规范，共 1372 行）：截图→Figma JSON 实战规则，含命名白名单、底板分离、constraints、组件匹配、自检清单。
+  - 新增 `references/figma-to-red-plistlib.md`：plistlib 兜底方案（CLI 不可用时使用）。
+  - 新增 9 份 lessons：
+    - `lesson_unit2_auto_convert.md` — Redream 打开时 unit=2 自动转 unit=0
+    - `lesson_unit3_content_size_only.md` — unit=3 只能用于 contentSize 高度
+    - `lesson_unique_node_id_required.md` — uniqueNodeId 必须唯一非零
+    - `lesson_rebolt_redInfos_required.md` — rebolt 必须含 redInfos
+    - `lesson_no_hand_built_xml.md` — 禁止手拼 XML 字符串
+    - `lesson_reference_img_node_copy.md` — referenceImgNode 从参考文件复制
+    - `lesson_button_content_as_child.md` — 按钮内容必须作为触控层子节点（点击缩放跟随）
+    - `lesson_floating_layer_mask.md` — 浮层必须含 放穿透层 + 遮罩_背景
+    - `lesson_coord_constraint_flow.md` — Figma → .red 坐标约束判断四步法
 - **2026-04-22**：对齐 `ai_dev_skill` commit `9a8b53f` + 实测 `Redream CLI 1.3.4`（装在 `/Applications/Redream 1.0/`）。CLI 表面 / 格式 / 标准文档与引擎组权威版**零语义差异**（仅目录布局不同：本地扁平 vs 引擎组分层）。
   - 更正 CLI 二进制路径为 `/Applications/Redream 1.0/Redream.app/...`（含空格，shell 需加引号）。
   - 补录实测 action 计数：inspect=11 / modify=27 / rebolt-modify=26 / rebolt 顶层=3。
