@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Plugin backups
+*.bak
+*.bak.*
+
+# Reference video frames (大体积参考资料，建议本地保留，不上传 Git)
+component_extractor/video_frames/
+
+# 临时输出
+red_output*/
+*.redream

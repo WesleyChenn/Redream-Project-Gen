@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "design_size": {
+      "w": 1080,
+      "h": 2400
+    }
+  },
+  "screens": [
+    {
+      "id": "s1",
+      "name": "界面_主菜单",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "INSTANCE",
+          "name": "排行榜行_1",
+          "component_name": "排行榜行",
+          "variant": "常态",
+          "x": 40,
+          "y": 100,
+          "w": 997,
+          "h": 203
+        },
+        {
+          "type": "INSTANCE",
+          "name": "排行榜行_2",
+          "component_name": "排行榜行",
+          "variant": "常态",
+          "x": 40,
+          "y": 320,
+          "w": 997,
+          "h": 203
+        },
+        {
+          "type": "INSTANCE",
+          "name": "排行榜行_3_当前",
+          "component_name": "排行榜行",
+          "variant": "变体_2",
+          "x": 40,
+          "y": 540,
+          "w": 997,
+          "h": 203
+        },
+        {
+          "type": "INSTANCE",
+          "name": "活动按钮_奖杯",
+          "component_name": "活动按钮",
+          "variant": "常态",
+          "x": 30,
+          "y": 800,
+          "w": 215,
+          "h": 175
+        },
+        {
+          "type": "INSTANCE",
+          "name": "活动按钮_盾牌",
+          "component_name": "活动按钮",
+          "variant": "常态",
+          "x": 30,
+          "y": 1000,
+          "w": 215,
+          "h": 175
+        }
+      ]
+    }
+  ],
+  "flow": [],
+  "components": [
+    {
+      "name": "排行榜行",
+      "w": 997,
+      "h": 203,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_行",
+              "x": 0,
+              "y": 0,
+              "w": 997,
+              "h": 203,
+              "corner_radius": 20
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_名字",
+              "x": 100,
+              "y": 50,
+              "content": "Alice",
+              "font_size": 50
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "变体_2",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_行",
+              "x": 0,
+              "y": 0,
+              "w": 997,
+              "h": 203,
+              "corner_radius": 20,
+              "fill": "#88c870"
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_名字",
+              "x": 100,
+              "y": 50,
+              "content": "Me",
+              "font_size": 50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "活动按钮",
+      "w": 215,
+      "h": 175,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_按钮",
+              "x": 0,
+              "y": 0,
+              "w": 215,
+              "h": 175,
+              "corner_radius": 30
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_标题",
+              "x": 50,
+              "y": 130,
+              "content": "Trophy",
+              "font_size": 32
+            }
+          ],
+          "is_default": true
+        }
+      ]
+    }
+  ]
+}

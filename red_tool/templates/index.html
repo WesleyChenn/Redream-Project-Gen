@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>RED Tool — Redream 工具箱</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#c0392b;--red-light:#e74c3c;
+  --bg:#f0f2f5;--panel:#fff;
+  --sidebar:#2c3e50;--sidebar-text:#ecf0f1;--sidebar-hover:#34495e;
+  --border:#e0e0e0;--text:#2c3e50;--muted:#7f8c8d;--code:#f8f9fa;
+  --ok:#27ae60;--err:#e74c3c;--warn:#f39c12;
+  --h:48px;--sw:248px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;
+     color:var(--text);background:var(--bg);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Header ── */
+header{height:var(--h);background:var(--sidebar);color:#fff;display:flex;align-items:center;
+       padding:0 16px;gap:10px;flex-shrink:0;z-index:10}
+.logo{font-size:15px;font-weight:700;color:#e74c3c;letter-spacing:1px}
+.subtitle{font-size:11px;color:#95a5a6}
+header .spacer{flex:1}
+#header-status{font-size:11px;color:#95a5a6;padding:4px 8px;border-radius:4px;
+               background:rgba(255,255,255,0.08)}
+
+/* ── Layout ── */
+.layout{flex:1;display:flex;overflow:hidden}
+
+/* ── Sidebar ── */
+aside{width:var(--sw);background:var(--sidebar);color:var(--sidebar-text);
+      display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+.sb-section{padding:10px 12px 5px;font-size:10px;font-weight:600;color:#7f8c8d;
+            letter-spacing:1px;text-transform:uppercase;
+            border-top:1px solid rgba(255,255,255,0.06);margin-top:2px}
+.cfg-row{display:flex;align-items:center;padding:3px 10px;gap:5px}
+.cfg-row label{font-size:10px;color:#95a5a6;min-width:30px;flex-shrink:0}
+.cfg-row input{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);
+               color:#fff;padding:3px 6px;border-radius:3px;font-size:11px;min-width:0}
+.cfg-row input:focus{outline:none;border-color:var(--red-light)}
+.sb-btn{margin:4px 10px;padding:5px 10px;background:rgba(255,255,255,0.07);
+        border:1px solid rgba(255,255,255,0.1);color:var(--sidebar-text);border-radius:4px;
+        cursor:pointer;font-size:11px;width:calc(100% - 20px);text-align:left;transition:background .15s}
+.sb-btn:hover{background:rgba(255,255,255,0.14)}
+.file-list{flex:1;overflow-y:auto;padding:4px 0}
+.fi{padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:7px;
+    transition:background .1s;border-left:3px solid transparent}
+.fi:hover{background:var(--sidebar-hover)}
+.fi.active{background:rgba(192,57,43,.25);border-left-color:var(--red-light)}
+.fi-icon{font-size:13px}
+.fi-name{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi-size{font-size:10px;color:#7f8c8d}
+
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Tabs ── */
+.tabs{display:flex;background:var(--panel);border-bottom:2px solid var(--border);flex-shrink:0}
+.tab{padding:11px 20px;cursor:pointer;font-size:13px;color:var(--muted);
+     border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:500}
+.tc{flex:1;overflow:hidden;display:none}
+.tc.active{display:flex}
+
+/* ── Generate Tab ── */
+#tab-gen{flex-direction:column}
+.gen-cfg{background:var(--panel);border-bottom:1px solid var(--border);padding:8px 14px;
+         display:flex;gap:14px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.gen-cfg label{font-size:11px;color:var(--muted)}
+.gen-cfg input{width:300px;padding:5px 8px;border:1px solid var(--border);
+               border-radius:4px;font-size:12px}
+.gen-cfg input:focus{outline:none;border-color:var(--red)}
+.gen-body{flex:1;display:flex;overflow:hidden}
+.json-panel{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border)}
+.panel-hd{background:var(--panel);border-bottom:1px solid var(--border);padding:7px 12px;
+          font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;
+          letter-spacing:.5px;display:flex;align-items:center;justify-content:space-between;
+          flex-shrink:0}
+#json-input{flex:1;border:none;outline:none;resize:none;
+            font-family:'Monaco','Menlo','Courier New',monospace;font-size:11px;
+            padding:12px;background:var(--code);color:var(--text);line-height:1.6}
+.gen-right{width:290px;display:flex;flex-direction:column;background:var(--panel);flex-shrink:0}
+#gen-log{flex:1;overflow-y:auto;padding:10px 12px;
+         font-family:'Monaco','Menlo',monospace;font-size:11px;line-height:1.8}
+.l-ok{color:var(--ok)}.l-err{color:var(--err)}.l-warn{color:var(--warn)}.l-info{color:var(--muted)}
+.gen-acts{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:7px}
+
+/* ── Edit Tab ── */
+#tab-edit{flex-direction:row}
+.tree-panel{width:310px;display:flex;flex-direction:column;
+            border-right:1px solid var(--border);background:var(--panel);flex-shrink:0}
+#tree-box{flex:1;overflow:auto;padding:5px 0;font-size:12px}
+.tn-row{display:flex;align-items:center;height:25px;cursor:pointer;
+        padding-right:8px;user-select:none;transition:background .1s}
+.tn-row:hover{background:#f5f7f9}
+.tn-row.sel{background:#fef0ee}
+.tn-tog{width:15px;height:15px;display:flex;align-items:center;justify-content:center;
+        font-size:9px;color:var(--muted);flex-shrink:0;cursor:pointer}
+.tn-tog:hover{color:var(--red)}
+.tn-ico{width:17px;flex-shrink:0;font-size:12px}
+.tn-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.tn-cls{font-size:10px;color:var(--muted);margin-left:3px;flex-shrink:0}
+.tn-kids.hide{display:none}
+
+/* ── Props Panel ── */
+.props-panel{flex:1;display:flex;flex-direction:column;background:var(--panel);overflow:hidden}
+#props-box{flex:1;overflow-y:auto;padding:8px 12px}
+.node-info{background:#f8f9fa;border:1px solid var(--border);border-radius:4px;
+           padding:8px 10px;margin-bottom:10px}
+.ni-name{font-size:13px;font-weight:600}
+.ni-cls{font-size:11px;color:var(--muted);margin-top:2px}
+.ni-id{font-size:10px;color:#bdc3c7;margin-top:2px;font-family:monospace}
+.pr{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #f0f0f0}
+.pr:last-child{border-bottom:none}
+.pr-key{min-width:130px;font-size:11px;font-weight:500;padding-top:3px;color:var(--text)}
+.pr-type{min-width:75px;font-size:10px;color:var(--muted);padding-top:4px}
+.pr-val{flex:1}
+.pr-val input{width:100%;padding:3px 6px;border:1px solid var(--border);border-radius:3px;
+              font-size:11px;font-family:'Monaco','Menlo',monospace;
+              color:var(--text);background:var(--code)}
+.pr-val input:focus{outline:none;border-color:var(--red);background:#fff}
+.pr-val input.err{border-color:var(--err)}
+.anim-hd{margin-top:10px;font-size:11px;font-weight:600;color:var(--muted);
+          text-transform:uppercase;letter-spacing:.5px;padding:6px 0 4px}
+.anim-pre{font-size:10px;background:var(--code);padding:8px;border-radius:4px;
+           overflow:auto;max-height:180px;border:1px solid var(--border);
+           font-family:monospace;line-height:1.5}
+.edit-acts{padding:9px 12px;border-top:1px solid var(--border);display:flex;
+           align-items:center;gap:8px}
+
+/* ── Buttons ── */
+.btn{padding:7px 14px;border-radius:4px;border:none;cursor:pointer;
+     font-size:12px;font-weight:500;transition:all .15s}
+.btn-p{background:var(--red);color:#fff}
+.btn-p:hover{background:var(--red-light)}
+.btn-s{background:#ecf0f1;color:var(--text);border:1px solid var(--border)}
+.btn-s:hover{background:#dfe6e9}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-ok:hover{background:#2ecc71}
+.btn-sm{padding:4px 10px;font-size:11px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── Empty state ── */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
+       height:100%;color:var(--muted);gap:8px}
+.empty .ei{font-size:30px}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#aaa}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:18px;right:18px;background:#2c3e50;color:#fff;
+       padding:9px 15px;border-radius:6px;font-size:12px;z-index:999;
+       opacity:0;transform:translateY(6px);transition:all .2s;max-width:300px}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.tok{border-left:3px solid var(--ok)}
+#toast.terr{border-left:3px solid var(--err)}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🔴 RED TOOL</span>
+  <span class="subtitle">Redream 工具箱</span>
+  <span class="spacer"></span>
+  <span id="header-status">准备就绪</span>
+</header>
+
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <aside>
+    <div class="sb-section">路径配置</div>
+    <div class="cfg-row">
+      <label>输出</label>
+      <input id="cfg-out" type="text" title="输出目录">
+    </div>
+    <button class="sb-btn" onclick="loadFiles()">🔄 刷新文件列表</button>
+    <button class="sb-btn" onclick="openFinder()">📂 在 Finder 中打开</button>
+    <div class="sb-section">.red 文件</div>
+    <div class="file-list" id="file-list">
+      <div style="padding:14px 12px;font-size:11px;color:#7f8c8d">点击「刷新」加载文件列表</div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="main">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('gen')">⚡ 生成</div>
+      <div class="tab"        onclick="switchTab('edit')">✏️ 编辑</div>
+    </div>
+
+    <!-- Generate -->
+    <div class="tc active" id="tab-gen">
+      <div class="gen-cfg">
+        <div><label>输出目录：</label><input id="gen-out" type="text" style="width:310px"></div>
+        <div id="cli-status" style="font-size:12px;color:#888"></div>
+      </div>
+      <div class="gen-body">
+        <div class="json-panel">
+          <div class="panel-hd">
+            📋 Figma JSON
+            <button class="btn btn-s btn-sm" onclick="document.getElementById('json-input').value=''">清空</button>
+          </div>
+          <textarea id="json-input" placeholder='粘贴 Figma 插件导出的 JSON…
+
+{
+  "screens": [{ "name": "界面_XXX", "w": 1080, "h": 2400, "layers": [...] }],
+  "flow": []
+}'></textarea>
+        </div>
+        <div class="gen-right">
+          <div class="panel-hd">日志</div>
+          <div id="gen-log"><div class="l-info">等待生成…</div></div>
+          <div class="gen-acts">
+            <button class="btn btn-p" id="btn-gen" onclick="generate()">⚡ 生成 .red 文件</button>
+            <button class="btn btn-s btn-sm" onclick="document.getElementById('gen-log').innerHTML=''">清空日志</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit -->
+    <div class="tc" id="tab-edit">
+      <div class="tree-panel">
+        <div class="panel-hd">
+          节点树
+          <span id="tree-fname" style="font-size:10px;font-weight:400;color:#aaa;
+                max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+        </div>
+        <div id="tree-box">
+          <div class="empty"><div class="ei">🌲</div><div>从左侧选择文件</div></div>
+        </div>
+      </div>
+      <div class="props-panel">
+        <div class="panel-hd">
+          属性编辑
+          <button class="btn btn-ok btn-sm" id="btn-save" onclick="saveFile()" disabled>💾 保存</button>
+        </div>
+        <div id="props-box">
+          <div class="empty"><div class="ei">👆</div><div>点击节点查看属性</div></div>
+        </div>
+        <div class="edit-acts">
+          <button class="btn btn-s btn-sm" id="btn-save2" onclick="saveFile()" disabled>💾 保存文件</button>
+          <span id="save-st" style="font-size:11px;color:var(--muted)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── State ──
+const S = {
+  outDir: '',
+  files: [],
+  curPath: null, curData: null,
+  selNode: null, dirty: false,
+};
+
+// ── Init ──
+async function init() {
+  const cfg = await api('/api/config');
+  S.outDir  = cfg.output_dir;
+  if (cfg.cli_path) {
+    document.getElementById('cli-status').textContent =
+      cfg.cli_exists ? '✅ Redream CLI 就绪' : '❌ 未找到 Redream CLI: ' + cfg.cli_path;
+  }
+  set('cfg-out',  S.outDir);
+
+  set('gen-out',  S.outDir);
+
+
+  // sync config ↔ gen path fields
+  ['cfg-out','gen-out'].forEach(id =>
+    ge(id).addEventListener('input', e => {
+      S.outDir = e.target.value;
+      ['cfg-out','gen-out'].forEach(x => { if(x!==id) set(x,S.outDir); });
+    })
+  );
+  
+  await loadFiles();
+}
+
+// ── Tabs ──
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) =>
+    t.classList.toggle('active', ['gen','edit'][i] === name));
+  document.querySelectorAll('.tc').forEach(c =>
+    c.classList.toggle('active', c.id === 'tab-'+name));
+}
+
+// ── File List ──
+async function loadFiles() {
+  setStatus('加载中…');
+  const r = await api('/api/files?dir='+enc(S.outDir));
+  if (!r.ok) { toast(r.error,'err'); return; }
+  S.files = r.files;
+  const list = ge('file-list');
+  if (!S.files.length) {
+    list.innerHTML = '<div style="padding:14px 12px;font-size:11px;color:#7f8c8d">未找到 .red 文件</div>';
+    setStatus('0 个文件'); return;
+  }
+  list.innerHTML = S.files.map(f => `
+    <div class="fi ${f.path===S.curPath?'active':''}" onclick="loadFile(${JSON.stringify(f.path)})">
+      <span class="fi-icon">🔴</span>
+      <span class="fi-name" title="${esc(f.rel)}">${esc(f.name)}</span>
+      <span class="fi-size">${fmtSz(f.size)}</span>
+    </div>`).join('');
+  setStatus(S.files.length + ' 个文件');
+}
+
+// ── Generate ──
+async function generate() {
+  const jsonText = ge('json-input').value.trim();
+  if (!jsonText) { toast('请先粘贴 JSON','err'); return; }
+  log('info','⏳ 开始生成…');
+  ge('btn-gen').disabled = true;
+  try {
+    const r = await api('/api/generate', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        json_text: jsonText,
+
+        output_dir: ge('gen-out').value.trim(),
+      })
+    });
+    if (r.ok) {
+      r.results.forEach(res => {
+        log('ok', `✅ ${res.name}  (${res.nodes} 节点, ${fmtSz(res.size)})`);
+        log('info', `   → ${res.path}`);
+      });
+      toast('生成成功','ok');
+      await loadFiles();
+    } else {
+      log('err','❌ '+r.error);
+      if (r.trace) r.trace.split('\n').filter(Boolean).forEach(l => log('err', l));
+      toast('生成失败','err');
+    }
+  } catch(e) { log('err','❌ '+e.message); }
+  finally    { ge('btn-gen').disabled = false; }
+}
+
+function log(type, msg) {
+  const el = ge('gen-log');
+  const d  = document.createElement('div');
+  d.className = 'l-'+type; d.textContent = msg;
+  el.appendChild(d); el.scrollTop = el.scrollHeight;
+}
+
+// ── Load File ──
+async function loadFile(path) {
+  setStatus('加载中…');
+  const r = await api('/api/load?path='+enc(path));
+  if (!r.ok) { toast(r.error,'err'); return; }
+  S.curPath = path; S.curData = r.data; S.dirty = false; S.selNode = null;
+  ge('tree-fname').textContent = path.split('/').pop();
+  ge('btn-save').disabled = false;
+  ge('btn-save2').disabled = false;
+  ge('save-st').textContent = '';
+  renderFileList();
+  renderTree();
+  ge('props-box').innerHTML = '<div class="empty"><div class="ei">👆</div><div>点击节点查看属性</div></div>';
+  switchTab('edit');
+  setStatus('已加载: '+path.split('/').pop());
+  toast('已加载','ok');
+}
+
+function renderFileList() {
+  // re-render active state
+  ge('file-list').querySelectorAll('.fi').forEach(el => {
+    const p = el.getAttribute('onclick').replace(/loadFile\(|["')\s]/g,'');
+    el.classList.toggle('active', S.files.some(f => f.path === S.curPath && f.path.includes(p)));
+  });
+  // simpler: just reload
+  loadFiles();
+}
+
+// ── Tree ──
+const ICONS = {
+  CCLayer:'📐', CCNode:'📦', CCSprite:'🖼', REDNodeButton:'🔘',
+  CCRedLabel:'📝', CCLayerColor:'🎨', CCProgressTimer:'⏳', REDFile:'📎',
+};
+
+function renderTree() {
+  const box = ge('tree-box');
+  box.innerHTML = '';
+  if (!S.curData?.nodeGraph) {
+    box.innerHTML = '<div class="empty"><div>无效文件</div></div>'; return;
+  }
+  box.appendChild(buildTN(S.curData.nodeGraph, 0));
+}
+
+function buildTN(node, depth) {
+  const wrap = document.createElement('div');
+  const row  = document.createElement('div');
+  row.className = 'tn-row';
+
+  // indent
+  const ind = document.createElement('span');
+  ind.style.cssText = `display:inline-block;width:${depth*13+3}px;flex-shrink:0`;
+  row.appendChild(ind);
+
+  // toggle
+  const tog = document.createElement('span');
+  tog.className = 'tn-tog';
+  const hasKids = node.children?.length > 0;
+  tog.textContent = hasKids ? '▼' : '';
+  row.appendChild(tog);
+
+  // icon
+  const ico = document.createElement('span');
+  ico.className = 'tn-ico';
+  ico.textContent = ICONS[node.baseClass] || '▸';
+  row.appendChild(ico);
+
+  // name
+  const nm = document.createElement('span');
+  nm.className = 'tn-name';
+  nm.textContent = node.displayName || '(无名)';
+  row.appendChild(nm);
+
+  // class
+  const cls = document.createElement('span');
+  cls.className = 'tn-cls';
+  cls.textContent = node.baseClass || '';
+  row.appendChild(cls);
+
+  wrap.appendChild(row);
+
+  // children
+  if (hasKids) {
+    const kids = document.createElement('div');
+    kids.className = 'tn-kids';
+    for (const ch of node.children) kids.appendChild(buildTN(ch, depth+1));
+    wrap.appendChild(kids);
+    let open = true;
+    tog.addEventListener('click', e => {
+      e.stopPropagation();
+      open = !open;
+      tog.textContent = open ? '▼' : '▶';
+      kids.classList.toggle('hide', !open);
+    });
+  }
+
+  row.addEventListener('click', e => {
+    e.stopPropagation();
+    document.querySelectorAll('.tn-row.sel').forEach(r => r.classList.remove('sel'));
+    row.classList.add('sel');
+    S.selNode = node;
+    renderProps(node);
+  });
+
+  return wrap;
+}
+
+// ── Props ──
+function renderProps(node) {
+  const box = ge('props-box');
+  box.innerHTML = '';
+
+  // info card
+  box.innerHTML = `
+    <div class="node-info">
+      <div class="ni-name">${esc(node.displayName||'(无名)')}</div>
+      <div class="ni-cls">${esc(node.baseClass||'')}${node.customClass?' · '+node.customClass:''}</div>
+      <div class="ni-id">ID: ${node.uniqueNodeId||0}</div>
+    </div>`;
+
+  // properties
+  (node.properties||[]).forEach((prop, i) => {
+    const row = document.createElement('div');
+    row.className = 'pr';
+    row.innerHTML = `
+      <div class="pr-key">${esc(prop.name)}</div>
+      <div class="pr-type">${esc(prop.type)}</div>
+      <div class="pr-val"><input type="text" value="${esc(JSON.stringify(prop.value))}" data-idx="${i}"></div>`;
+    box.appendChild(row);
+
+    const inp = row.querySelector('input');
+    inp.addEventListener('change', () => {
+      try {
+        node.properties[i].value = JSON.parse(inp.value);
+        inp.classList.remove('err');
+        markDirty();
+      } catch {
+        inp.classList.add('err');
+        toast('JSON 格式错误','err');
+      }
+    });
+  });
+
+  // animated properties
+  const anim = node.animatedProperties;
+  if (anim && Object.keys(anim).length > 0) {
+    const hd = document.createElement('div');
+    hd.className = 'anim-hd';
+    hd.textContent = 'animatedProperties';
+    box.appendChild(hd);
+    renderAnimEditor(box, node);
+  } else {
+    // offer to add animation
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn btn-s btn-sm';
+    addBtn.style.marginTop = '10px';
+    addBtn.textContent = '+ 添加动画 keyframe';
+    addBtn.onclick = () => {
+      node.animatedProperties = {
+        "0": {
+          "visible": {
+            "keyframes": [{
+              "easing": {"type": 0},
+              "name": "visible",
+              "pathValues": [],
+              "time": -0.0,
+              "type": 1,
+              "value": true
+            }],
+            "name": "visible",
+            "type": 1
+          }
+        }
+      };
+      markDirty();
+      renderProps(node); // 刷新
+    };
+    box.appendChild(addBtn);
+  }
+}
+
+function renderAnimEditor(container, node) {
+  const pre = document.createElement('pre');
+  pre.className = 'anim-pre';
+  pre.textContent = JSON.stringify(node.animatedProperties, null, 2);
+  container.appendChild(pre);
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn btn-s btn-sm';
+  editBtn.style.marginTop = '4px';
+  editBtn.textContent = '✏️ 编辑动画 JSON';
+  container.appendChild(editBtn);
+
+  editBtn.onclick = () => {
+    const ta = document.createElement('textarea');
+    ta.value = JSON.stringify(node.animatedProperties, null, 2);
+    ta.style.cssText = 'width:100%;height:180px;font-family:monospace;font-size:10px;'+
+      'padding:8px;border:1px solid var(--red);border-radius:4px;resize:vertical;margin-top:4px';
+    const applyBtn = document.createElement('button');
+    applyBtn.className = 'btn btn-p btn-sm';
+    applyBtn.style.marginTop = '4px';
+    applyBtn.textContent = '应用';
+    applyBtn.onclick = () => {
+      try {
+        node.animatedProperties = JSON.parse(ta.value);
+        pre.textContent = JSON.stringify(node.animatedProperties, null, 2);
+        ta.replaceWith(pre); applyBtn.remove(); editBtn.style.display = '';
+        markDirty(); toast('已应用','ok');
+      } catch(e) { toast('JSON 错误: '+e.message,'err'); }
+    };
+    pre.replaceWith(ta); editBtn.style.display = 'none';
+    ta.after(applyBtn);
+  };
+}
+
+function markDirty() {
+  S.dirty = true;
+  ge('save-st').textContent = '⚠ 有未保存更改';
+  ge('save-st').style.color = 'var(--warn)';
+}
+
+// ── Save ──
+async function saveFile() {
+  if (!S.curPath || !S.curData) { toast('未加载文件','err'); return; }
+  ge('btn-save').disabled = ge('btn-save2').disabled = true;
+  try {
+    const r = await api('/api/save', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({path: S.curPath, data: S.curData})
+    });
+    if (r.ok) {
+      S.dirty = false;
+      ge('save-st').textContent = `✅ 已保存 (${fmtSz(r.size)})`;
+      ge('save-st').style.color = 'var(--ok)';
+      toast('保存成功','ok');
+      await loadFiles();
+    } else {
+      toast('保存失败: '+r.error,'err');
+    }
+  } catch(e) { toast('网络错误','err'); }
+  finally { ge('btn-save').disabled = ge('btn-save2').disabled = false; }
+}
+
+// ── Finder ──
+async function openFinder() {
+  await api('/api/open_finder?path='+enc(S.outDir));
+}
+
+// ── Utils ──
+async function api(url, opts) {
+  const r = await fetch(url, opts);
+  return r.json();
+}
+const ge  = id => document.getElementById(id);
+const set = (id,v) => { const el = ge(id); if(el) el.value = v; };
+const enc = s => encodeURIComponent(s);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function fmtSz(b) {
+  if (b < 1024) return b+'B';
+  if (b < 1024*1024) return (b/1024).toFixed(0)+'K';
+  return (b/1024/1024).toFixed(1)+'M';
+}
+function setStatus(m) { ge('header-status').textContent = m; }
+let _toastTimer;
+function toast(msg, type='ok') {
+  const el = ge('toast');
+  el.textContent = msg;
+  el.className = 'show t'+type;
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ── Start ──
+init();
+</script>
+</body>
+</html>

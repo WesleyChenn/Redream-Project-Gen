@@ -1,0 +1,59 @@
+{
+  "meta": { "design_size": { "w": 1080, "h": 2400 } },
+  "screens": [
+    {
+      "id": "s1",
+      "name": "界面_主菜单",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "FRAME",
+          "name": "排行榜行_1",
+          "x": 40, "y": 100, "w": 997, "h": 203,
+          "children": [
+            { "type": "RECTANGLE", "name": "底板_行", "x": 0, "y": 0, "w": 997, "h": 203, "corner_radius": 20 },
+            { "type": "TEXT", "name": "文本_名字", "x": 100, "y": 50, "content": "Alice", "font_size": 50 }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "排行榜行_2",
+          "x": 40, "y": 320, "w": 997, "h": 203,
+          "children": [
+            { "type": "RECTANGLE", "name": "底板_行", "x": 0, "y": 0, "w": 997, "h": 203, "corner_radius": 20 },
+            { "type": "TEXT", "name": "文本_名字", "x": 100, "y": 50, "content": "Bob", "font_size": 50 }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "排行榜行_3_当前",
+          "x": 40, "y": 540, "w": 997, "h": 203,
+          "children": [
+            { "type": "RECTANGLE", "name": "底板_行", "x": 0, "y": 0, "w": 997, "h": 203, "corner_radius": 20, "fill": "#88c870" },
+            { "type": "TEXT", "name": "文本_名字", "x": 100, "y": 50, "content": "Me", "font_size": 50 }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "活动按钮_奖杯",
+          "x": 30, "y": 800, "w": 215, "h": 175,
+          "children": [
+            { "type": "RECTANGLE", "name": "底板_按钮", "x": 0, "y": 0, "w": 215, "h": 175, "corner_radius": 30 },
+            { "type": "TEXT", "name": "文本_标题", "x": 50, "y": 130, "content": "Trophy", "font_size": 32 }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "活动按钮_盾牌",
+          "x": 30, "y": 1000, "w": 215, "h": 175,
+          "children": [
+            { "type": "RECTANGLE", "name": "底板_按钮", "x": 0, "y": 0, "w": 215, "h": 175, "corner_radius": 30 },
+            { "type": "TEXT", "name": "文本_标题", "x": 50, "y": 130, "content": "Shield", "font_size": 32 }
+          ]
+        }
+      ]
+    }
+  ],
+  "flow": []
+}
