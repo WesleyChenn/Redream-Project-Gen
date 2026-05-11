@@ -338,6 +338,56 @@ def apply_default_visible(default_layers, generated_root_kids):
                 props.insert(0, {'name':'visible','type':'Check','value':False})
 
 
+# v20.7.x+ 8.11 多图层 + visible 切换实现
+# 跟 apply_default_visible 不同: 这里把全集**所有**图层 default visible=False
+# (不管它在哪个 Variant 中是 default 可见),让每条 sequence 各自打 visible=True keyframe
+def apply_all_invisible_default(merged_layers, generated_root_kids):
+    """
+    8.11 多图层模式: 全集所有图层 default visible=False。
+    每条 sequence(含 default Variant 的 seq 0)各自打 visible=True keyframe
+    显示该 Variant 该可见的图层。Variant 之间 keyframe 形式对称、清晰。
+    """
+    layer_map = {}
+    _collect_layers_by_name(merged_layers, layer_map)
+    name_to_node = {}
+    for root in generated_root_kids or []:
+        _collect_nodes_by_name(root, name_to_node)
+
+    for name in layer_map.keys():
+        node = name_to_node.get(name)
+        if node is None: continue
+        props = node.setdefault('properties', [])
+        for p in props:
+            if p.get('name') == 'visible':
+                p['value'] = False
+                break
+        else:
+            props.insert(0, {'name':'visible','type':'Check','value':False})
+
+
+def make_visible_diffs_for_variant(variant_layers):
+    """
+    8.11 模式:对单个 Variant 生成 keyframe diffs ── 该 Variant 里 visible 不为 False
+    的图层 → visible=True keyframe。
+    (Variant.layers 已被 _filter_invisible 处理过, 这里默认 layers 内节点都该 visible)
+
+    外侧 wrapper(根 CCNode)不打 keyframe ── 它 default visible=True,
+    本身不渲染内容(只是容器),不需要 keyframe 控制。空 Variant 靠"内部图层全 invisible"
+    达到视觉空。
+    """
+    diffs = []
+    def collect(L):
+        for n in L or []:
+            if isinstance(n, dict):
+                nm = n.get('name', '')
+                vis = n.get('visible', True)
+                if nm and vis is not False:
+                    diffs.append((nm, 'visible', True))
+                # 注:不递归内部 children, 因为 8.11 模式 Variant 之间的图层在顶层就分了
+    collect(variant_layers)
+    return diffs
+
+
 def write_variant_keyframes(generated_root_kids, diffs, seq_id):
     """
     把 diffs 写入对应节点 animatedProperties[str(seq_id)]
@@ -382,10 +432,31 @@ def new_rebolt_id():
 # build_child 处理 INSTANCE 时按 INSTANCE.variant 查表得到 animation 字段值。
 _COMPONENT_VARIANT_SEQID = {}
 
+# v20.7.x+ 空变体登记表(Figma 侧空 frame Variant → 引擎侧 wrapper.visible=false)
+# {component_name: set(variant_name)} — 表示这些 Variant 是"空"(layers 全 invisible / 0 layers)
+# 主屏 INSTANCE 引用空变体时,build_child 走 make_ccnode + visible=False 而不是 make_redfile
+_COMPONENT_EMPTY_VARIANTS = {}
+
+
+def is_empty_variant(variant):
+    """判断一个 Variant 是不是 '空 frame'(视觉无内容):
+    - layers 数 = 0
+    - OR 所有顶层 layers 都 visible=False
+    """
+    layers = variant.get('layers', []) or []
+    if not layers: return True
+    return all(L.get('visible') is False for L in layers)
+
+
+def is_empty_variant_ref(component_name, variant_name):
+    """查 INSTANCE 引用的 Variant 是否为空变体"""
+    return variant_name in _COMPONENT_EMPTY_VARIANTS.get(component_name, set())
+
 
 def register_component_variants(components):
     """
-    在生成主屏 .red 之前调用，记录所有 Component 的 variant_name → sequenceId 映射。
+    在生成主屏 .red 之前调用，记录所有 Component 的 variant_name → sequenceId 映射,
+    + 同时登记空变体集合到 _COMPONENT_EMPTY_VARIANTS。
 
     映射规则与 generate_red_component() 里 sequences 的构造保持一致：
       - is_default=True 的 Variant → sequenceId = 0
@@ -393,6 +464,7 @@ def register_component_variants(components):
       - 其他 Variants 按出现顺序递增 sequenceId
     """
     _COMPONENT_VARIANT_SEQID.clear()
+    _COMPONENT_EMPTY_VARIANTS.clear()
     for comp in components or []:
         cname = comp.get('name', '')
         if not cname: continue
@@ -404,8 +476,12 @@ def register_component_variants(components):
             default_v = variants[0]
 
         variant_map = {}
+        empty_set = set()
         if default_v is not None:
-            variant_map[default_v.get('name', '常态')] = 0
+            d_name = default_v.get('name', '常态')
+            variant_map[d_name] = 0
+            if is_empty_variant(default_v):
+                empty_set.add(d_name)
 
         seq_id = 1
         for v in variants:
@@ -413,9 +489,12 @@ def register_component_variants(components):
             if v.get('is_default'): continue
             vname = v.get('name', f'Variant_{seq_id}')
             variant_map[vname] = seq_id
+            if is_empty_variant(v):
+                empty_set.add(vname)
             seq_id += 1
 
         _COMPONENT_VARIANT_SEQID[cname] = variant_map
+        _COMPONENT_EMPTY_VARIANTS[cname] = empty_set
 
 
 def lookup_variant_seqid(component_name, variant_name):
@@ -610,6 +689,10 @@ def build_child(n, parent_w, parent_h, parent_is_fullwidth,
         if comp_name not in _COMPONENT_VARIANT_SEQID:
             return make_ccnode(name, px, py, ux, uy, w, h, 0, 0, 0.5, 0.5, [])
 
+        # v20.7.x+ 空 Variant 走正常 REDFile 路径(不再特殊处理):
+        # 子 CCB 内空 Variant 仍生成 sequence(无 keyframe),
+        # animation = 空 sequence id → 引擎加载切到这条 sequence 视觉全空。
+
         red_file_path = f'控件库/{comp_name}.red'
         seq_id = lookup_variant_seqid(comp_name, variant)
         return make_redfile(name, px, py, ux, uy, w, h,
@@ -733,6 +816,7 @@ def build_top_layer(info, sw, sh):
         if comp_name not in _COMPONENT_VARIANT_SEQID:
             return make_ccnode(name, px, py, ux, uy, w, h, 0, 0, 0.5, 0.5, [])
 
+        # v20.7.x+ 空 Variant 走正常 REDFile 路径(同 build_child)
         seq_id = lookup_variant_seqid(comp_name, variant)
         return make_redfile(name, px, py, ux, uy, w, h,
                             red_file_path=f'控件库/{comp_name}.red',
@@ -1018,60 +1102,63 @@ def generate_red_component(component):
         default_variant = {'name': '常态', 'layers': []}
 
     # v20.7.x ③: 合并所有 variants 的 layers 全集（兜底 Figma 端缺失节点）
-    # 每个 variant.layers 可能只包含该 variant 实际可见的节点（不规范），
-    # 引擎合并出全集再生成节点树，确保后续 keyframe 写入有目标节点。
-    inner_layers = merge_variants_layers(variants, default_variant)
-    inner_kids = build_children(inner_layers, cw, ch, False)
+    # ============================================
+    # v20.7.x+ 8.11 修订(2026-05-11): 组级 keyframe 模式
+    # 每个非空 Variant 创建一个 CCNode 组(displayName="组_<Variant名>"),
+    # 组内含该 Variant.layers 的所有图层(包括共享图层副本 — 每组各一份)。
+    # 组 default visible=False, sequence 给对应组打 visible=True keyframe。
+    # 空 Variant 不创建组、不打 keyframe → 视觉全空。
+    # ============================================
+    import copy as _copy
 
-    # 把全集中 visible=False 的节点（包括默认 variant 没出现过的）写入 properties，
-    # 让 sequence 0（常态）加载时这些节点真的隐藏
-    apply_default_visible(inner_layers, inner_kids)
+    group_nodes = []  # [(variant_name, group_ccnode), ...]
+    for v in variants:
+        v_name = v.get('name', '')
+        v_layers = v.get('layers') or []
+        if not v_layers:
+            # 空 Variant — 不创建组
+            continue
+        # 深拷贝 Variant.layers (共享图层会在每组各占一份独立节点)
+        v_layers_copy = _copy.deepcopy(v_layers)
+        v_inner_kids = build_children(v_layers_copy, cw, ch, False)
+        # 创建组 CCNode 容器
+        group_name = f'组_{v_name}'
+        group_node = make_ccnode(
+            group_name, 0.0, 0.0, 0, 0, cw, ch, 0, 0, 0.5, 0.5, v_inner_kids
+        )
+        # 组 default visible=False
+        for p in group_node.get('properties', []):
+            if p.get('name') == 'visible':
+                p['value'] = False
+                break
+        else:
+            group_node.setdefault('properties', []).insert(0,
+                {'name': 'visible', 'type': 'Check', 'value': False})
+        group_nodes.append((v_name, group_node))
 
-    # 根节点 CCNode（控件原始尺寸，displayName = 组件名）
-    # step 2 状态：position=(0, 0)，让主屏幕引用此 CCB 时内容居中
-    # 代价：子 CCB 单独打开时编辑器视图错位（CCSprite 视觉偏右上，原因未定位）
-    # 主屏渲染才是核心产出，子 CCB 单独打开错位可接受
+    # inner_kids = 所有组(按 ordered 顺序排;空 Variant 不入)
+    inner_kids = [gn for _, gn in group_nodes]
+
+    # 根节点 CCNode (外侧 wrapper)
     ccnode_root = make_ccnode(
         cname, 0.0, 0.0, 0, 0, cw, ch, 0, 0, 0.5, 0.5, inner_kids
     )
-    ccnode_root['expand'] = True  # 根节点编辑器里默认展开
+    ccnode_root['expand'] = True
 
-    # 构造 sequences（每个 Variant 一条占位 sequence）
+    # 构造 sequences: 每个 Variant 一条 sequence
+    # 非空 Variant → 给对应组打 visible=True keyframe
+    # 空 Variant → 不打 keyframe → 所有组 invisible → 视觉空
     sequences = []
-    seq_id = 0
-    # 默认 Variant 永远 sequenceId=0，name="常态"
-    sequences.append({
-        'autoPlay': False,
-        'callbackChannel': {'keyframes':[],'name':'','type':0},
-        'chainedSequenceId': -1,
-        'length': 0.0666667,
-        'name': '常态',
-        'offset': 0.0, 'position': 0.0,
-        'resolution': 30.0, 'scale': 128.0,
-        'sequenceId': 0,
-        'shake2Channel': {'keyframes':[],'name':'','type':0},
-        'shakeChannel':  {'keyframes':[],'name':'','type':0},
-        'soundChannel':  {'keyframes':[],'name':'','type':0},
-        'timelineEndPlay': 0.0666667, 'timelineStartPlay': 0.0,
-        'wiseChannel':   {'keyframes':[],'name':'','type':0},
-    })
-    seq_id = 1
-    # 其他 Variants：每个非默认 variant
-    #   1) 构造一条 sequence
-    #   2) 跟全集 layers 做 diff（visible / fill）—— 用 inner_layers（合并后的全集），
-    #      不是原始 default_variant.layers，否则缺少"只在某些 variant 出现"的节点
-    #   3) 把 diff 写入对应节点的 animatedProperties[seqId] keyframe
-    default_layers = inner_layers
-    for v in variants:
-        if v is default_variant: continue
-        if v.get('is_default'): continue
-        vname = v.get('name', f'Variant_{seq_id}')
-        sequences.append({
+    ordered = [default_variant] + [v for v in variants
+                                   if v is not default_variant and not v.get('is_default')]
+
+    def make_seq(name, seq_id):
+        return {
             'autoPlay': False,
             'callbackChannel': {'keyframes':[],'name':'','type':0},
             'chainedSequenceId': -1,
             'length': 0.0666667,
-            'name': vname,
+            'name': name,
             'offset': 0.0, 'position': 0.0,
             'resolution': 30.0, 'scale': 128.0,
             'sequenceId': seq_id,
@@ -1080,13 +1167,20 @@ def generate_red_component(component):
             'soundChannel':  {'keyframes':[],'name':'','type':0},
             'timelineEndPlay': 0.0666667, 'timelineStartPlay': 0.0,
             'wiseChannel':   {'keyframes':[],'name':'','type':0},
-        })
-        # ③ variant_diffs：解析跟默认 variant 的差异 → 写入 keyframe
-        v_layers = v.get('layers', [])
-        diffs = diff_variant_against_default(default_layers, v_layers)
-        if diffs:
-            write_variant_keyframes(inner_kids, diffs, seq_id)
-        seq_id += 1
+        }
+
+    # 组名 → 组节点 映射(为 write_variant_keyframes 走 inner_kids 服务)
+    group_name_to_node = {gn.get('displayName',''): gn for _, gn in group_nodes}
+
+    for seq_id, v in enumerate(ordered):
+        if v is None: continue
+        v_name = v.get('name', f'Variant_{seq_id}')
+        sequences.append(make_seq(v_name, seq_id))
+        # 该 Variant 对应组 → visible=True keyframe
+        # 空 Variant 没有对应组,跳过(全 invisible → 视觉空)
+        group_name = f'组_{v_name}'
+        if group_name in group_name_to_node:
+            write_variant_keyframes(inner_kids, [(group_name, 'visible', True)], seq_id)
 
     return {
         # 回退到"能跑但主屏右偏"的版本：file centeredOrigin=True 让子 CCB 单独打开时居中

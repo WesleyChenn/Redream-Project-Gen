@@ -442,6 +442,11 @@ async function buildNode(layer, parent, depth, screen) {
     parent.appendChild(inst);
     reg(screen, name, inst);
     if (layer.visible === false) inst.visible = false;
+    // [v20.7.x+] 空变体特例: 引用 Figma 侧空 frame Variant → wrapper.visible=false
+    // (跟 app.py is_empty_variant_ref 处理逻辑对齐)
+    if (variantName && entry.emptyVariants && entry.emptyVariants[variantName]) {
+      inst.visible = false;
+    }
     // [v20.7+] 应用 INSTANCE 节点上的 overrides(支持嵌套)
     // 这一步之前漏掉,导致同 Variant 多实例渲染时 TEXT.content 全部用模板数据,
     // 列表里所有行都显示同一个名字/分数。
@@ -1217,6 +1222,7 @@ async function buildV20_6_ComponentSets(componentsArr) {
     // 为每个 Variant 创建一个临时 Component(脱离任何容器,远离画布)
     var componentNodes = [];
     var variantMap = {};
+    var emptyVariants = {};  // [v20.7.x+] 空变体集合: { vName: true }
     var defaultIdx = 0;
     for (var vi = 0; vi < variants.length; vi++) {
       var vDef = variants[vi];
@@ -1235,6 +1241,13 @@ async function buildV20_6_ComponentSets(componentsArr) {
 
       // 构建 Variant 内部 layers
       var vLayers = vDef.layers || [];
+      // [v20.7.x+] 空变体识别: layers 数 = 0 OR 所有 layers 顶层 visible=false
+      // → 标记为空变体, INSTANCE 引用时 wrapper.visible=false
+      var isEmpty = vLayers.length === 0 || vLayers.every(function(L) {
+        return L && L.visible === false;
+      });
+      if (isEmpty) emptyVariants[vName] = true;
+
       for (var li = 0; li < vLayers.length; li++) {
         await buildNode(vLayers[li], comp, 1, '__comp__' + name);
       }
@@ -1277,7 +1290,8 @@ async function buildV20_6_ComponentSets(componentsArr) {
       componentSet: compSet,
       defaultVariantNode: componentNodes[defaultIdx],
       variantMap: variantMap,
-      propertyName: propName
+      propertyName: propName,
+      emptyVariants: emptyVariants  // [v20.7.x+] 空变体集合
     };
     compCount++;
   }

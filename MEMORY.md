@@ -552,3 +552,64 @@ RED Tool V1 用扁平 `Resources/` 而非生产项目的 `ccb/<模块>/`，是 V
 - "状态 × 尺寸" = 2 个 Property（V1 报错让用户拆成多个 Component Set）
 
 讨论时谨慎用"多态"避免歧义。
+
+---
+
+## 28. Variant 多图层 vs 同图层 建模(2026-05-09 RoyalPass 教训)
+
+**现象**:RoyalPass v4 final.json 用了"同图层 + fill 切换"实现 Variant — 气泡底板.常态 fill=蓝 / 气泡底板.特殊 fill=金,同一节点名"底板_气泡"。
+经讨论, **应该改成"多图层 + visible 切换"** — 两个不同节点 底板_气泡_常态 / 底板_气泡_特殊 各自全集,sequence 在对应图层打 visible=true keyframe。
+
+**当前 RoyalPass final.json 保持现状不重做**(用户决策,作为踩坑记录),**后续屏严格按 SKILL.md 8.11 节"多图层 + visible 切换"实现**。
+
+**详细规则**: 引擎 SKILL.md 8.11 节"Variant 多图层 + visible 切换建模"
+
+## 29. 空 Variant 演进(2026-05-09 → 2026-05-11 修订)
+
+**v1(2026-05-09 实施,已废弃)**:
+- app.py: `is_empty_variant_ref` 检测空 Variant → build_child / build_top_layer 走特例,改 `make_ccnode + visible=False`,不创建 REDFile
+- 主屏 INSTANCE 引用空 Variant 时整个不引用子 CCB,wrapper 隐藏
+- 子 CCB 不生成空 Variant 的 sequence
+
+**v2(2026-05-11 修订,当前)**:
+- **空 Variant 跟普通 Variant 同样处理**,不再特例
+- 子 CCB 生成 sequence(序号正常登记),sequence 内**不打任何 keyframe**(make_visible_diffs_for_variant 给 layers=[] 返回 [])
+- 主屏 INSTANCE 引用空 Variant 走正常 REDFile,animation = 空 sequence id
+- 引擎加载切到空 sequence → 内部图层 default invisible 且无 keyframe → 视觉全空
+
+**为什么改 v2**:跟用户最终设计意图对齐 — "空 Variant 仍生成 sequence,但这个状态下没有图层可见,也没有图层打了可见帧"。v1 跳过 sequence 不符合此意图。
+
+**code.js**:暂保留 v1 的 `entry.emptyVariants` 处理(Figma 端 INSTANCE 引用空 Variant 时 wrapper FRAME visible=false)。Figma 端视觉表现跟引擎端逻辑独立。
+
+**详细规则**: 引擎 SKILL.md 8.12 节"空 Variant 处理"
+
+---
+
+## 30. Variant keyframe 从图层级 → 组级(2026-05-11 修订)
+
+**v2(2026-05-11 早段,已废弃)**:**图层级 keyframe**
+- 内部图层全 default invisible
+- 每条 sequence 直接在该 Variant 可见的图层上打 visible=True keyframe
+- 共享图层在多个 sequence 都打
+
+**v3(2026-05-11 当前)**:**组级 keyframe**
+- 每个非空 Variant 创建一个 CCNode 组容器(`组_<Variant名>`)
+- 组内含该 Variant.layers 的所有图层(包括共享图层副本 — 每组各占一份)
+- 组 default visible=False, sequence 给对应组打 visible=True keyframe
+- 空 Variant **不创建组,不打 keyframe** → 视觉全空
+
+**为什么改 v3**:用户反馈"打可见帧应该在组上打,不是图层上"。Redream 编辑器里看时间线更清晰(只看到一个组的 keyframe 标记,而不是 3-4 个图层各自的标记)。
+
+**关键实现细节**:
+- 共享图层(无尾缀)在每组内深拷贝一份独立 instance,因为 cocos2d-x 节点不能复用父
+- 外侧 wrapper(根 CCNode)default visible=True 不动,不需要 keyframe(CCNode 不渲染内容)
+- 组名 = `组_<Variant名>`(用 Variant 名作尾缀约定)
+
+**app.py 改动**:
+- `generate_red_component` 内主循环重写 — 每个非空 Variant 深拷贝 layers → build_children → CCNode 组容器
+- `inner_kids = [组_x, 组_y, ...]`(不再是平铺图层)
+- sequence 循环给 `组_<Variant名>` 打 keyframe
+
+**code.js 不动**:Figma 端不感知"组"概念(那是 app.py 生成 .red 时的中间结构)。
+
+**详细规则**: 引擎 SKILL.md 8.11 节"Variant 组级 visible 切换建模"

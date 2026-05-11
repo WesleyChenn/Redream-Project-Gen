@@ -994,4 +994,81 @@ for c in d['components']:
 
 ---
 
+## 组团识别 + Variant 抽取最小化(v20.7.x+,RoyalPass 教训)
+
+**前置:** 这套原则由 RoyalPass 视频生成 + 同事评审反馈沉淀。具体执行流程见 `03_skeleton.md` 第二步"组团识别(5 步法)"。
+
+### 5 大设计原则
+
+1. **变化下沉到最小单元** — 不在大容器(网格行/奖励格/卡片)上做"通用/对勾型/锁型..."这种排列组合 Variant。变化必须下沉到最小可独立变化的视觉单元(底板/角标/底标/icon),每个单元各自带独立 Variant。
+
+2. **大组团不抽 Component,只是 FRAME 结构** — 网格行 / 奖励格 / 中央组等中间结构层是 FRAME 包装层。N 行各异通过子 INSTANCE 各自引用不同 Variant 表达,不通过外层 Variant 排列组合表达。
+
+3. **数据驱动 vs 状态多态分离**:
+   - 数据驱动(代码运行时填,需求频繁变,种类无法穷尽枚举)→ 占位 RECT,不做 Component / Variant
+   - 状态多态(屏幕里枚举可数,2~10 种)→ 做 Component + Variant
+
+4. **"该状态不显示"做空 Variant(0 layers,语义名"空")**
+   - 角标这类 Component 加一个 `layers=[]` 的 Variant,Variant 名约定为 `空`(不带其他前缀后缀)
+   - 设计师在 INSTANCE 的"状态"下拉选"空"即不显示
+   - 不用 `visible=false` 表达(那是临时显隐,Variant 是状态切换)
+   - 引擎实现细节(空 Variant 仍生成 sequence,内部无 keyframe → 视觉空)见**引擎 SKILL `/Users/red/Desktop/引擎最新skill/SKILL.md` 8.12 节"空 Variant 处理"**
+
+5. **运行时数值不进 Variant** — 进度条的"满/空"是引擎运行时按 percentage 切割,**不做 Variant**;但进度条 icon 的"已完成/未完成"是状态多态,**做 Variant**。区分:数值连续 vs 状态离散。
+
+### 不做 Variant 的两类例外
+
+#### 1. 奖励物图片(道具/宝箱/任务奖励等"内容图")
+
+- 屏幕里出现的种类多 + 需求频繁变 + 设计师无法穷尽枚举
+- 做成占位 RECT,程序运行时按数据 setSpriteFrame 替换图片
+- 不做 Variant,占位 RECT 名字用 `图片_xxx` / `图标_xxx` 前缀
+
+#### 2. 进度条本体(进度条 RECT 的"当前填充百分比")
+
+- 视觉永远画 100% 满模板(SKILL 进度条铁律)
+- 引擎运行时按 percentage 切割(CCProgressTimer)
+- 不做"50% / 80%"这种 Variant
+- 但进度条 **图标/状态指示器** 的"已完成/未完成"是状态多态,**做 Variant**
+
+### 边界场景决策流程图
+
+```
+这个视觉变化点:
+├── 是大容器(行/卡/格 包装层)还是最小单元(底板/角标/icon)?
+│   ├── 大容器 → 不抽 Component,FRAME 包装层。变化下沉到子单元
+│   └── 最小单元 → 进入下一判断
+│
+├── 屏幕里这个单元能枚举可数(2~10 种)吗?
+│   ├── 是 → 做 Component + Variant
+│   │       ├── 状态包含"不显示" → 加"空 frame" Variant
+│   │       └── 各 Variant 视觉签名必须唯一(否则 combineAsVariants 失败)
+│   └── 否 → 进入下一判断
+│
+└── 是数值连续(满/空、百分比)还是种类无穷(图片资源)?
+    ├── 数值连续 → 引擎运行时计算(CCProgressTimer 等)
+    └── 种类无穷 → 占位 RECT,程序运行时填图
+```
+
+### 反面案例(踩过的坑)
+
+❌ **网格行_等级 = 通用 / 宝箱型 / 对勾型 / 对勾锁型 4 Variant**
+   - 原因: 排列组合,违反原则 1 + 2
+   - 正确: 网格行只 1-2 真实视觉差异 Variant(常态 / 当前用户高亮),
+     每行的对勾/锁/数量差异通过内部子 INSTANCE(角标/底标 INSTANCE)各自引用对应 Variant 表达
+
+✅ **角标/底标/黄色高亮条 做"常态空" Variant(空 frame)— Figma 侧合规**
+   - Figma 侧:常态空 Variant 0 layers,设计师在 INSTANCE 下拉选"常态空"即不显示
+   - 翻译工具自动在引擎侧把这种 INSTANCE 转成 wrapper.visible=false(详见原则 4)
+
+❌ **奖励物做了 7 个 Variant 列举所有道具**
+   - 原因: 违反原则 3 + 例外 1(种类无穷,程序填)
+   - 正确: 占位 `图片_奖励物` RECT,程序 setSpriteFrame
+
+❌ **看到 1 Variant Component 就删掉降级 FRAME**
+   - 原因: 擅自改用户原始设计意图(详见前面"Component 修复铁律")
+   - 正确: 加 dummy 第 2 Variant 制造视觉差异(fill / corner_radius)
+
+---
+
 ⛔ 本文件为全局参考，不单独执行。每个步骤开始时必须先读取本文件。

@@ -1,5 +1,46 @@
 # Changelog
 
+## v8.2.0 / v8-5.11 (2026-05-11)
+
+在 v8-5.9 基础上的增量更新，重点：引擎 SKILL 文档重构 + 工具链小修。
+
+### 重构（破坏性变更）
+
+- **`references/RED-Tool-v20.7-guide.md` → `references/RED-Tool-v20.7/`**
+  原单文件 1102 行的 RED Tool 引擎指南，由引擎组重构为 7 主题分文件 + 1 索引：
+  - `SKILL.md`（55 行，索引）
+  - `00_overview.md`（74 行，工具概述 + 启动 + 输入输出 + 整体管线）
+  - `01_schema_coord.md`（160 行，scene.json schema + 坐标规则）
+  - `02_naming.md`（80 行，命名规则）
+  - `03_component.md`（367 行，组件提取 + Variant 分类）
+  - `04_cli_python.md`（143 行，CLI 调用 + Python 集成）
+  - `05_figma_plugin.md`（145 行，Figma 插件交互）
+  - `06_misc.md`（263 行，杂项与排错）
+
+### 升级
+
+- **`MEMORY.md`**（顶层）：554 → **615 行**（引擎最新内存规则）
+- **`phase1-figma-json/00_core_rules.md`**：997 → **1074 行**
+- **`phase1-figma-json/03_skeleton.md`**：472 → **547 行**
+- **`plugin/code.js`**：75045 → **75795 B**（小修）
+- **`red_tool/app.py`**：1631 → **1725 行**
+
+### 无变化
+
+- `component_extractor/`（全部跳过）
+- `phase1-figma-json/` 的 04、06、07
+- `plugin/ui.html`、`manifest.json`
+- `red_tool/templates/index.html`
+- `lessons/lesson_component_no_delete.md`（4.22最新skill/MEMORY.md 内容未变）
+
+### 跳过未集成
+
+- `引擎最新skill/SKILL.md.bak`（备份文件）
+- `最新插件/code.js.bak.*`（备份文件）
+- `4.22最新skill/output/`（项目生成产物）
+
+---
+
 ## v8.1.0 / v8-5.9 (2026-05-09)
 
 在 v8-5.6 基础上的增量更新，覆盖 RoyalPass 项目实战教训 + 工具/规范同步。
