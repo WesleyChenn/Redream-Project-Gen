@@ -710,6 +710,36 @@ def build_top_layer(info, sw, sh):
     if name == '遮罩_背景':
         return None
 
+    # v20.7.x: 屏幕顶层 INSTANCE 节点 → 父 CCNode + 子 REDFile 两层
+    # 复用 build_child 里的处理逻辑（计算屏幕级 px/py,然后调 make_redfile）
+    # 之前 build_top_layer 没有 INSTANCE 分支,导致主屏顶层 INSTANCE 走全宽/固定宽分支
+    # 生成空 CCNode 容器,没有 REDFile 子节点
+    if t == 'INSTANCE':
+        comp_name = n.get('component_name', 'unknown')
+        variant   = n.get('variant', '常态')
+
+        # 屏幕坐标系下的中心点
+        x = info['x']
+        y = info['y']
+        cx = x + w / 2.0
+        cy = sh - y - h / 2.0
+
+        # 用百分比单位（屏幕级响应式）
+        px = cx / sw * 100.0
+        py = cy / sh * 100.0
+        ux, uy = 2, 2
+
+        # 引用的 component 没注册（被过滤掉了）→ 降级空 CCNode
+        if comp_name not in _COMPONENT_VARIANT_SEQID:
+            return make_ccnode(name, px, py, ux, uy, w, h, 0, 0, 0.5, 0.5, [])
+
+        seq_id = lookup_variant_seqid(comp_name, variant)
+        return make_redfile(name, px, py, ux, uy, w, h,
+                            red_file_path=f'控件库/{comp_name}.red',
+                            variant_name=variant,
+                            sequence_id=seq_id,
+                            component_display_name=comp_name)
+
     # v20: 顶层节点如果本身是触控层（按钮_XXX FRAME），生成 REDNodeButton
     is_self_btn = is_btn_layer(name, t)
 
@@ -830,9 +860,13 @@ def generate_red(screen):
          if l.get('name') != '遮罩_背景'
          and l is not bg_layer], sw, sh
     )
-    top_infos    = [r for r in classified if r['vc'] == 'TOP']
-    bottom_infos = [r for r in classified if r['vc'] == 'BOTTOM']
-    other_infos  = [r for r in classified if r['vc'] not in ('TOP','BOTTOM')]
+    # v20.7.x: INSTANCE 节点不参与 TOP/BOTTOM 合并
+    # merge_edge_nodes 把每个节点当普通 FRAME 处理,会丢 INSTANCE→REDFile 引用,
+    # 改走 other_infos → build_top_layer 里的 INSTANCE 分支,生成正确的父 CCNode + 子 REDFile
+    def _is_instance(r): return r['node'].get('type') == 'INSTANCE'
+    top_infos    = [r for r in classified if r['vc'] == 'TOP'    and not _is_instance(r)]
+    bottom_infos = [r for r in classified if r['vc'] == 'BOTTOM' and not _is_instance(r)]
+    other_infos  = [r for r in classified if r['vc'] not in ('TOP','BOTTOM') or _is_instance(r)]
 
     scene_kids = []
 
@@ -1396,14 +1430,17 @@ def api_generate_red():
 
         generated_files = []
 
-        # 1.5 v20.7.x: 反查被屏幕 INSTANCE 直接引用的 component_name
+        # 1.5 v20.7.x V2: 反查被引用的 component_name（含传递引用追溯，支持多层嵌套）
         #
-        # V1 决策：不做传递引用追溯（嵌套子 CCB 是 V2 任务）。只保留屏幕 INSTANCE
-        # 直接引用的 component。如果某 component 内部嵌套了对其他 component 的
-        # INSTANCE 引用（多半是 Figma 端 buildSceneForRed 误传的脏数据），那些被
-        # 嵌套引用的"孤儿" component 不会被生成 .red 文件 —— build_child 处理
-        # INSTANCE 节点时会做兜底（孤儿引用降级为空 CCNode 占位），避免 inspect_check
-        # 报 broken reference。
+        # 算法（BFS 直到收敛）：
+        #   第 1 轮：扫 screens.layers，收集屏幕直接 INSTANCE 引用的 component
+        #   第 N 轮：扫已收集 component 的 variants[*].layers 里的嵌套 INSTANCE
+        #   一直追溯到某轮没有新 component 出现 → 收敛
+        #
+        # 这样无论多深嵌套（屏幕 → A → B → C → D → ...）都能完整保留依赖链。
+        # 自动去重（referenced_comp_names 是 set），即使有循环引用也不会无限循环。
+        # 跳过的 component 是真正"屏幕和被引用 component 都没用到"的孤立条目
+        # （Figma _组件库 frame 误传 / 自动占位命名 / component_ref 老体系）。
         referenced_comp_names = set()
 
         def _collect_instance_refs(layers, sink):
@@ -1414,8 +1451,28 @@ def api_generate_red():
                     if cn: sink.add(cn)
                 _collect_instance_refs(n.get('children'), sink)
 
+        # 第 1 轮：屏幕直接引用
+        direct_refs = set()
         for screen in screens:
-            _collect_instance_refs(screen.get('layers', []), referenced_comp_names)
+            _collect_instance_refs(screen.get('layers', []), direct_refs)
+        referenced_comp_names |= direct_refs
+
+        # 第 2 轮起：传递追溯，扫已收集 component 的 variants 内部 INSTANCE
+        comp_by_name = {c.get('name'): c for c in (components or []) if c.get('name')}
+        pending = set(referenced_comp_names)
+        depth = 1
+        while pending:
+            new_refs = set()
+            for cname in pending:
+                comp = comp_by_name.get(cname)
+                if not comp: continue
+                for v in comp.get('variants', []) or []:
+                    _collect_instance_refs(v.get('layers', []), new_refs)
+            new_refs -= referenced_comp_names  # 去重，防循环引用
+            if new_refs:
+                depth += 1
+            referenced_comp_names |= new_refs
+            pending = new_refs
 
         if referenced_comp_names and components:
             kept, skipped = [], []
@@ -1427,12 +1484,23 @@ def api_generate_red():
                     skipped.append(cname or '(未命名)')
             if skipped:
                 log_lines.append(
-                    f'⏭️  跳过未被 INSTANCE 直接引用的 Component（{len(skipped)}个）: '
+                    f'⏭️  跳过未被任何 INSTANCE 引用的 Component（{len(skipped)}个）: '
                     + ', '.join(skipped)
+                )
+            indirect_refs = referenced_comp_names - direct_refs
+            if indirect_refs:
+                log_lines.append(
+                    f'🔗 嵌套追溯保留（嵌套深度 {depth} 层，{len(indirect_refs)} 个传递引用）: '
+                    + ', '.join(sorted(indirect_refs))
                 )
             components = kept
 
-        # 2. 子 CCB 生成（v20.7：先生成子 CCB，再生成主屏，主屏的 INSTANCE → REDFile 引用）
+        # 2. v20.7.x V2: 注册 Component variant→sequenceId 映射
+        # 必须在子 CCB 和主屏生成之前调用（两边的 build_child 处理 INSTANCE 时都要查表）
+        # 之前误放在子 CCB 生成之后 → 嵌套 INSTANCE 全部走兜底降级空 CCNode
+        register_component_variants(components)
+
+        # 3. 子 CCB 生成（v20.7：先生成子 CCB，再生成主屏，主屏的 INSTANCE → REDFile 引用）
         if components:
             log_lines.append('')
             log_lines.append(f'━━━ 子 CCB（{len(components)} 个）━━━')
@@ -1444,7 +1512,8 @@ def api_generate_red():
                 cname = comp.get('name', '未命名Component')
                 log_lines.append(f'  • {cname}')
 
-                # 2.1 Python 生成中间 .red
+                # 3.1 Python 生成中间 .red（内部 build_child 处理嵌套 INSTANCE 时
+                #     已能查 _COMPONENT_VARIANT_SEQID，正确生成 REDFile 引用）
                 try:
                     red_dict = generate_red_component(comp)
                 except Exception as e:
@@ -1453,14 +1522,14 @@ def api_generate_red():
                                     'error': f'Component {cname}: {str(e)}',
                                     'log': '\n'.join(log_lines)})
 
-                # 2.2 写入临时文件
+                # 3.2 写入临时文件
                 with tempfile.NamedTemporaryFile(suffix='.red', delete=False,
                                                   prefix='redtool_comp_') as tf:
                     tmp_path = tf.name
                 with open(tmp_path, 'wb') as f:
                     plistlib.dump(red_dict, f)
 
-                # 2.3 CLI build-scene 规范化（输出到 Resources/控件库/）
+                # 3.3 CLI build-scene 规范化（输出到 Resources/控件库/）
                 ok, out, err = build_scene_via_cli(
                     proj_path, cname, tmp_path, subdir='控件库'
                 )
@@ -1476,10 +1545,6 @@ def api_generate_red():
                 variant_count = len(comp.get('variants', []))
                 log_lines.append(f'    ✅ 控件库/{cname}.red ({variant_count} 个 Variant)')
                 generated_files.append(f'Resources/控件库/{cname}.red')
-
-        # 2.x v20.7.x: 主屏生成前注册 Component variant→sequenceId 映射
-        # build_child 处理 INSTANCE 时按 INSTANCE.variant 查表得到 animation 字段值
-        register_component_variants(components)
 
         # 3. 逐个屏幕生成
         for screen in screens:

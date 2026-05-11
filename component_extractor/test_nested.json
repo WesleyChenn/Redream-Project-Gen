@@ -1,0 +1,109 @@
+{
+  "meta": {"design_size": {"w": 1080, "h": 2400}},
+  "screens": [
+    {
+      "id": "s1",
+      "name": "界面_Shop",
+      "w": 1080, "h": 2400,
+      "layers": [
+        {
+          "type": "FRAME", "name": "金币购买卡片_2000",
+          "x": 30, "y": 600, "w": 1020, "h": 280,
+          "children": [
+            {"type": "RECTANGLE", "name": "底板_卡片", "x": 0, "y": 0, "w": 1020, "h": 280, "corner_radius": 30},
+            {"type": "RECTANGLE", "name": "图_金币堆", "x": 30, "y": 50, "w": 200, "h": 200},
+            {"type": "FRAME", "name": "道具数量徽章_1", "x": 280, "y": 50, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x1", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_2", "x": 400, "y": 50, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x1", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_3", "x": 280, "y": 160, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x1", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_4", "x": 400, "y": 160, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x1", "font_size": 32}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME", "name": "金币购买卡片_5000",
+          "x": 30, "y": 920, "w": 1020, "h": 280,
+          "children": [
+            {"type": "RECTANGLE", "name": "底板_卡片", "x": 0, "y": 0, "w": 1020, "h": 280, "corner_radius": 30},
+            {"type": "RECTANGLE", "name": "图_金币堆", "x": 30, "y": 50, "w": 200, "h": 200},
+            {"type": "FRAME", "name": "道具数量徽章_1", "x": 280, "y": 50, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x2", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_2", "x": 400, "y": 50, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x2", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_3", "x": 280, "y": 160, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x2", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_4", "x": 400, "y": 160, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x2", "font_size": 32}
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME", "name": "金币购买卡片_10000",
+          "x": 30, "y": 1240, "w": 1020, "h": 280,
+          "children": [
+            {"type": "RECTANGLE", "name": "底板_卡片", "x": 0, "y": 0, "w": 1020, "h": 280, "corner_radius": 30},
+            {"type": "RECTANGLE", "name": "图_金币堆", "x": 30, "y": 50, "w": 200, "h": 200},
+            {"type": "FRAME", "name": "道具数量徽章_1", "x": 280, "y": 50, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x5", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_2", "x": 400, "y": 50, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x5", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_3", "x": 280, "y": 160, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x5", "font_size": 32}
+              ]
+            },
+            {"type": "FRAME", "name": "道具数量徽章_4", "x": 400, "y": 160, "w": 100, "h": 100,
+              "children": [
+                {"type": "RECTANGLE", "name": "底板_徽章", "x": 0, "y": 0, "w": 100, "h": 100, "corner_radius": 20},
+                {"type": "TEXT", "name": "文本_数量", "x": 30, "y": 60, "content": "x5", "font_size": 32}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "flow": []
+}

@@ -146,6 +146,52 @@ textarea::placeholder { color: #bbb; }
 .svc-dot { width: 7px; height: 7px; border-radius: 50%; background: #c0c0c0; flex-shrink: 0; }
 .svc-dot.ok  { background: #34a853; }
 .svc-dot.err { background: #ea4335; }
+
+/* [v20.7+] INSTANCE 尺寸不一致警告框（.red tab） */
+.size-warn {
+  display: none;
+  margin-top: 8px;
+  border: 1px solid #f5c2c0;
+  background: #fff7f6;
+  border-radius: 7px;
+  padding: 10px 11px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  flex-shrink: 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.size-warn.visible { display: block; }
+.size-warn-title {
+  font-size: 11px; font-weight: 700; color: #c5221f;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}
+.size-warn-list {
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px; color: #5a1714;
+  background: #fdebe9; border-radius: 5px;
+  padding: 7px 9px; margin-bottom: 8px;
+  max-height: 110px; overflow-y: auto;
+  white-space: pre-wrap; word-break: break-all;
+}
+.size-warn-fix {
+  background: #fff;
+  border: 1px solid #f5d6d3;
+  border-radius: 5px;
+  padding: 7px 9px;
+  margin-bottom: 8px;
+  font-size: 10.5px;
+  line-height: 1.65;
+  color: #444;
+}
+.size-warn-fix b { color: #1a1a1a; }
+.size-warn-btns { display: flex; gap: 6px; }
+.size-warn-btns .btn { flex: 1; padding: 7px 0; font-size: 11px; }
+.btn-retry { background: #1a73e8; color: #fff; }
+.btn-force { background: #fff; color: #c5221f; border: 1px solid #f5c2c0; }
+.btn-force:hover { background: #fce8e6; }
+.btn-sync { background: #34a853; color: #fff; flex: 1; font-weight: 700; }
+.btn-split { background: #6f42c1; color: #fff; flex: 1; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -232,6 +278,40 @@ textarea::placeholder { color: #bbb; }
     <span id="svcText">Python 服务: 未检测</span>
     <span style="margin-left:auto; cursor:pointer; color:#1a73e8;" id="btnCheckSvc">[重检]</span>
   </div>
+
+  <!-- [v20.7+] INSTANCE 尺寸不一致警告框 -->
+  <div class="size-warn" id="sizeWarn">
+    <div class="size-warn-title">
+      <span>⛔</span>
+      <span id="sizeWarnTitle">INSTANCE 尺寸与 Component 本体不一致</span>
+    </div>
+    <div class="size-warn-list" id="sizeWarnList"></div>
+    <div class="size-warn-fix">
+      <b>📌 修复方式选择</b><br>
+      <br>
+      <b>情况 A：所有尺寸应该是同一个</b>（设计师误拖了边框）<br>
+      → 在屏幕里选中<b>目标尺寸</b>的那个 INSTANCE → 点下方 <b>「🔁 用选中 INSTANCE 同步全部尺寸」</b><br>
+      插件会把 main Component + 所有同源 INSTANCE 都同步到此尺寸。<br>
+      <br>
+      <b>情况 B：不同尺寸代表不同 Variant</b>（如"大档/小档"两个版本）<br>
+      → 选中所有需要拆分的 INSTANCE（≥2 个）→ 点下方 <b>「📐 按尺寸拆分为多个 Variant」</b><br>
+      插件会按尺寸分组：实例数最多的尺寸保留原 Variant，其余尺寸 clone 出新 Variant 并把对应 INSTANCE 重指向。<br>
+      <br>
+      <b>替代方案（手动）</b>：去 <code>📦_组件库</code> 直接改 Component 本体 W/H → 框选屏幕里所有 INSTANCE → 右键 <code>Reset all changes</code>。<br>
+      <i style="color:#999;">（新版 Figma 已删除 "Push to main component"，无法走旧版 ⌥⌘Y 路径）</i>
+    </div>
+    <div class="size-warn-btns" style="margin-bottom:6px;">
+      <button class="btn btn-sync" id="btnSyncSize">🔁 用选中 INSTANCE 同步全部尺寸</button>
+    </div>
+    <div class="size-warn-btns" style="margin-bottom:6px;">
+      <button class="btn btn-split" id="btnSplitSize">📐 按尺寸拆分为多个 Variant</button>
+    </div>
+    <div class="size-warn-btns">
+      <button class="btn btn-retry" id="btnRetryGenRed">🔄 重新尝试生成</button>
+      <button class="btn btn-force" id="btnForceGenRed">⛔ 忽略并强制生成</button>
+    </div>
+  </div>
+
   <div class="label" style="margin-top:8px;">已生成文件 (单击在 Finder 打开):</div>
   <div class="file-list" id="redFileList"></div>
 </div>
@@ -389,9 +469,92 @@ document.getElementById('btnGenRed').onclick = function() {
   var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
   setStatus('genRedStatus', '正在收集选中屏幕...', 'running');
   document.getElementById('redFileList').innerHTML = '';
+  hideSizeWarn();
   // 通知 code.js 收集选中屏幕 + 反查 Component → 整理成 scene.json
   parent.postMessage({
     pluginMessage: { type: 'gen_red', output_path: outputPath }
+  }, '*');
+};
+
+// [v20.7+] 警告框相关
+function hideSizeWarn() {
+  var w = document.getElementById('sizeWarn');
+  if (w) w.classList.remove('visible');
+}
+function showSizeWarn(warnings) {
+  var list = document.getElementById('sizeWarnList');
+  var title = document.getElementById('sizeWarnTitle');
+  list.innerHTML = '';
+  var lines = [];
+  (warnings || []).forEach(function(it) {
+    if (it.kind === 'inconsistent_instance_sizes') {
+      lines.push('❌ Component "' + it.component + '" 的 INSTANCE 尺寸不一致:');
+      (it.instances || []).forEach(function(i) {
+        lines.push('     - ' + i.name + ': ' + i.w + '×' + i.h);
+      });
+    } else if (it.kind === 'instance_vs_component_mismatch') {
+      lines.push('❌ ' + it.component + ' / ' + it.instance_name +
+                 ': INSTANCE ' + it.instance_size.w + '×' + it.instance_size.h +
+                 '  ≠  Component 本体 ' + it.component_size.w + '×' + it.component_size.h);
+    }
+  });
+  list.textContent = lines.join('\n');
+  title.textContent = 'INSTANCE 尺寸与 Component 本体不一致（' + (warnings || []).length + ' 条）';
+  document.getElementById('sizeWarn').classList.add('visible');
+}
+
+// 重新尝试 - 不带 force,正常走一遍
+document.getElementById('btnRetryGenRed').onclick = function() {
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '重新检测 INSTANCE 尺寸...', 'running');
+  hideSizeWarn();
+  parent.postMessage({
+    pluginMessage: { type: 'gen_red', output_path: outputPath }
+  }, '*');
+};
+
+// [v20.7+] 用选中 INSTANCE 同步全部尺寸 — 替代被新版 Figma 删掉的 Push to main
+document.getElementById('btnSyncSize').onclick = function() {
+  setStatus('genRedStatus', '正在同步 INSTANCE 尺寸到 main + 兄弟实例...', 'running');
+  parent.postMessage({
+    pluginMessage: { type: 'sync_instance_size' }
+  }, '*');
+};
+
+// [v20.7+] 按尺寸拆分为多个 Variant — 把不同尺寸视作不同档位
+document.getElementById('btnSplitSize').onclick = function() {
+  var ok = confirm(
+    '📐 按尺寸拆分为多个 Variant\n\n' +
+    '操作:\n' +
+    '  1. 在屏幕里选中所有要拆分的 INSTANCE (≥2 个)\n' +
+    '  2. 它们必须都引用同一个 Component Set\n' +
+    '  3. 实例数最多的尺寸保留原 Variant\n' +
+    '  4. 其余尺寸自动 clone 新 Variant + 重指向\n\n' +
+    '会修改 Component Set,继续吗?'
+  );
+  if (!ok) return;
+  setStatus('genRedStatus', '正在按尺寸拆分 Variant...', 'running');
+  parent.postMessage({
+    pluginMessage: { type: 'split_instance_by_size' }
+  }, '*');
+};
+
+// 忽略并强制生成 - 二次确认后带 force:true
+document.getElementById('btnForceGenRed').onclick = function() {
+  var ok = confirm(
+    '⚠️ 强制生成会按当前不一致的尺寸生成 .red\n\n' +
+    '引擎按数据如实生成时:\n' +
+    '  • 主屏父 CCNode 用 INSTANCE 尺寸\n' +
+    '  • 子 CCB 用 Component 本体尺寸\n' +
+    '  → 父子尺寸不匹配,渲染视觉错位\n\n' +
+    '确认要继续吗?'
+  );
+  if (!ok) return;
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '⚠ 强制生成中（尺寸已知不一致）...', 'warn');
+  hideSizeWarn();
+  parent.postMessage({
+    pluginMessage: { type: 'gen_red', output_path: outputPath, force: true }
   }, '*');
 };
 
@@ -522,11 +685,51 @@ window.onmessage = function(e) {
 
   // 🚀 生成 .red：code.js 准备好 scene.json，传回 ui.html 由 ui.html 调 Python
   if (msg.type === 'gen_red_ready') {
+    hideSizeWarn();
     sendSceneToPython(msg.scene, msg.output_path);
   }
 
   if (msg.type === 'gen_red_error') {
     setStatus('genRedStatus', '❌ ' + msg.message, 'err');
+  }
+
+  // [v20.7+] INSTANCE 尺寸不一致 — code.js 阻止了生成,显示详情让用户决定
+  if (msg.type === 'gen_red_size_blocked') {
+    setStatus('genRedStatus',
+      '⛔ 阻止生成: INSTANCE 尺寸不一致 ' + (msg.warnings || []).length + ' 条',
+      'err');
+    showSizeWarn(msg.warnings || []);
+    document.getElementById('redFileList').innerHTML = '';
+  }
+
+  // [v20.7+] 同步 INSTANCE 尺寸结果
+  if (msg.type === 'sync_instance_size_done') {
+    var r = msg.result || {};
+    if (r.ok) {
+      setStatus('genRedStatus',
+        '✅ 已同步 ' + r.component_name + ' → ' +
+        r.target_size.w + '×' + r.target_size.h +
+        '（main + ' + r.siblings_resized + ' 个 INSTANCE）。点「重新尝试生成」继续。',
+        'ok');
+    } else {
+      setStatus('genRedStatus', '❌ 同步失败: ' + r.error, 'err');
+    }
+  }
+
+  // [v20.7+] 按尺寸拆分 Variant 结果
+  if (msg.type === 'split_instance_by_size_done') {
+    var sr = msg.result || {};
+    if (sr.ok) {
+      var details = (sr.variants_created || []).map(function(v) {
+        return v.name + ' (' + v.w + '×' + v.h + ', ' + v.instances + '个)';
+      }).join(', ');
+      setStatus('genRedStatus',
+        '✅ 已拆分 ' + sr.component_set + ' → ' +
+        sr.total_sizes + ' 个 Variant。新增: ' + details + '。点「重新尝试生成」继续。',
+        'ok');
+    } else {
+      setStatus('genRedStatus', '❌ 拆分失败: ' + sr.error, 'err');
+    }
   }
 
   // 加载存储的输出路径

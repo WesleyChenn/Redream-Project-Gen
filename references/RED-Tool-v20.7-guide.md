@@ -778,16 +778,18 @@ return {
 1. 解析 body
 2. 校验 schema（screens 必填）
 3. ensure_project（new-project + add-resource-path Resources）
-3.5 v20.7.x: 反查被屏幕 INSTANCE 直接引用的 component_name（V1：不做嵌套追溯）
-   算法：扫 screens.layers，收集屏幕直接 INSTANCE 引用的 component → 用集合过滤 components
+3.5 v20.7.x V2: 反查被引用的 component_name（含传递引用追溯，支持多层嵌套）
+   算法（BFS 直到收敛）：
+     第 1 轮：扫 screens.layers，收集屏幕直接 INSTANCE 引用的 component
+     第 N 轮：扫已收集 component 的 variants[*].layers 里的嵌套 INSTANCE
+     收敛条件：某轮没有新 component 出现
    过滤：
-     - 保留：被屏幕 INSTANCE 直接引用的 component
-     - 跳过：所有未被直接引用的（包括 Figma _组件库 frame 误传、component_ref 老体系、自动占位命名等）
-   V1 不做"传递引用追溯"（嵌套子 CCB → V2 任务）：
-     - 如果某 component 内部嵌套 INSTANCE 引用其他 component，引用 target 不会被生成
-     - build_child 处理 INSTANCE 时做兜底：未注册的 component 引用降级为空 CCNode 占位
-     - 这样 inspect_check 不会报 broken reference，只是嵌套子 CCB 视觉上是空占位
-   嵌套子 CCB 的真支持（含传递追溯）→ V2
+     - 保留：被屏幕直接引用 + 通过嵌套传递引用追溯到的 component
+     - 跳过：完全未被引用的孤立条目（Figma _组件库 frame 误传、component_ref 老体系、自动占位命名）
+   嵌套深度由 BFS 轮数自动确定：
+     - 轮数 = 嵌套层数（屏幕→A→B→C 是 4 层，BFS 跑 4 轮）
+     - 自动去重防循环引用（A→B→A 这种结构 BFS 仍能收敛）
+   build_child INSTANCE 分支保留"未注册降级空 CCNode 占位"作为防御兜底
 4. 先生成所有子 CCB → Resources/控件库/<name>.red
    - generate_red_component(component) 生成中间结构（根节点为 CCNode，v20.7.x 改）
    - build_scene_via_cli(proj, name, tmp, subdir='控件库')
@@ -919,13 +921,14 @@ RED Tool V1 不生成 `.rebolt`，所以 `animation=-2` 加载后视觉冻结在
 
 ### 🔥 V2 第一批要做（绝对要做）
 
-- **4.3 嵌套子 CCB**（Component 内部允许 INSTANCE 引用其他 component）
-  - 实施关键：**传递引用追溯**（component A → B → C 的链路全部生成）
-  - V1 兜底：未注册的 component 引用降级为空 CCNode 占位（避免 inspect 报错）
-  - V2 改造点：app.py `api_generate_red` 加传递追溯过滤；`build_child` INSTANCE 分支
-    去掉"未注册降级"逻辑（因为 V2 所有嵌套引用都会被追溯生成）
+- ✅ **4.3 嵌套子 CCB（已实装 v20.7.x V2 / 2026-05-06）**
+  - api_generate_red BFS 传递追溯：第 1 轮扫屏幕，第 N 轮扫已收集 component 内部 INSTANCE，收敛即停
+  - 嵌套深度由 BFS 轮数自动确定（屏幕→A→B→C 4 层）
+  - 自动去重防循环引用（A→B→A 仍能收敛）
+  - build_child INSTANCE 分支保留"未注册降级空 CCNode"作为兜底防御
+  - 已测试:Shop 模型 4 层嵌套追溯通过
 - 4.12 Instance 缩放（待 Redream 测试是否支持 contentSize 覆盖）
-- 嵌套子节点 constraints 处理（响应式补全）
+- **嵌套子节点 constraints 处理**（V2 第一批,响应式完整翻译,跟约束完全翻译合并）
 - 4.6 多分辨率配置（5 种：设计/正常/偏宽/偏高/Node）
 
 ### ⚠️ V2 第二批

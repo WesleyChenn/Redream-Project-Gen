@@ -6,7 +6,10 @@
 
 所有 JSON 节点 `name` 前缀必须且只能来自以下白名单，违反即为幻觉错误：
 
-`界面_` `浮层_` `组_` `底板_` `内容区_` `内容_` `容器_` `导航_` `列表项_` `网格行_` `网格项_` `弹窗_` `按钮_` `图片_` `图标_` `背景_` `遮罩_` `文本_` `文字_` `弹性缝隙` `角标_` `徽章_` `进度_` `Tab_` `Toggle_` `请求_` `消息项_` `活动_` `底标_`
+`界面_` `浮层_` `组_` `底板_` `内容区_` `内容_` `容器_` `导航_` `列表项_` `网格行_` `网格项_` `弹窗_` `按钮_` `图片_` `图标_` `背景_` `遮罩_` `文本_` `文字_` `弹性缝隙` `角标_` `徽章_` `进度_` `进度条_` `Tab_` `Toggle_` `请求_` `消息项_` `活动_` `底标_`
+
+> 注: `进度条_` 是 v20.4 进度条建模铁律(双层 RECT 中的"填充层")的强制要求,
+> 必须在白名单内。早期 skill 误漏,此版本补上。
 
 ### 按钮识别铁律（v20，与 Redream 引擎对齐）
 
@@ -632,6 +635,362 @@
   - 背景只占中间区高度，顶部 / 底部无背景可透
   - 容器内元素绝对定位会与背景混淆
 - 背景 fill 字段一律省略（由插件按 `背景_` 前缀上最浅灰）
+
+---
+
+## 嵌套 CCB 铁律（大 CCB / 子 CCB，v20.7+）
+
+复合视觉单元（如列表行、卡片、按钮组）必须按 **嵌套 CCB 模型**建模，**禁止把所有子元素摊平到外层 FRAME**。
+
+### 模型
+
+```
+列表项 (大 CCB / 外层 Component)
+├─ 排名圆 (子 CCB INSTANCE)
+├─ 图片_头像 (单纯 RECT 占位,数据绑定)
+├─ 角标_王冠 (子 CCB INSTANCE,可隐藏)
+└─ 文本/分数 (TEXT/RECT 直接子节点)
+```
+
+- **大 CCB**：是被列表/网格复用的外层容器（如 `列表项_排名`）
+- **子 CCB**：是大 CCB 内部可独立复用的子单元（如 `角标_王冠`、`排名圆`），自己也可能多 Variant
+- **图片占位**：单纯 `图片_xxx` / `图标_xxx` RECT，运行时数据绑定，**不做 Variant**
+
+### 子 CCB 显隐铁律（必读）
+
+子 CCB INSTANCE 在不同行/卡的"出现/不出现"，**用 wrapper 节点的 `visible: true/false` 表达，不用增删 children**。
+
+❌ **错误**：rank 5 行的 children 数组里加 `角标_王冠`，rank 6 行不加
+- 后果：6 行 structural_fingerprint 不一致，extract_components 抽不出统一的 `列表项` Component
+
+✅ **正确**：6 行 children 数组都包含 `角标_王冠`，需要隐藏的行写 `"visible": false`
+- 6 行 structural_fingerprint 一致 → 抽成同 1 个 `列表项` Component
+- visual_signature 因 `visible` 字段差异 → 自动分成 2 个 Variant
+- extract_components 在替换 INSTANCE 时**会保留 wrapper 的 visible 字段**（v20.7+ 修复）→ 引擎按 INSTANCE.visible 决定是否渲染
+
+### 例子
+
+```json
+{
+  "type": "FRAME", "name": "列表项_排名6",
+  "w": 1000, "h": 130,
+  "children": [
+    { "type": "RECTANGLE", "name": "底板_行", ... },
+    { "type": "FRAME", "name": "排名圆", ... },          ← 子 CCB,所有行都有
+    { "type": "RECTANGLE", "name": "图片_头像", ... },
+    { "type": "FRAME", "name": "角标_王冠",              ← 子 CCB
+      "visible": false,                                  ← rank 6 隐藏
+      "children": [
+        { "type": "RECTANGLE", "name": "底板_角标王冠", ... },
+        { "type": "RECTANGLE", "name": "图标_王冠", ... }
+      ]
+    },
+    { "type": "TEXT", "name": "文本_玩家名", "content": "mmmmm", ... }
+  ]
+}
+```
+
+### 阶段二抽取后的输出形态
+
+```
+components:
+  列表项_排名 (Variant 常态):  ... INSTANCE 角标_王冠 visible=false  ...
+  列表项_排名 (Variant 变体2): ... INSTANCE 角标_王冠 visible=true   ...
+  角标_王冠 (单 Component): 自身 layers 里描述完整内容(底板 + 图标)
+```
+
+引擎渲染：
+- 行 INSTANCE 选中 Variant `常态` → 内嵌 INSTANCE `角标_王冠` 的 `visible=false` → 不渲染王冠 ✅
+- 行 INSTANCE 选中 Variant `变体2` → 内嵌 INSTANCE `角标_王冠` 的 `visible=true` → 渲染王冠 ✅
+
+---
+
+## Variant 内部建模铁律（v20.7+，与 extract_components 行为对齐）
+
+抽取出来的 Component 经常带多个 Variant。Variant 内部数据如何组织有 3 条硬规则，写错了引擎要么渲染丢数据，要么时间线污染。
+
+### 1. Variant.layers 只放该 Variant 实际可见的图层
+
+**Figma 编辑期允许 visible 切换** —— 设计师方便开关元素。
+**进 Variant.layers 时必须过滤 visible=false 节点** —— extract_components 的 `_filter_invisible` 自动做这件事，进引擎的时间线只剩可见层。
+
+```json
+flat_scene 输入(Figma 编辑期):
+  列表项_排名6 children:
+    - 底板_行
+    - 排名圆 INSTANCE
+    - 图片_头像
+    - 角标_王冠 (visible: false)    ← 设计师标记隐藏
+    - 文本_玩家名
+
+final_scene 输出(进引擎):
+  列表项_排名 Variant 常态 layers:
+    - 底板_行
+    - 排名圆 INSTANCE
+    - 图片_头像
+                                    ← 角标_王冠 已被 _filter_invisible 删除
+    - 文本_玩家名
+```
+
+**❌ 错误**：把 visible=false 节点也写进 Variant.layers，靠引擎运行时切换可见性。
+**✅ 正确**：visible=false 在 Variant 内**直接物理删除**，运行时不再存在。
+
+### 2. wrapper 级的 visible / opacity 必须保留到 INSTANCE 节点
+
+子 CCB 的 wrapper（即 INSTANCE 节点）在某个 Variant 里可能整体隐藏（例如 rank 1 没有物品架，rank 6 没有王冠）。这种"整个组件隐藏"的状态**必须保留在父 Variant 的 INSTANCE 节点上**，而不是擦掉。
+
+```json
+列表项_排名 Variant 常态 layers:
+  ...
+  {
+    "type": "INSTANCE",
+    "name": "角标_王冠",
+    "component_name": "角标_王冠",
+    "variant": "常态",
+    "visible": false        ← wrapper 级别的 visible 必须传给 INSTANCE
+  }
+```
+
+`extract_components._make_instance_node` 已自动复制 wrapper 的 `visible` / `opacity` 到 INSTANCE。手写 JSON 时也要遵守这条。
+
+### 3. 实例间数据差异 → 每个 INSTANCE 节点上的 overrides
+
+**6 行排行榜不能渲染同一个名字。** 每个 INSTANCE 节点必须自带 `overrides`，覆盖 Variant 模板里的对应字段。
+
+```json
+列表项_排名 Variant 常态 layers (模板):
+  - 排名圆 INSTANCE (overrides: { 圆形容器_图标_文本: "8" })
+  - 文本_玩家名: content="kibuntenkan"
+  - 文本_分数: content="50"
+
+屏幕里的 INSTANCE 引用:
+  {
+    "type": "INSTANCE",
+    "name": "列表项_排名9",
+    "component_name": "列表项_排名",
+    "variant": "常态",
+    "overrides": {                  ← 实例独立 override
+      "排名圆": { "圆形容器_图标_文本": "9" },
+      "文本_玩家名": "walid",
+      "文本_玩家说明": "Inomoov",
+      "文本_分数": "26"
+    }
+  }
+```
+
+`extract_components._collect_text_and_ref_overrides` 自动比对模板与实例，把差异提取到 INSTANCE.overrides。手写 JSON 时也要每个 INSTANCE 自带 overrides。
+
+**已支持的 override 类型**：
+- `TEXT` 节点的 `content` 文本差异
+- `component_ref` 节点的 `overrides` 字段差异（嵌套结构）
+
+**不支持的 override 类型**（差异需另作 Variant 处理）：
+- 节点 size / position 差异
+- fill / corner_radius / 视觉属性差异
+- visible 差异（这种应该是不同 Variant，不是同 Variant 的实例差异）
+
+---
+
+## INSTANCE 尺寸同步铁律（v20.7+，与 Figma "Push to main component" 工作流对齐）
+
+### 问题背景
+
+设计师在屏幕里直接拖动 INSTANCE 边框改尺寸时，**Figma 默认不会把改动同步回 Component Set 本体**（这是 Figma "实例 vs 主版" 的设计哲学）。结果：
+
+- `components[].w/h` = Component Set 本体尺寸（如 1020×479）
+- `screens[].layers[INSTANCE].w/h` = 各自被拖过的尺寸（如 499/438/360）
+- 引擎按数据如实生成 .red：父 CCNode 用 INSTANCE 尺寸，子 CCB 用 Component 尺寸
+- → **父子尺寸不匹配，渲染视觉错位**
+
+### 工作流铁律（每次改 INSTANCE 后必做）
+
+1. 设计师在屏幕里直接改 INSTANCE 尺寸（直观）
+2. 改完选中 INSTANCE
+3. 右键 → **Push changes to main component**（中文："推送变更到主组件"）
+   或快捷键 `⌥⌘Y`（macOS）/ `Alt+Ctrl+Y`（Windows）
+4. 验证：所有引用同一 Component 的 INSTANCE 应**立即自动同步**到新尺寸；只有当前选中的变了说明没生效
+
+### 生成 JSON 前自检（Claude 在 S5/S6 必查）
+
+对 scene.json 里**每一个** `type: "INSTANCE"` 节点：
+
+```
+□ 同 component_name 的所有 INSTANCE 的 w/h 是否一致?
+   不一致 → 设计师在屏幕里拖过尺寸但没 Push,要求设计师 Push 后重新导出
+
+□ INSTANCE 的 w/h 是否等于对应 components[].w/h?
+   不一致 → 同上,要求 Push
+```
+
+### 自检脚本（粘贴到终端跑）
+
+```bash
+python3 -c "
+import json
+d = json.load(open('flat_scene.json'))   # 或 final_scene.json
+comp_size = {c['name']:(c['w'],c['h']) for c in d.get('components',[])}
+by_comp = {}
+def walk(n):
+    if n.get('type')=='INSTANCE':
+        cn = n.get('component_name','')
+        by_comp.setdefault(cn,[]).append((n.get('name'),n.get('w'),n.get('h')))
+    for ch in (n.get('children') or n.get('layers') or []): walk(ch)
+for s in d.get('screens',[]):
+    for L in s.get('layers',[]): walk(L)
+issues=[]
+for cn, insts in by_comp.items():
+    sizes = set((w,h) for _,w,h in insts)
+    if len(sizes)>1:
+        issues.append(f'❌ {cn} 的 INSTANCE 尺寸不一致: {sizes}')
+    cw,ch = comp_size.get(cn,(None,None))
+    for nm,w,h in insts:
+        if (cw,ch)!=(None,None) and (w,h)!=(cw,ch):
+            issues.append(f'❌ {cn}/{nm} ({w}x{h}) 与 Component 本体 ({cw}x{ch}) 不一致 → Push 主版')
+print('✅ 全部一致' if not issues else '\n'.join(issues))
+"
+```
+
+### 引擎侧不修改
+
+引擎按数据如实生成,**不做"猜测设计意图"的逻辑**(改起来风险大,容易把别的搞坏)。
+这个问题必须从 Figma 端工作流解决,Claude/插件/extractor 三层都做检查并报错,但**不自动改尺寸**。
+
+---
+
+## S7 后必须 100% 嵌套化(v20.7.x+,从 RoyalPass 教训得来)
+
+跑完 `extract_components.py` 后,主屏 `screens.layers` + 所有 Component `Variant.layers` 内部
+**禁止存在 FRAME 是"应该被复用的结构"**(列表行/卡片/重复按钮组)。
+
+### 现象(踩过的坑)
+
+第一次 S7 输出 6 个 Component 抽出来时,部分行(如 RoyalPass 视频里的行 19/20)被算法判定为
+"无法归类的特殊形态",直接保留成扁平 FRAME 留在主屏,跟其他 5/6 行的 INSTANCE 形态混在一起。
+设计师粘到 Figma 后看到"前 2 行扁平 + 后 6 行引用"的奇怪混合结构。
+
+### 自检脚本(交付前必跑)
+
+```python
+# 对每个"预期 ≥2 实例"的结构指纹,扫描 final_scene.json
+# 主屏 list_inner.children 全部 type=INSTANCE  ✅
+# 出现 type=FRAME 但跟某个 Component 结构指纹相同 → ❌ 漏网平铺
+def find_orphan_frames(d):
+    list_inner_candidates = [...]
+    for parent in list_inner_candidates:
+        for ch in parent.get('children', []):
+            if ch.get('type') == 'FRAME':
+                # 这是漏网的复用结构
+                yield (parent, ch)
+```
+
+### 漏网时的修复路径(铁律)
+
+| 处理 | 状态 |
+|---|---|
+| ✅ 把 FRAME 抽成新 Variant,转成 INSTANCE 引用 | **正确** |
+| ✅ Variant 之间用 `visible` / `fill` 表达差异(SKILL 子 CCB 显隐铁律)| **正确** |
+| ❌ 删除 Component,把所有 INSTANCE 还原为内嵌 FRAME | **禁止**(违反用户原始设计意图)|
+
+### 为什么不能删 Component
+
+`extract_components.py` 算法只识别 N 种主流"显隐组合",边缘组合(比如 RoyalPass 行 19 的"双侧对勾",
+行 20 的"对勾+锁混合")会留作 FRAME。如果遇到 FRAME 漏网就走"删 Component"路径,会:
+
+1. 违反用户最初对哪些做 Component 的设计决策
+2. 引发后续 `combineAsVariants` 在其他 Component 上失败的连锁问题
+   (因为引用关系变了,Variant 结构变了,触发新的"视觉签名相同"等问题)
+3. 设计师在 Figma 看到组件库变少,又要回头复盘
+
+正确做法是**加 Variant 让模型覆盖所有真实显隐组合**,Component 数量保持稳定。
+
+---
+
+## Component 修复铁律(combineAsVariants 失败时,v20.7.x+)
+
+Figma `combineAsVariants` 是硬性约束:**至少 2 个 component + 视觉签名各不相同**。
+违反任一就失败,Component Set 不创建,registry 里没有这个 Component,
+引用它的外层 Component 也会连带失败(整个组件库渲染塌陷)。
+
+### 失败的三种典型场景 + 正确修复
+
+#### 场景 1:Component 只有 1 个 Variant
+
+```
+❌ 错误修复: 删除 Component,降级为内嵌 FRAME
+✅ 正确修复: 加 dummy 第 2 Variant,用 fill / visible 制造视觉差异
+
+例: 组_进度_行_tb (1 Variant 常态)
+   → 加 2 个 Variant: 已达 fill=#7BC847 / 未达 fill=#888888
+   → 进度条本体永远画 100% 满(SKILL 进度条铁律不变)
+   → Variant 表达"已达 vs 未达"两个视觉状态,引擎按等级选 Variant
+```
+
+#### 场景 2:多个 Variant 视觉签名相同
+
+```
+现象: Variant A 和 Variant B 内部 layers 相同(types/names/fills 全等)
+原因: _filter_invisible 把 visible=false 节点物理删了,本来差异就在 visible,过滤后变成完全一样
+
+❌ 错误修复: 把两个 Variant 合并/删除
+✅ 正确修复:
+   - "显示/隐藏" 类差异 → 改成 INSTANCE.visible=false(SKILL 子 CCB 显隐铁律)
+   - "格式不同/文字不同" → 用 fill 或 icon 添加视觉差异
+
+例: 数量徽章 (显示/隐藏 → _filter 后内容相同)
+   方案 A: 删除"隐藏"Variant,改成 INSTANCE.visible=false
+   方案 B: 改成"x格式/m格式"两个真有视觉差异的 Variant(m格式底板红色,因为对应红心计时)
+```
+
+#### 场景 3:引用了未创建的 Component
+
+```
+原因: components[] 数组里子 Component 排在外层 Component 后面,buildV20_6_ComponentSets
+     按数组顺序处理,处理外层时子 Component 还没注册到 registry,引用失败。
+
+✅ 修复: 子 Component 必须排在引用它的 Component 前面。
+   一般顺序: 最深的叶子 Component → 中层 Component → 最外层 Component
+```
+
+### 元铁律:删 Component 必须先和用户确认
+
+Component 列表是用户的**设计决策**(哪些是可复用单元,哪些不是),工具限制是次要约束。
+
+遇到 `combineAsVariants` 失败时:
+1. 先尝试**加 Variant** 让 Component 能 combine
+2. 不行才考虑跟用户讨论是否降级为内嵌 FRAME
+3. **不擅自删除 Component** — 用户的"省事修复"标准跟工具的不一样
+
+### Component 交付前自检脚本(必跑)
+
+```python
+# 对每个 Component 验证:
+# 1. variants 数量 ≥ 2(否则 combineAsVariants 失败)
+# 2. 每个 Variant 的视觉签名 hash 唯一(否则 combineAsVariants 失败)
+# 3. INSTANCE 引用的 component_name 都在 components[] 里
+# 4. components[] 顺序: 子 Component 在前,外层在后
+
+import hashlib
+def variant_signature(layers):
+    parts = []
+    def collect(L):
+        for n in L:
+            if isinstance(n, dict):
+                parts.append(f"{n.get('type')}|{n.get('name')}|{n.get('fill','')}|{n.get('visible',True)}")
+                if n.get('type')=='INSTANCE':
+                    parts.append(f"INST|{n.get('component_name')}|{n.get('variant')}")
+                for k in ('children','layers'):
+                    if k in n: collect(n[k])
+    collect(layers or [])
+    return hashlib.md5(''.join(parts).encode()).hexdigest()[:8]
+
+for c in d['components']:
+    assert len(c['variants']) >= 2, f"{c['name']} 只有 {len(c['variants'])} Variant — combineAsVariants 会失败"
+    sigs = set()
+    for v in c['variants']:
+        sig = variant_signature(v.get('layers'))
+        assert sig not in sigs, f"{c['name']} 的 Variant '{v['name']}' 跟其他 Variant 视觉签名相同"
+        sigs.add(sig)
+```
 
 ---
 

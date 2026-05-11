@@ -253,16 +253,41 @@ function getCompHolder() {
   return compHolder;
 }
 
-// ── overrides（FIX②③）──
+// ── overrides（FIX②③ + v20.7+ 嵌套 override）──
+// v20.7+: 支持嵌套 override
+//   flat: { "文本_玩家名": "gen" }                    → 找 TEXT 设 content
+//   嵌套: { "排名圆": { "圆形容器_图标_文本": "3" } }   → 找子 INSTANCE,递归 applyOverrides
 async function applyOverrides(inst, overrides) {
   if (!overrides || !Object.keys(overrides).length) return;
-  var texts = inst.findAll(function(n){ return n.type === 'TEXT'; });
   for (var key in overrides) {
     var val = overrides[key];
-    if (val === null || val === undefined || val === '') continue;
+    if (val === null || val === undefined) continue;
+
+    // 嵌套 override: val 是对象 → 在子节点找同名 INSTANCE,递归
+    if (typeof val === 'object' && !Array.isArray(val)) {
+      var subInst = null;
+      try {
+        subInst = inst.findOne(function(n) {
+          return (n.type === 'INSTANCE' || n.type === 'FRAME') && n.name === key;
+        });
+      } catch(e) {}
+      if (subInst) {
+        await applyOverrides(subInst, val);
+      } else {
+        log('⚠ 嵌套 override 未找到子 INSTANCE: ' + key + '（' + inst.name + '）');
+      }
+      continue;
+    }
+
+    // 平铺 override: val 是字符串 → 找 TEXT 设 content
+    if (val === '') continue;
+    var texts;
+    try {
+      texts = inst.findAll(function(n){ return n.type === 'TEXT'; });
+    } catch(e) { continue; }
     var target = null;
     for (var i = 0; i < texts.length; i++) { if (texts[i].name === key) { target = texts[i]; break; } }
-    if (!target) { for (var i = 0; i < texts.length; i++) { if (texts[i].name.indexOf(key) >= 0) { target = texts[i]; break; } } }
+    if (!target) { for (var j = 0; j < texts.length; j++) { if (texts[j].name.indexOf(key) >= 0) { target = texts[j]; break; } } }
     if (!target) { log('⚠ overrides 未匹配: ' + key + '（' + inst.name + '）'); continue; }
     try {
       await figma.loadFontAsync(target.fontName);
@@ -417,6 +442,12 @@ async function buildNode(layer, parent, depth, screen) {
     parent.appendChild(inst);
     reg(screen, name, inst);
     if (layer.visible === false) inst.visible = false;
+    // [v20.7+] 应用 INSTANCE 节点上的 overrides(支持嵌套)
+    // 这一步之前漏掉,导致同 Variant 多实例渲染时 TEXT.content 全部用模板数据,
+    // 列表里所有行都显示同一个名字/分数。
+    if (layer.overrides) {
+      await applyOverrides(inst, layer.overrides);
+    }
     return inst;
   }
 
@@ -877,13 +908,148 @@ function componentSetToJsonForRed(compSet, registry) {
 
   // v20.7.x: w/h 用单个 variant 的尺寸，不是 ComponentSet frame 整体的尺寸
   // （ComponentSet 整体宽 = N 个 variant 横向并排，会得到 5520 这种错误的合并宽度）
-  return {
+
+  // [v20.7+] 标记是否是组件库引用(parent 为"组件库" page)
+  // 组件库引用的 INSTANCE 必然按 S0 规则缩放(80×80 vs 库 25×25),
+  // 不应该参与"INSTANCE vs Component 本体"尺寸一致性检查。
+  var isLibrary = false;
+  try {
+    var node = compSet;
+    while (node && node.type !== 'PAGE') node = node.parent;
+    if (node && node.name === '组件库') isLibrary = true;
+  } catch(e) {}
+
+  var result = {
     name: compName,
     w: Math.round(sampleVariant.width),
     h: Math.round(sampleVariant.height),
     property_name: propertyName,
     variants: variants
   };
+  if (isLibrary) result._is_library = true;
+  return result;
+}
+
+// [v20.7+] 生成 .red 前的清理: 递归删除 Variant.layers 内 visible=false 节点
+//   - 对应 S0 用户决策: "某根时间线里隐藏的图层直接删掉" — 这里"时间线"特指
+//     Component Set 内的 Variant 时间线
+//   - 屏幕级 layers 的 visible=false 必须保留(Tab 切换/状态切换 都依赖它,
+//     例如 同屏 Tab 时,被隐藏的那个 Tab 容器不能被删,否则切回来什么都没有了)
+function stripInvisibleNodes(scene) {
+  var stats = { variant: 0 };
+
+  function recurseAndStrip(layers) {
+    if (!Array.isArray(layers)) return layers;
+    var out = [];
+    for (var i = 0; i < layers.length; i++) {
+      var n = layers[i];
+      if (n && n.visible === false) {
+        continue;  // 节点不可见,在 Variant 内删掉(连同 children)
+      }
+      if (n) {
+        if (Array.isArray(n.children)) n.children = recurseAndStrip(n.children);
+        if (Array.isArray(n.layers))   n.layers   = recurseAndStrip(n.layers);
+      }
+      out.push(n);
+    }
+    return out;
+  }
+
+  // ❌ 屏幕 layers 不剥离 (保留 visible=false 给 Tab/状态切换用)
+
+  // ✅ 仅 Component variants 内部 layers 剥离
+  (scene.components || []).forEach(function(c) {
+    (c.variants || []).forEach(function(v) {
+      var before = JSON.stringify(v.layers || []).length;
+      v.layers = recurseAndStrip(v.layers || []);
+      var after = JSON.stringify(v.layers || []).length;
+      if (after < before) stats.variant++;
+    });
+  });
+
+  return stats;
+}
+
+// [v20.7+] INSTANCE 尺寸同步检查
+// 对应 S0 文档 "INSTANCE 尺寸同步铁律":
+//   设计师在屏幕里直接拖 INSTANCE 改尺寸 → Figma 不会自动同步到 Component Set 本体
+//   生成 .red 时父 CCNode 用 INSTANCE 尺寸,子 CCB 用 Component 尺寸 → 视觉错位
+// 本函数扫描 scene 输出,发现尺寸不一致时报警,但不自动修复(必须从 Figma 端 Push)
+function checkInstanceSizeConsistency(scene) {
+  var compSize = {};
+  // [v20.7+] 组件库引用按 S0 规则故意缩放,跳过尺寸一致性检查(否则误报)
+  (scene.components || []).forEach(function(c) {
+    if (c._is_library) return;
+    compSize[c.name] = { w: c.w, h: c.h };
+  });
+
+  var byComp = {};   // component_name → [{name, w, h}, ...]
+  function walk(n) {
+    if (!n) return;
+    if (n.type === 'INSTANCE') {
+      var cn = n.component_name || '';
+      if (!byComp[cn]) byComp[cn] = [];
+      byComp[cn].push({ name: n.name, w: n.w, h: n.h });
+    }
+    var kids = n.children || n.layers || [];
+    for (var i = 0; i < kids.length; i++) walk(kids[i]);
+  }
+  (scene.screens || []).forEach(function(s) {
+    (s.layers || []).forEach(walk);
+  });
+
+  var issues = [];
+  for (var cn in byComp) {
+    var insts = byComp[cn];
+    var seen = {}, sizes = [];
+    insts.forEach(function(i) {
+      var k = i.w + 'x' + i.h;
+      if (!seen[k]) { seen[k] = true; sizes.push({ w: i.w, h: i.h }); }
+    });
+    if (sizes.length > 1) {
+      issues.push({
+        kind: 'inconsistent_instance_sizes',
+        component: cn,
+        instances: insts,
+        sizes: sizes
+      });
+    }
+    var cs = compSize[cn];
+    if (cs) {
+      insts.forEach(function(i) {
+        if (i.w !== cs.w || i.h !== cs.h) {
+          issues.push({
+            kind: 'instance_vs_component_mismatch',
+            component: cn,
+            instance_name: i.name,
+            instance_size: { w: i.w, h: i.h },
+            component_size: cs
+          });
+        }
+      });
+    }
+  }
+  return issues;
+}
+
+function logSizeIssues(issues) {
+  if (!issues || !issues.length) return;
+  log('⚠️  INSTANCE 尺寸同步检查发现 ' + issues.length + ' 条问题:');
+  issues.forEach(function(it) {
+    if (it.kind === 'inconsistent_instance_sizes') {
+      log('  ❌ Component "' + it.component + '" 的 INSTANCE 尺寸不一致:');
+      it.instances.forEach(function(i) {
+        log('       - ' + i.name + ': ' + i.w + '×' + i.h);
+      });
+    } else if (it.kind === 'instance_vs_component_mismatch') {
+      log('  ❌ ' + it.component + ' / ' + it.instance_name +
+          ': INSTANCE ' + it.instance_size.w + '×' + it.instance_size.h +
+          ' ≠ Component 本体 ' + it.component_size.w + '×' + it.component_size.h);
+    }
+  });
+  log('  📌 修复: 选中目标尺寸 INSTANCE → 右键 Push changes to main component (⌥⌘Y)');
+  log('       所有同 component 的 INSTANCE 自动同步,Component 本体也更新');
+  log('  ⛔ 不修复直接生成 .red → 父子尺寸不匹配,渲染视觉错位');
 }
 
 // 主入口：把当前选中的屏幕打包成 scene.json（v20.6 schema）
@@ -941,7 +1107,7 @@ function buildSceneForRed() {
     }
   }
 
-  return {
+  var sceneOut = {
     meta: {
       design_size: {
         w: screensOut[0] ? screensOut[0].w : 1080,
@@ -953,6 +1119,20 @@ function buildSceneForRed() {
     flow: [],
     _ignored_count: ignoredCount
   };
+
+  // [v20.7+] INSTANCE 尺寸同步检查 — 把警告附在 scene 上,UI 层根据这个决定是否阻止生成
+  var sizeIssues = checkInstanceSizeConsistency(sceneOut);
+  if (sizeIssues.length > 0) {
+    sceneOut._size_warnings = sizeIssues;
+  }
+
+  // [v20.7+] 生成 .red 前的最后一道清理: 把所有 visible=false 节点硬删
+  // 引擎不需要看到隐藏层(Figma 时间线里 visible=false 的元素 → 进 .red 时直接删除)
+  var stripStats = stripInvisibleNodes(sceneOut);
+  log('🧹 已清理 invisible 节点: ' + stripStats.screen + ' 个屏幕受影响, ' +
+      stripStats.variant + ' 个 Variant 受影响');
+
+  return sceneOut;
 }
 
 // ── Log ──
@@ -1286,12 +1466,271 @@ function buildIdMap() {
 }
 
 // ── 导出当前页面 JSON（Figma → wireframe JSON）v20: 新增 reactions + flow ──
+// [v20.7+] 用选中 INSTANCE 同步全部 — 替代被新版 Figma 删掉的 "Push to main"
+//   1. 当前 selection 必须是 exactly 1 个 INSTANCE
+//   2. 取它的 mainComponent (在 Component Set 里就是某个 Variant)
+//   3. 把 main 自身 resize 到选中 INSTANCE 的 w/h
+//   4. 扫当前 page 所有引用同 mainComponent 的 INSTANCE,全部 resize
+//   5. 报告结果
+function syncInstanceSizeToMain() {
+  var sel = figma.currentPage.selection;
+  if (sel.length !== 1) {
+    return { ok: false, error: '请只选中 1 个 INSTANCE 节点（当前选中 ' + sel.length + ' 个）' };
+  }
+  var node = sel[0];
+  if (node.type !== 'INSTANCE') {
+    return { ok: false, error: '请选中 INSTANCE 节点（当前是 ' + node.type + '）' };
+  }
+  var main = node.mainComponent;
+  if (!main) {
+    return { ok: false, error: '此 INSTANCE 找不到 mainComponent（可能引用了已删除组件）' };
+  }
+  var targetW = Math.round(node.width);
+  var targetH = Math.round(node.height);
+
+  // 1. resize main 本身
+  try {
+    main.resize(targetW, targetH);
+  } catch (e) {
+    return { ok: false, error: '改 main 尺寸失败: ' + e.message };
+  }
+
+  // 2. 扫当前 page 所有同 mainComponent 的 INSTANCE
+  var siblingsResized = 0;
+  function scan(n) {
+    if (n.type === 'INSTANCE' && n.mainComponent && n.mainComponent.id === main.id) {
+      if (Math.round(n.width) !== targetW || Math.round(n.height) !== targetH) {
+        try {
+          n.resize(targetW, targetH);
+          siblingsResized++;
+        } catch (e) {
+          // 单个 resize 失败继续往下,最后报告
+        }
+      }
+    }
+    if ('children' in n) {
+      for (var i = 0; i < n.children.length; i++) scan(n.children[i]);
+    }
+  }
+  for (var i = 0; i < figma.currentPage.children.length; i++) {
+    scan(figma.currentPage.children[i]);
+  }
+
+  return {
+    ok: true,
+    component_name: main.name,
+    target_size: { w: targetW, h: targetH },
+    siblings_resized: siblingsResized,
+    main_resized: true
+  };
+}
+
+// [v20.7+] 解析 Variant 名为属性对: "状态=常态, 尺寸=499" → { props: {状态:'常态', 尺寸:'499'}, keys: ['状态','尺寸'] }
+function parseVariantName(name) {
+  var obj = {};
+  var keys = [];
+  var parts = String(name || '').split(',');
+  for (var i = 0; i < parts.length; i++) {
+    var p = parts[i].trim();
+    if (!p) continue;
+    var eq = p.indexOf('=');
+    if (eq < 0) continue;
+    var k = p.substring(0, eq).trim();
+    var v = p.substring(eq + 1).trim();
+    if (!(k in obj)) keys.push(k);
+    obj[k] = v;
+  }
+  return { props: obj, keys: keys };
+}
+
+function serializeVariantName(parsed) {
+  var parts = [];
+  for (var i = 0; i < parsed.keys.length; i++) {
+    var k = parsed.keys[i];
+    parts.push(k + '=' + parsed.props[k]);
+  }
+  return parts.join(', ');
+}
+
+// [v20.7+] 把所选 INSTANCE 按尺寸拆为多个 Variant
+//   1. 选 ≥2 个 INSTANCE,必须全引用同一 Component Set
+//   2. 按 (w, h) 分组
+//   3. 实例数最多的尺寸保留 anchor Variant(并 resize 到该尺寸)
+//   4. 其余每个尺寸 clone anchor → resize → append 到 Component Set
+//   5. 给 Component Set 加 "尺寸" 属性维度（Variant 名追加 尺寸=h 后缀）
+//   6. swapComponent 把每个 INSTANCE 重新指向匹配尺寸的 Variant
+function splitInstancesByVariantSize() {
+  var sel = figma.currentPage.selection;
+  if (sel.length < 2) {
+    return { ok: false, error: '请选中 ≥2 个尺寸不同的 INSTANCE（当前 ' + sel.length + ' 个）' };
+  }
+  for (var i = 0; i < sel.length; i++) {
+    if (sel[i].type !== 'INSTANCE') {
+      return { ok: false, error: '所有选中节点必须是 INSTANCE（"' + sel[i].name + '" 是 ' + sel[i].type + '）' };
+    }
+  }
+
+  // 所有 INSTANCE 必须引用同一 Component Set
+  var componentSet = null;
+  for (var j = 0; j < sel.length; j++) {
+    var main = sel[j].mainComponent;
+    if (!main) {
+      return { ok: false, error: 'INSTANCE "' + sel[j].name + '" 找不到 mainComponent' };
+    }
+    var setOrComp = (main.parent && main.parent.type === 'COMPONENT_SET') ? main.parent : main;
+    if (componentSet === null) {
+      componentSet = setOrComp;
+    } else if (componentSet.id !== setOrComp.id) {
+      return { ok: false, error: '所选 INSTANCE 引用了不同的 Component / Component Set,请只选同一个组件的实例' };
+    }
+  }
+  if (componentSet.type !== 'COMPONENT_SET') {
+    return { ok: false, error: '该组件不在 Component Set 里(只有单个 COMPONENT)。请先在 Figma 把它转成 Variants(右键 → Combine as variants),再回来拆分' };
+  }
+
+  // 按 (w, h) 分组
+  var sizeMap = {};   // "WxH" → { w, h, instances: [] }
+  var sizeOrder = []; // 保持插入顺序
+  for (var k = 0; k < sel.length; k++) {
+    var inst = sel[k];
+    var w = Math.round(inst.width);
+    var h = Math.round(inst.height);
+    var key = w + 'x' + h;
+    if (!sizeMap[key]) {
+      sizeMap[key] = { w: w, h: h, instances: [] };
+      sizeOrder.push(key);
+    }
+    sizeMap[key].instances.push(inst);
+  }
+  if (sizeOrder.length < 2) {
+    return { ok: false, error: '所选 INSTANCE 尺寸都一样（' + sizeOrder[0] + '),无需拆分' };
+  }
+
+  // 按"实例数降序"排,实例最多的尺寸保留为 anchor Variant
+  sizeOrder.sort(function(a, b) {
+    return sizeMap[b].instances.length - sizeMap[a].instances.length;
+  });
+
+  var anchorVariant = sel[0].mainComponent;
+  var keepKey = sizeOrder[0];
+  var keep = sizeMap[keepKey];
+
+  // 1. anchor Variant + 同尺寸 INSTANCE 都 resize 到 keep
+  try {
+    anchorVariant.resize(keep.w, keep.h);
+  } catch (e) {
+    return { ok: false, error: '改 anchor Variant 尺寸失败: ' + e.message };
+  }
+  keep.instances.forEach(function(inst) {
+    try { inst.resize(keep.w, keep.h); } catch (e) {}
+  });
+
+  // 2. 给整个 Component Set 加 "尺寸" 属性维度(如果还没有)
+  // 现有所有 Variant 的名字补 ", 尺寸=<自身高度>"
+  var anchorParsed = parseVariantName(anchorVariant.name);
+  if (!('尺寸' in anchorParsed.props)) {
+    var setVariants = componentSet.children;
+    for (var v = 0; v < setVariants.length; v++) {
+      var vNode = setVariants[v];
+      var p = parseVariantName(vNode.name);
+      if (!('尺寸' in p.props)) {
+        var sizeVal = (vNode.id === anchorVariant.id)
+          ? String(keep.h)
+          : String(Math.round(vNode.height));
+        p.props['尺寸'] = sizeVal;
+        p.keys.push('尺寸');
+        // 单 Variant 无属性场景 fallback
+        if (p.keys.length === 1 && p.keys[0] === '尺寸') {
+          // OK,只有 尺寸 一个属性
+        }
+        vNode.name = serializeVariantName(p);
+      }
+    }
+    anchorParsed = parseVariantName(anchorVariant.name);
+  } else {
+    anchorParsed.props['尺寸'] = String(keep.h);
+    anchorVariant.name = serializeVariantName(anchorParsed);
+    anchorParsed = parseVariantName(anchorVariant.name);
+  }
+
+  // 3. 其余每个尺寸 clone anchor → resize → append → swap INSTANCE
+  var newVariantsCreated = [];
+  for (var s = 1; s < sizeOrder.length; s++) {
+    var sk = sizeOrder[s];
+    var grp = sizeMap[sk];
+
+    var newV;
+    try {
+      newV = anchorVariant.clone();
+    } catch (e) {
+      return { ok: false, error: 'clone anchor Variant 失败: ' + e.message };
+    }
+
+    // 新 Variant 名: 沿用 anchor 其他属性,改 尺寸=<新高>
+    var newParsed = parseVariantName(anchorVariant.name);
+    newParsed.props['尺寸'] = String(grp.h);
+    newV.name = serializeVariantName(newParsed);
+
+    componentSet.appendChild(newV);
+
+    try { newV.resize(grp.w, grp.h); } catch (e) {}
+
+    // 重指向所有同尺寸 INSTANCE
+    grp.instances.forEach(function(inst) {
+      try {
+        inst.swapComponent(newV);
+        inst.resize(grp.w, grp.h);
+      } catch (e) {}
+    });
+
+    newVariantsCreated.push({ name: newV.name, w: grp.w, h: grp.h, instances: grp.instances.length });
+  }
+
+  return {
+    ok: true,
+    component_set: componentSet.name,
+    anchor_variant: anchorVariant.name,
+    keep_size: { w: keep.w, h: keep.h, instances: keep.instances.length },
+    variants_created: newVariantsCreated,
+    total_instances: sel.length,
+    total_sizes: sizeOrder.length
+  };
+}
+
 // ── 消息处理 ──
 figma.ui.onmessage = function(msg) {
   if (msg.type === 'generate') {
     generate(msg.data).catch(function(e) {
       figma.ui.postMessage({ type:'error', message:String(e) });
     });
+  }
+
+  // [v20.7+] 用选中 INSTANCE 同步全部尺寸
+  if (msg.type === 'sync_instance_size') {
+    var result = syncInstanceSizeToMain();
+    if (result.ok) {
+      figma.notify('✅ 已同步: ' + result.component_name + ' → ' +
+                   result.target_size.w + '×' + result.target_size.h +
+                   '（main + ' + result.siblings_resized + ' 个 INSTANCE）',
+                   { timeout: 5000 });
+    } else {
+      figma.notify('❌ ' + result.error, { timeout: 5000, error: true });
+    }
+    figma.ui.postMessage({ type: 'sync_instance_size_done', result: result });
+  }
+
+  // [v20.7+] 按尺寸拆为多 Variant
+  if (msg.type === 'split_instance_by_size') {
+    var splitResult = splitInstancesByVariantSize();
+    if (splitResult.ok) {
+      figma.notify('✅ 已拆分: ' + splitResult.component_set + ' → ' +
+                   splitResult.total_sizes + ' 个 Variant(' +
+                   splitResult.total_instances + ' 个 INSTANCE 已重指向)',
+                   { timeout: 5000 });
+    } else {
+      figma.notify('❌ ' + splitResult.error, { timeout: 5000, error: true });
+    }
+    figma.ui.postMessage({ type: 'split_instance_by_size_done', result: splitResult });
   }
 
   if (msg.type === 'export_lib') {
@@ -1304,6 +1743,12 @@ figma.ui.onmessage = function(msg) {
     if (result.error) {
       figma.ui.postMessage({ type: 'export_json_done', error: result.error });
     } else {
+      // 即使有尺寸警告也允许导出 JSON（仅 .red 生成才阻止），但要打到日志面板
+      if (result._size_warnings && result._size_warnings.length) {
+        logSizeIssues(result._size_warnings);
+        figma.notify('⚠️ INSTANCE 尺寸不一致 ' + result._size_warnings.length +
+                     ' 条 — 详情看日志,生成 .red 前需修复', { timeout: 6000 });
+      }
       figma.ui.postMessage({ type: 'export_json_done', data: result, screenCount: result.screens.length });
     }
   }
@@ -1313,6 +1758,20 @@ figma.ui.onmessage = function(msg) {
     var scene = buildSceneForRed();
     if (scene.error) {
       figma.ui.postMessage({ type: 'gen_red_error', message: scene.error });
+    } else if (scene._size_warnings && scene._size_warnings.length && !msg.force) {
+      // [v20.7+] INSTANCE 尺寸不一致 — 阻止生成 .red,因为父子尺寸会错位
+      logSizeIssues(scene._size_warnings);
+      figma.notify('⛔ 阻止生成 .red: INSTANCE 尺寸不一致 ' +
+                   scene._size_warnings.length + ' 条', { timeout: 8000, error: true });
+      figma.ui.postMessage({
+        type: 'gen_red_size_blocked',
+        warnings: scene._size_warnings,
+        scene: scene,
+        output_path: msg.output_path,
+        message: 'INSTANCE 尺寸与 Component 本体不一致。\n' +
+                 '修复方法: 选中 INSTANCE → ⌥⌘Y (Push to main component) → 重新导出。\n' +
+                 '若确实需要按当前数据强制生成(可能渲染错位),再次点击生成会带 force 标志。'
+      });
     } else {
       figma.ui.postMessage({
         type: 'gen_red_ready',

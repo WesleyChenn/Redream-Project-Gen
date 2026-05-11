@@ -48,15 +48,20 @@ CONTENT_H = ROW_COUNT * ROW_H  # 17 * 177 = 3009
 # ========== 节点工厂 ==========
 def make_row(rank, name, title, item_count, score, is_current):
     """
-    生成一个排行榜行 FRAME.
-    规则 11.5: 所有行内部子节点命名 100% 一致, 共 10 个固定槽位.
+    生成一个排行榜行 FRAME (v2 嵌套版).
+
+    规则 11.5: 所有行内部子节点命名 100% 一致, 共 8 个固定槽位.
+
+    嵌套结构(Layer 2 候选):
+      头像_朋友   (FRAME): 底板_头像 + 图_头像
+      徽章_头衔   (FRAME): 底板_徽章 + 文本_头衔
+      徽章_道具   (FRAME): 图_道具 + 文本_数量
+
     实例间差异:
-      - TEXT.content (名字/排名/分数/头衔/道具数) = 数据驱动, 不算 Variant
+      - TEXT.content (名字/排名/分数/头衔文字/数量) = 数据驱动, 不算 Variant
       - 底板_行.fill (绿/默认) = 状态多态
-      - 图标_头衔徽章.visible (T/F) = 状态多态
-      - 文本_头衔.visible        (T/F) = 状态多态
-      - 图标_道具.visible        (T/F) = 状态多态
-      - 文本_道具数.visible      (T/F) = 状态多态
+      - 徽章_头衔.visible (T/F) = 状态多态
+      - 徽章_道具.visible (T/F) = 状态多态
     """
     has_title = bool(title)
     has_item = bool(item_count)
@@ -69,91 +74,89 @@ def make_row(rank, name, title, item_count, score, is_current):
         "children": [
             # 1. 底板_行 (当前用户绿底)
             {
-                "type": "RECTANGLE",
-                "name": "底板_行",
+                "type": "RECTANGLE", "name": "底板_行",
                 "x": 0, "y": 0, "w": LIST_W, "h": ROW_H,
                 "corner_radius": 30,
                 "constraints": {"horizontal": "SCALE", "vertical": "SCALE"},
                 **({"fill": "#88c870"} if is_current else {})
             },
-            # 2. 文本_排名 (数字)
+            # 2. 文本_排名
             {
-                "type": "TEXT",
-                "name": "文本_排名",
-                "x": 50, "y": 60,
-                "content": str(rank),
+                "type": "TEXT", "name": "文本_排名",
+                "x": 50, "y": 60, "content": str(rank),
                 "font_size": 60, "font_weight": "Bold",
                 "textAlignHorizontal": "CENTER",
                 "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
             },
-            # 3. 图标_头像
+            # 3. 头像_朋友 (FRAME 复合: 底板 + 图)  ← Layer 2 候选 #1
             {
-                "type": "RECTANGLE",
-                "name": "图标_头像",
+                "type": "FRAME", "name": "头像_朋友",
                 "x": 130, "y": 35, "w": 105, "h": 105,
-                "corner_radius": 20,
-                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
+                "layoutMode": "NONE",
+                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"},
+                "children": [
+                    {"type": "RECTANGLE", "name": "底板_头像",
+                     "x": 0, "y": 0, "w": 105, "h": 105, "corner_radius": 20,
+                     "constraints": {"horizontal": "SCALE", "vertical": "SCALE"}},
+                    {"type": "RECTANGLE", "name": "图_头像",
+                     "x": 10, "y": 10, "w": 85, "h": 85, "corner_radius": 15,
+                     "constraints": {"horizontal": "SCALE", "vertical": "SCALE"}}
+                ]
             },
             # 4. 文本_名字
             {
-                "type": "TEXT",
-                "name": "文本_名字",
-                "x": 260, "y": 60,
-                "content": name,
+                "type": "TEXT", "name": "文本_名字",
+                "x": 260, "y": 60, "content": name,
                 "font_size": 50, "font_weight": "Bold",
                 "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
             },
-            # 5. 文本_头衔 (Knight/Grand Knight, visible 由 has_title 控制)
+            # 5. 徽章_头衔 (FRAME 复合: 底板盾牌 + 文本)  ← Layer 2 候选 #2
+            #     visible 控制显隐
             {
-                "type": "TEXT",
-                "name": "文本_头衔",
-                "x": 260, "y": 115,
-                "content": title or "Knight",      # 空时仍写占位, visible 控显隐
-                "font_size": 32, "font_weight": "Regular",
+                "type": "FRAME", "name": "徽章_头衔",
+                "x": 260, "y": 110, "w": 200, "h": 40,
+                "layoutMode": "NONE",
                 "visible": has_title,
-                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
+                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"},
+                "children": [
+                    {"type": "RECTANGLE", "name": "底板_徽章",
+                     "x": 0, "y": 5, "w": 35, "h": 35, "corner_radius": 8,
+                     "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}},
+                    {"type": "TEXT", "name": "文本_头衔",
+                     "x": 45, "y": 5,
+                     "content": title or "Knight",
+                     "font_size": 32, "font_weight": "Regular",
+                     "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}}
+                ]
             },
-            # 6. 图标_头衔徽章 (visible 由 has_title 控制)
+            # 6. 徽章_道具 (FRAME 复合: 图标 + 数量)  ← Layer 2 候选 #3
             {
-                "type": "RECTANGLE",
-                "name": "图标_头衔徽章",
-                "x": 420, "y": 110, "w": 40, "h": 40,
-                "corner_radius": 10,
-                "visible": has_title,
-                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
-            },
-            # 7. 图标_道具 (visible 由 has_item 控制)
-            {
-                "type": "RECTANGLE",
-                "name": "图标_道具",
-                "x": 700, "y": 50, "w": 80, "h": 80,
-                "corner_radius": 15,
+                "type": "FRAME", "name": "徽章_道具",
+                "x": 700, "y": 50, "w": 160, "h": 80,
+                "layoutMode": "NONE",
                 "visible": has_item,
-                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
+                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"},
+                "children": [
+                    {"type": "RECTANGLE", "name": "图_道具",
+                     "x": 0, "y": 0, "w": 80, "h": 80, "corner_radius": 15,
+                     "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}},
+                    {"type": "TEXT", "name": "文本_数量",
+                     "x": 90, "y": 20,
+                     "content": item_count or "x1",
+                     "font_size": 36, "font_weight": "Bold",
+                     "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}}
+                ]
             },
-            # 8. 文本_道具数 (visible 由 has_item 控制)
+            # 7. 图标_舵盘
             {
-                "type": "TEXT",
-                "name": "文本_道具数",
-                "x": 790, "y": 70,
-                "content": item_count or "x1",
-                "font_size": 36, "font_weight": "Bold",
-                "visible": has_item,
-                "constraints": {"horizontal": "LEFT", "vertical": "CENTER"}
-            },
-            # 9. 图标_舵盘
-            {
-                "type": "RECTANGLE",
-                "name": "图标_舵盘",
+                "type": "RECTANGLE", "name": "图标_舵盘",
                 "x": 870, "y": 60, "w": 64, "h": 64,
                 "constraints": {"horizontal": "RIGHT", "vertical": "CENTER"}
             },
-            # 10. 文本_分数
+            # 8. 文本_分数
             {
-                "type": "TEXT",
-                "name": "文本_分数",
-                "x": 950, "y": 70,
-                "content": str(score),
+                "type": "TEXT", "name": "文本_分数",
+                "x": 950, "y": 70, "content": str(score),
                 "font_size": 40, "font_weight": "Bold",
                 "textAlignHorizontal": "RIGHT",
                 "constraints": {"horizontal": "RIGHT", "vertical": "CENTER"}

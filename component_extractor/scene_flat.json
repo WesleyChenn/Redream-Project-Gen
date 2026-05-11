@@ -1,17 +1,17 @@
 {
   "screens": [
     {
-      "name": "界面_TeamTreasure",
+      "name": "界面_Shop",
       "w": 1080,
       "h": 2400,
       "layers": [
         {
           "type": "FRAME",
-          "name": "组_Team Treasure标题",
+          "name": "组_顶部HUD",
           "x": 0,
-          "y": 78,
+          "y": 138,
           "w": 1080,
-          "h": 863,
+          "h": 222,
           "layoutMode": "NONE",
           "constraints": {
             "horizontal": "SCALE",
@@ -20,24 +20,150 @@
           "children": [
             {
               "type": "RECTANGLE",
-              "name": "底板_主标题",
+              "name": "底板_HUD",
               "x": 0,
               "y": 0,
               "w": 1080,
-              "h": 863,
-              "corner_radius": 0,
+              "h": 222,
               "constraints": {
                 "horizontal": "SCALE",
                 "vertical": "SCALE"
               }
             },
             {
+              "type": "FRAME",
+              "name": "按钮_金币栏",
+              "x": 30,
+              "y": 80,
+              "w": 220,
+              "h": 90,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "CENTER"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_金币栏",
+                  "x": 0,
+                  "y": 0,
+                  "w": 220,
+                  "h": 90,
+                  "corner_radius": 45,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_金币",
+                  "x": 80,
+                  "y": 25,
+                  "content": "1107",
+                  "font_size": 42,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_标题",
+              "x": 350,
+              "y": 60,
+              "w": 380,
+              "h": 130,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_标题",
+                  "x": 0,
+                  "y": 0,
+                  "w": 380,
+                  "h": 130,
+                  "corner_radius": 65,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_标题",
+                  "x": 80,
+                  "y": 30,
+                  "content": "Shop",
+                  "font_size": 70,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_关闭",
+              "x": 920,
+              "y": 60,
+              "w": 130,
+              "h": 130,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "CENTER"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_关闭",
+                  "x": 0,
+                  "y": 0,
+                  "w": 130,
+                  "h": 130,
+                  "corner_radius": 65,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_RoyalPass",
+          "x": 30,
+          "y": 380,
+          "w": 1020,
+          "h": 720,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
               "type": "RECTANGLE",
-              "name": "图片_海盗插画",
+              "name": "底板_RoyalPass",
               "x": 0,
-              "y": 50,
-              "w": 1080,
-              "h": 740,
+              "y": 0,
+              "w": 1020,
+              "h": 720,
+              "corner_radius": 30,
               "constraints": {
                 "horizontal": "SCALE",
                 "vertical": "SCALE"
@@ -46,331 +172,1499 @@
             {
               "type": "TEXT",
               "name": "文本_标题",
-              "x": 157,
-              "y": 90,
-              "content": "Team Treasure",
-              "font_size": 80,
-              "font_weight": "Bold",
-              "textAlignHorizontal": "CENTER",
-              "constraints": {
-                "horizontal": "CENTER",
-                "vertical": "TOP"
-              }
-            },
-            {
-              "type": "FRAME",
-              "name": "按钮_关闭",
-              "x": 921,
-              "y": 13,
-              "w": 132,
-              "h": 124,
-              "layoutMode": "NONE",
-              "constraints": {
-                "horizontal": "RIGHT",
-                "vertical": "TOP"
-              },
-              "children": [
-                {
-                  "component_ref": "圆形按钮_关闭",
-                  "name": "组件_关闭",
-                  "x": 0,
-                  "y": 0,
-                  "w": 132,
-                  "h": 124,
-                  "constraints": {
-                    "horizontal": "SCALE",
-                    "vertical": "SCALE"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "FRAME",
-              "name": "按钮_信息",
-              "x": 30,
-              "y": 251,
-              "w": 102,
-              "h": 102,
-              "layoutMode": "NONE",
-              "constraints": {
-                "horizontal": "LEFT",
-                "vertical": "TOP"
-              },
-              "children": [
-                {
-                  "component_ref": "圆形按钮_信息",
-                  "name": "组件_信息",
-                  "x": 0,
-                  "y": 0,
-                  "w": 102,
-                  "h": 102,
-                  "constraints": {
-                    "horizontal": "SCALE",
-                    "vertical": "SCALE"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "FRAME",
-              "name": "按钮_倒计时",
-              "x": 406,
-              "y": 660,
-              "w": 268,
-              "h": 74,
-              "layoutMode": "NONE",
-              "constraints": {
-                "horizontal": "CENTER",
-                "vertical": "TOP"
-              },
-              "children": [
-                {
-                  "component_ref": "底标_倒计时",
-                  "name": "组件_倒计时",
-                  "x": 0,
-                  "y": 0,
-                  "w": 268,
-                  "h": 74,
-                  "constraints": {
-                    "horizontal": "SCALE",
-                    "vertical": "SCALE"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "FRAME",
-          "name": "组_Choisss横幅",
-          "x": 0,
-          "y": 941,
-          "w": 1080,
-          "h": 167,
-          "layoutMode": "NONE",
-          "constraints": {
-            "horizontal": "SCALE",
-            "vertical": "TOP"
-          },
-          "children": [
-            {
-              "type": "RECTANGLE",
-              "name": "底板_Choisss横幅",
-              "x": 0,
-              "y": 0,
-              "w": 1080,
-              "h": 167,
-              "constraints": {
-                "horizontal": "SCALE",
-                "vertical": "SCALE"
-              }
-            },
-            {
-              "type": "TEXT",
-              "name": "文本_Choisss",
-              "x": 130,
+              "x": 60,
               "y": 50,
-              "content": "Choisss",
+              "content": "Royal Pass",
               "font_size": 60,
               "font_weight": "Bold",
               "constraints": {
                 "horizontal": "LEFT",
-                "vertical": "CENTER"
+                "vertical": "TOP"
               }
             },
             {
               "type": "RECTANGLE",
-              "name": "图标_横幅舵盘",
-              "x": 740,
-              "y": 50,
-              "w": 64,
-              "h": 64,
+              "name": "图_宝箱",
+              "x": 50,
+              "y": 150,
+              "w": 500,
+              "h": 500,
               "constraints": {
-                "horizontal": "RIGHT",
-                "vertical": "CENTER"
-              }
-            },
-            {
-              "type": "TEXT",
-              "name": "文本_Choisss进度数",
-              "x": 820,
-              "y": 60,
-              "content": "1997/5000",
-              "font_size": 40,
-              "font_weight": "Bold",
-              "constraints": {
-                "horizontal": "RIGHT",
-                "vertical": "CENTER"
-              }
-            }
-          ]
-        },
-        {
-          "type": "FRAME",
-          "name": "组_Choisss进度",
-          "x": 0,
-          "y": 1108,
-          "w": 1080,
-          "h": 277,
-          "layoutMode": "NONE",
-          "constraints": {
-            "horizontal": "SCALE",
-            "vertical": "TOP"
-          },
-          "children": [
-            {
-              "type": "RECTANGLE",
-              "name": "底板_Choisss进度",
-              "x": 0,
-              "y": 0,
-              "w": 1080,
-              "h": 277,
-              "constraints": {
-                "horizontal": "SCALE",
-                "vertical": "SCALE"
+                "horizontal": "LEFT",
+                "vertical": "TOP"
               }
             },
             {
               "type": "FRAME",
-              "name": "组_进度_Choisss",
-              "x": 140,
-              "y": 122,
-              "w": 812,
-              "h": 37,
+              "name": "按钮_Activate",
+              "x": 600,
+              "y": 500,
+              "w": 380,
+              "h": 120,
               "layoutMode": "NONE",
               "constraints": {
-                "horizontal": "SCALE",
-                "vertical": "CENTER"
+                "horizontal": "RIGHT",
+                "vertical": "BOTTOM"
               },
               "children": [
                 {
                   "type": "RECTANGLE",
-                  "name": "底板_Choisss",
+                  "name": "底板_Activate",
                   "x": 0,
                   "y": 0,
-                  "w": 812,
-                  "h": 37,
-                  "corner_radius": 18,
+                  "w": 380,
+                  "h": 120,
+                  "corner_radius": 60,
                   "constraints": {
                     "horizontal": "SCALE",
                     "vertical": "SCALE"
                   }
                 },
                 {
-                  "type": "RECTANGLE",
-                  "name": "进度条_Choisss",
-                  "x": 10,
-                  "y": 10,
-                  "w": 792,
-                  "h": 17,
-                  "corner_radius": 8,
+                  "type": "TEXT",
+                  "name": "文本_Activate",
+                  "x": 100,
+                  "y": 35,
+                  "content": "Activate",
+                  "font_size": 48,
+                  "font_weight": "Bold",
                   "constraints": {
-                    "horizontal": "SCALE",
-                    "vertical": "SCALE"
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "金币购买卡片_2000",
+          "x": 30,
+          "y": 1130,
+          "w": 1020,
+          "h": 360,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_卡片",
+              "x": 0,
+              "y": 0,
+              "w": 1020,
+              "h": 360,
+              "corner_radius": 30,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图_金币堆",
+              "x": 30,
+              "y": 30,
+              "w": 220,
+              "h": 200,
+              "corner_radius": 0,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_金额",
+              "x": 90,
+              "y": 230,
+              "content": "2000",
+              "font_size": 60,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_1",
+              "x": 320,
+              "y": 40,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#9b6dff",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_2",
+              "x": 440,
+              "y": 40,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#d54a3a",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_3",
+              "x": 320,
+              "y": 150,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#3da8e0",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_4",
+              "x": 440,
+              "y": 150,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#f0b419",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_1",
+              "x": 620,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#7d4dbf",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "1h",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_2",
+              "x": 750,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#cc3a2e",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "∞",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_3",
+              "x": 880,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#3a6dd9",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "∞",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
                   }
                 }
               ]
             },
             {
               "type": "RECTANGLE",
-              "name": "图标_进度舵盘",
-              "x": 20,
-              "y": 67,
-              "w": 129,
-              "h": 129,
+              "name": "底板_价格条",
+              "x": 0,
+              "y": 280,
+              "w": 1020,
+              "h": 80,
               "constraints": {
-                "horizontal": "LEFT",
-                "vertical": "CENTER"
-              }
-            },
-            {
-              "type": "RECTANGLE",
-              "name": "图标_宝箱_棕",
-              "x": 240,
-              "y": 72,
-              "w": 102,
-              "h": 102,
-              "constraints": {
-                "horizontal": "LEFT",
-                "vertical": "CENTER"
-              }
-            },
-            {
-              "type": "RECTANGLE",
-              "name": "图标_宝箱_蓝",
-              "x": 540,
-              "y": 72,
-              "w": 102,
-              "h": 102,
-              "constraints": {
-                "horizontal": "CENTER",
-                "vertical": "CENTER"
-              }
-            },
-            {
-              "type": "RECTANGLE",
-              "name": "图标_宝箱_紫",
-              "x": 850,
-              "y": 72,
-              "w": 102,
-              "h": 102,
-              "constraints": {
-                "horizontal": "RIGHT",
-                "vertical": "CENTER"
-              }
-            },
-            {
-              "type": "RECTANGLE",
-              "name": "图标_勾",
-              "x": 260,
-              "y": 182,
-              "w": 64,
-              "h": 55,
-              "constraints": {
-                "horizontal": "LEFT",
-                "vertical": "CENTER"
+                "horizontal": "SCALE",
+                "vertical": "BOTTOM"
               }
             },
             {
               "type": "TEXT",
-              "name": "文本_3000",
-              "x": 560,
-              "y": 195,
-              "content": "3000",
-              "font_size": 36,
+              "name": "文本_标签",
+              "x": 30,
+              "y": 305,
+              "content": "Special Offer",
+              "font_size": 40,
               "font_weight": "Bold",
               "constraints": {
-                "horizontal": "CENTER",
-                "vertical": "CENTER"
+                "horizontal": "LEFT",
+                "vertical": "BOTTOM"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_价格",
+              "x": 720,
+              "y": 290,
+              "w": 280,
+              "h": 60,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "BOTTOM"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_价格按钮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 280,
+                  "h": 60,
+                  "corner_radius": 30,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_价格",
+                  "x": 80,
+                  "y": 15,
+                  "content": "£1.99",
+                  "font_size": 36,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "角标_Popular",
+              "x": -10,
+              "y": -10,
+              "w": 130,
+              "h": 50,
+              "layoutMode": "NONE",
+              "visible": false,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_角标",
+                  "x": 0,
+                  "y": 0,
+                  "w": 130,
+                  "h": 50,
+                  "corner_radius": 8,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_角标",
+                  "x": 30,
+                  "y": 10,
+                  "content": "Popular",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "金币购买卡片_5000",
+          "x": 30,
+          "y": 1530,
+          "w": 1020,
+          "h": 360,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_卡片",
+              "x": 0,
+              "y": 0,
+              "w": 1020,
+              "h": 360,
+              "corner_radius": 30,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图_金币堆",
+              "x": 30,
+              "y": 30,
+              "w": 220,
+              "h": 200,
+              "corner_radius": 0,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
               }
             },
             {
               "type": "TEXT",
-              "name": "文本_5000",
-              "x": 870,
-              "y": 195,
+              "name": "文本_金额",
+              "x": 90,
+              "y": 230,
               "content": "5000",
-              "font_size": 36,
+              "font_size": 60,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_1",
+              "x": 320,
+              "y": 40,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#9b6dff",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_2",
+              "x": 440,
+              "y": 40,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#d54a3a",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_3",
+              "x": 320,
+              "y": 150,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#3da8e0",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_4",
+              "x": 440,
+              "y": 150,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#f0b419",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x1",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_1",
+              "x": 620,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#7d4dbf",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "1h",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_2",
+              "x": 750,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#cc3a2e",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "∞",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_3",
+              "x": 880,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#3a6dd9",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "∞",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_价格条",
+              "x": 0,
+              "y": 280,
+              "w": 1020,
+              "h": 80,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "BOTTOM"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_标签",
+              "x": 30,
+              "y": 305,
+              "content": "Prince's Treasure",
+              "font_size": 40,
               "font_weight": "Bold",
               "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "BOTTOM"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_价格",
+              "x": 720,
+              "y": 290,
+              "w": 280,
+              "h": 60,
+              "layoutMode": "NONE",
+              "constraints": {
                 "horizontal": "RIGHT",
-                "vertical": "CENTER"
+                "vertical": "BOTTOM"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_价格按钮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 280,
+                  "h": 60,
+                  "corner_radius": 30,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_价格",
+                  "x": 80,
+                  "y": 15,
+                  "content": "£9.99",
+                  "font_size": 36,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "角标_Popular",
+              "x": -10,
+              "y": -10,
+              "w": 130,
+              "h": 50,
+              "layoutMode": "NONE",
+              "visible": false,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_角标",
+                  "x": 0,
+                  "y": 0,
+                  "w": 130,
+                  "h": 50,
+                  "corner_radius": 8,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_角标",
+                  "x": 30,
+                  "y": 10,
+                  "content": "Popular",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "金币购买卡片_10000",
+          "x": 30,
+          "y": 1930,
+          "w": 1020,
+          "h": 360,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_卡片",
+              "x": 0,
+              "y": 0,
+              "w": 1020,
+              "h": 360,
+              "corner_radius": 30,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图_金币堆",
+              "x": 30,
+              "y": 30,
+              "w": 220,
+              "h": 200,
+              "corner_radius": 0,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_金额",
+              "x": 90,
+              "y": 230,
+              "content": "10000",
+              "font_size": 60,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_1",
+              "x": 320,
+              "y": 40,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#9b6dff",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x2",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_2",
+              "x": 440,
+              "y": 40,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#d54a3a",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x2",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_3",
+              "x": 320,
+              "y": 150,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#3da8e0",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x2",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "道具数量徽章_4",
+              "x": 440,
+              "y": 150,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_道具",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#f0b419",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 75,
+                  "y": 60,
+                  "content": "x2",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_1",
+              "x": 620,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#7d4dbf",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "12h",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_2",
+              "x": 750,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#cc3a2e",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "∞",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "限时道具_3",
+              "x": 880,
+              "y": 80,
+              "w": 110,
+              "h": 100,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图_限时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 80,
+                  "corner_radius": 15,
+                  "fill": "#3a6dd9",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时长",
+                  "x": 30,
+                  "y": 80,
+                  "content": "∞",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_价格条",
+              "x": 0,
+              "y": 280,
+              "w": 1020,
+              "h": 80,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "BOTTOM"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_标签",
+              "x": 30,
+              "y": 305,
+              "content": "Queen's Treasure",
+              "font_size": 40,
+              "font_weight": "Bold",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "BOTTOM"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_价格",
+              "x": 720,
+              "y": 290,
+              "w": 280,
+              "h": 60,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "BOTTOM"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_价格按钮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 280,
+                  "h": 60,
+                  "corner_radius": 30,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_价格",
+                  "x": 80,
+                  "y": 15,
+                  "content": "£19.99",
+                  "font_size": 36,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "角标_Popular",
+              "x": -10,
+              "y": -10,
+              "w": 130,
+              "h": 50,
+              "layoutMode": "NONE",
+              "visible": true,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_角标",
+                  "x": 0,
+                  "y": 0,
+                  "w": 130,
+                  "h": 50,
+                  "corner_radius": 8,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_角标",
+                  "x": 30,
+                  "y": 10,
+                  "content": "Popular",
+                  "font_size": 28,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "界面_主菜单",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "RECTANGLE",
+          "name": "背景_钢琴房",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 2400,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "组_顶部HUD",
+          "x": 0,
+          "y": 138,
+          "w": 1080,
+          "h": 220,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_HUD",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 220,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
               }
             }
           ]
         },
         {
           "type": "FRAME",
-          "name": "容器_排行榜列表",
-          "x": 0,
-          "y": 1385,
-          "w": 1080,
-          "h": 952,
+          "name": "组_底部按钮",
+          "x": 30,
+          "y": 1900,
+          "w": 1020,
+          "h": 220,
           "layoutMode": "NONE",
-          "primaryAxisSizingMode": "FIXED",
-          "counterAxisSizingMode": "FIXED",
-          "clip_content": true,
-          "overflow": "VERTICAL",
           "constraints": {
             "horizontal": "SCALE",
             "vertical": "BOTTOM"
@@ -378,2475 +1672,132 @@
           "children": [
             {
               "type": "FRAME",
-              "name": "内容_排行榜列表",
+              "name": "按钮_Level",
+              "x": 0,
+              "y": 0,
+              "w": 480,
+              "h": 200,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_Level",
+                  "x": 0,
+                  "y": 0,
+                  "w": 480,
+                  "h": 200,
+                  "corner_radius": 100,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_Level",
+                  "x": 100,
+                  "y": 60,
+                  "content": "Level 537",
+                  "font_size": 60,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_Area",
+              "x": 540,
+              "y": 0,
+              "w": 480,
+              "h": 200,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_Area",
+                  "x": 0,
+                  "y": 0,
+                  "w": 480,
+                  "h": 200,
+                  "corner_radius": 100,
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_Area",
+                  "x": 130,
+                  "y": 60,
+                  "content": "Area 19",
+                  "font_size": 60,
+                  "font_weight": "Bold",
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_底部导航",
+          "x": 0,
+          "y": 2200,
+          "w": 1080,
+          "h": 200,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "BOTTOM"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_导航",
               "x": 0,
               "y": 0,
               "w": 1080,
-              "h": 3009,
-              "layoutMode": "VERTICAL",
-              "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "FIXED",
-              "primaryAxisAlignItems": "MIN",
-              "counterAxisAlignItems": "MIN",
-              "itemSpacing": 0,
-              "layoutSizingHorizontal": "FIXED",
-              "layoutSizingVertical": "HUG",
-              "children": [
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名1",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "1",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "mails",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x2",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "356",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名2",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "2",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Choy",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x2",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "343",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名3",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "3",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Kkk",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x2",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "275",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名4",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "4",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "onon",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Grand Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "209",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名5",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "5",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "GrandKn",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "180",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名6",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      },
-                      "fill": "#88c870"
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "6",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "mmmmm",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "126",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名7",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "7",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "hshen",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Grand Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "122",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名8",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "8",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Csl",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "114",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名9",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "9",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "lllll",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "93",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名10",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "10",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "luk",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "59",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名11",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "11",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Arthur",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "49",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名12",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "12",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Teresa",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "28",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名13",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "13",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Lokwan",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x2",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": true,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "26",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名14",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "14",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "fiona",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "24",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名15",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "15",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Cassandra",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "18",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名16",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "16",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "789",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "12",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "type": "FRAME",
-                  "name": "列表项_排名17",
-                  "w": 1080,
-                  "h": 177,
-                  "layoutMode": "NONE",
-                  "children": [
-                    {
-                      "type": "RECTANGLE",
-                      "name": "底板_行",
-                      "x": 0,
-                      "y": 0,
-                      "w": 1080,
-                      "h": 177,
-                      "corner_radius": 30,
-                      "constraints": {
-                        "horizontal": "SCALE",
-                        "vertical": "SCALE"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_排名",
-                      "x": 50,
-                      "y": 60,
-                      "content": "17",
-                      "font_size": 60,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "CENTER",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头像",
-                      "x": 130,
-                      "y": 35,
-                      "w": 105,
-                      "h": 105,
-                      "corner_radius": 20,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_名字",
-                      "x": 260,
-                      "y": 60,
-                      "content": "Hanna",
-                      "font_size": 50,
-                      "font_weight": "Bold",
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_头衔",
-                      "x": 260,
-                      "y": 115,
-                      "content": "Knight",
-                      "font_size": 32,
-                      "font_weight": "Regular",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_头衔徽章",
-                      "x": 420,
-                      "y": 110,
-                      "w": 40,
-                      "h": 40,
-                      "corner_radius": 10,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_道具",
-                      "x": 700,
-                      "y": 50,
-                      "w": 80,
-                      "h": 80,
-                      "corner_radius": 15,
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_道具数",
-                      "x": 790,
-                      "y": 70,
-                      "content": "x1",
-                      "font_size": 36,
-                      "font_weight": "Bold",
-                      "visible": false,
-                      "constraints": {
-                        "horizontal": "LEFT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "RECTANGLE",
-                      "name": "图标_舵盘",
-                      "x": 870,
-                      "y": 60,
-                      "w": 64,
-                      "h": 64,
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    },
-                    {
-                      "type": "TEXT",
-                      "name": "文本_分数",
-                      "x": 950,
-                      "y": 70,
-                      "content": "5",
-                      "font_size": 40,
-                      "font_weight": "Bold",
-                      "textAlignHorizontal": "RIGHT",
-                      "constraints": {
-                        "horizontal": "RIGHT",
-                        "vertical": "CENTER"
-                      }
-                    }
-                  ]
-                }
-              ]
+              "h": 200,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
             }
           ]
         }
       ]
     }
   ],
-  "flow": []
+  "flow": [
+    {
+      "from": "界面_Shop",
+      "from_node": "按钮_关闭",
+      "to": "界面_主菜单",
+      "trigger": "ON_CLICK",
+      "animation": "dissolve 300ms"
+    },
+    {
+      "from": "界面_主菜单",
+      "from_node": "(来源未确认)",
+      "to": "界面_Shop",
+      "trigger": "ON_CLICK",
+      "animation": "dissolve 300ms"
+    }
+  ]
 }

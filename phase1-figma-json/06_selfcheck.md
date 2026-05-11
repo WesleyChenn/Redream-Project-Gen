@@ -208,8 +208,214 @@ for i in issues: print(' ', i)
 
 任何 `_` 报红 → 改名(去下划线) → 重跑自检。
 
+## 【第十层半：Variant 内部建模合规（v20.7+ 阶段二导出后必检）】
+
+> 对应 S0 文档"Variant 内部建模铁律"。此层失败 → 引擎渲染丢数据或时间线污染。
+
+```
+✅/❌ 每个 Variant.layers 内不含 visible=false 节点(应被 _filter_invisible 物理删除)
+✅/❌ 子 CCB 整个隐藏的场景,wrapper 的 visible / opacity 已传到父 Variant 内的 INSTANCE 节点
+✅/❌ 同 Variant 内多个实例的 TEXT.content / component_ref.overrides 差异,
+       已作为每个 INSTANCE 节点的 overrides 字段输出(不能只保留模板的内容)
+✅/❌ INSTANCE.overrides 的 key 都对应到 Variant.layers 里实际存在的子节点 name
+       (不能 override 不存在的字段)
+```
+
+**自检方法**:
+
+```bash
+python3 -c "
+import json
+d = json.load(open('final_scene.json'))
+issues = []
+
+# 检查 1: Variant.layers 不含 visible=false
+def walk_check_visible(layers, ctx):
+    for L in layers or []:
+        if L.get('visible') is False:
+            issues.append(f'{ctx} 含 visible=false 节点: {L.get(\"name\")}')
+        for k in ('children','layers'):
+            if k in L: walk_check_visible(L[k], ctx + '/' + L.get('name','?'))
+for c in d.get('components',[]):
+    for v in c.get('variants',[]):
+        walk_check_visible(v.get('layers'), f'{c[\"name\"]}/{v[\"name\"]}')
+
+# 检查 2: 屏幕里同 component_name 的 INSTANCE 是否有数据 override(非模板实例必须有)
+by_comp = {}
+def walk(n):
+    if n.get('type')=='INSTANCE':
+        cn = n.get('component_name','')
+        by_comp.setdefault(cn,[]).append(n)
+    for c in (n.get('children') or n.get('layers') or []): walk(c)
+for s in d.get('screens',[]):
+    for L in s.get('layers',[]): walk(L)
+for cn, insts in by_comp.items():
+    if len(insts) <= 1: continue   # 单实例无须 override
+    n_with_override = sum(1 for i in insts if i.get('overrides'))
+    if n_with_override == 0:
+        issues.append(f'{cn} 有 {len(insts)} 个 INSTANCE 但全部无 overrides — 可能数据丢失')
+
+print('✅ 全部合规' if not issues else '❌ ' + str(len(issues)) + ' 项问题')
+for i in issues[:10]: print(' ', i)
+"
+```
+
+任何 ❌ 必须修后重跑。
+
+## 【第十一层：INSTANCE 尺寸同步合规（v20.7+ 阶段二导出后必检）】
+
+> 仅在 S7 跑完阶段二脚本、拿到 final_scene.json 后执行。
+> 对应 S0 文档"INSTANCE 尺寸同步铁律"。此层失败 → 引擎生成的 .red 文件父 CCNode 与子 CCB 尺寸不匹配,**视觉错位**。
+
+```
+✅/❌ 同一 component_name 的所有 INSTANCE 的 w/h 完全一致
+✅/❌ 每个 INSTANCE 的 w/h 等于对应 components[].w/h
+✅/❌ 不一致时,要求设计师选中 INSTANCE → ⌥⌘Y(macOS)/Alt+Ctrl+Y(Windows) Push 到主版后重新导出
+```
+
+**自检方法**:
+
+```bash
+python3 -c "
+import json
+d = json.load(open('final_scene.json'))
+comp_size = {c['name']:(c['w'],c['h']) for c in d.get('components',[])}
+by_comp = {}
+def walk(n):
+    if n.get('type')=='INSTANCE':
+        cn = n.get('component_name','')
+        by_comp.setdefault(cn,[]).append((n.get('name'),n.get('w'),n.get('h')))
+    for ch in (n.get('children') or n.get('layers') or []): walk(ch)
+for s in d.get('screens',[]):
+    for L in s.get('layers',[]): walk(L)
+issues=[]
+for cn, insts in by_comp.items():
+    sizes = set((w,h) for _,w,h in insts)
+    if len(sizes)>1:
+        issues.append(f'❌ {cn} 的 INSTANCE 尺寸不一致: {sizes}')
+    cw,ch = comp_size.get(cn,(None,None))
+    for nm,w,h in insts:
+        if (cw,ch)!=(None,None) and (w,h)!=(cw,ch):
+            issues.append(f'❌ {cn}/{nm} ({w}x{h}) 与 Component 本体 ({cw}x{ch}) 不一致 → Push 主版')
+print('✅ 全部一致' if not issues else '\n'.join(issues))
+"
+```
+
+**不一致时的处理流程**(三步):
+
+1. 识别问题 INSTANCE: 脚本输出哪些 component_name 的 INSTANCE 尺寸不一致 / 与本体不一致
+2. **要求设计师在 Figma 里**: 选中**任意一个目标尺寸**的 INSTANCE → 右键 `Push changes to main component`(或 `⌥⌘Y`) → 所有同 component 的 INSTANCE 自动同步到新尺寸
+3. 重新导出 scene.json → 重跑阶段二脚本 → 重跑本层自检直到全部 ✅
+
+⚠️ Claude / 插件 / extractor **不自动改尺寸**:引擎按数据如实生成,猜测设计意图风险大。
+   这是工作流铁律,设计师必须在 Figma 端手动 Push,不存在自动修复。
+
+## 【第十二层:S7 后嵌套化 + Component 修复合规(v20.7.x+,RoyalPass 教训)】
+
+> 仅在 S7 跑完阶段二脚本、拿到 final_scene.json 后执行。
+> 对应 `00_core_rules.md` 末尾两节:"S7 后必须 100% 嵌套化" + "Component 修复铁律"。
+> **此层失败时绝不能交付** — 设计师粘进 Figma 后会看到组件库不全 / 主屏前几行扁平后几行引用 的奇怪混合形态,
+> 触发后续连锁问题(combineAsVariants 失败 → registry 不全 → 预览 Frame 不创建)。
+
+```
+✅/❌ 主屏 list_inner / 网格行 / 卡片容器 内**没有"漏网平铺 FRAME"**
+       (即所有跟某个 Component 结构指纹相同的 FRAME 都已转为 INSTANCE)
+✅/❌ 每个 Component 至少 2 个 Variant(< 2 会让 Figma combineAsVariants 失败)
+✅/❌ 每个 Component 内的 Variants 视觉签名 hash 唯一(相同会让 combineAsVariants 失败)
+✅/❌ 所有 INSTANCE.component_name 都能在 components[] 数组里找到对应 Component
+✅/❌ components[] 顺序: 子 Component 在前,引用它的外层 Component 在后
+       (避免 buildV20_6_ComponentSets 处理外层时子还没注册)
+✅/❌ 修 Component 时未走"删 Component 降级 FRAME"路径(违反用户原始设计意图)
+✅/❌ 用户最初定的 Component 列表数量没变(气泡/内容/数量徽章/状态徽章/进度条/网格行 一个不少)
+```
+
+**自检脚本**(对应 00_core_rules.md "Component 交付前自检脚本"):
+
+```bash
+python3 -c "
+import json, hashlib
+d = json.load(open('final_scene.json'))
+
+issues = []
+
+# 1. Component 数量 ≥ 2 + 视觉签名唯一
+def variant_signature(layers):
+    parts = []
+    def collect(L):
+        for n in L or []:
+            if isinstance(n, dict):
+                parts.append(f'{n.get(\"type\")}|{n.get(\"name\")}|{n.get(\"fill\",\"\")}|{n.get(\"visible\",True)}')
+                if n.get('type')=='INSTANCE':
+                    parts.append(f'INST|{n.get(\"component_name\")}|{n.get(\"variant\")}')
+                for k in ('children','layers'):
+                    if k in n: collect(n[k])
+    collect(layers)
+    return hashlib.md5(''.join(parts).encode()).hexdigest()[:8]
+
+for c in d.get('components', []):
+    if len(c['variants']) < 2:
+        issues.append(f'{c[\"name\"]} 只有 {len(c[\"variants\"])} Variant — combineAsVariants 会失败')
+    sigs = {}
+    for v in c['variants']:
+        sig = variant_signature(v.get('layers'))
+        if sig in sigs:
+            issues.append(f'{c[\"name\"]} 的 Variant \"{v[\"name\"]}\" 跟 \"{sigs[sig]}\" 视觉签名相同 ({sig})')
+        sigs[sig] = v['name']
+
+# 2. INSTANCE 引用合法性
+all_comp_names = {c['name'] for c in d.get('components', [])}
+def walk(n, ctx):
+    if isinstance(n, dict):
+        if n.get('type')=='INSTANCE':
+            cn = n.get('component_name','')
+            if cn not in all_comp_names:
+                issues.append(f'{ctx}/{n.get(\"name\")} → component_name \"{cn}\" 不在 components[] 里')
+        for k in ('children','layers'):
+            if k in n: walk(n[k], ctx+'/'+(n.get('name','?')))
+    elif isinstance(n, list):
+        for x in n: walk(x, ctx)
+walk(d.get('screens'), 'screen')
+for c in d.get('components', []):
+    for v in c['variants']: walk(v.get('layers'), f'{c[\"name\"]}/{v[\"name\"]}')
+
+# 3. components[] 顺序: 子在前,外层在后
+seen = set()
+for c in d.get('components', []):
+    walk_inst = []
+    def collect_refs(layers):
+        for n in layers or []:
+            if isinstance(n, dict):
+                if n.get('type')=='INSTANCE':
+                    walk_inst.append(n.get('component_name'))
+                for k in ('children','layers'):
+                    if k in n: collect_refs(n[k])
+    for v in c['variants']: collect_refs(v.get('layers'))
+    for ref in walk_inst:
+        if ref not in seen and ref in all_comp_names:
+            issues.append(f'components[] 顺序错: {c[\"name\"]} 引用了还未注册的 {ref}')
+    seen.add(c['name'])
+
+print('✅ 第12层全部合规' if not issues else f'❌ {len(issues)} 项问题:')
+for i in issues[:20]: print(f'  {i}')
+"
+```
+
+**修复路径(任何 ❌ 都按此走)**:
+
+| 失败项 | 错误修复 | 正确修复 |
+|---|---|---|
+| 漏网平铺 FRAME | 删 Component 让 FRAME 合规 | 加 Variant 转 INSTANCE 引用 |
+| Variant 数量 < 2 | 删 Component | 加 dummy 第 2 Variant(fill 不同)|
+| Variant 视觉签名相同 | 合并/删 Variant | "显隐"用 INSTANCE.visible=false / 其他加 fill 或 icon 差异 |
+| INSTANCE 引用不存在的 component | 删 INSTANCE | 把缺失 Component 加回 components[] |
+| components[] 顺序错 | (不会出现自动错) | 按依赖关系重排:子 → 外层 |
+
+**元铁律**: 删 Component 必须**先和用户确认**,不擅自决定。Component 列表是用户的设计决策。
+
 ---
 
 ⛔ 全部 ✅ 后才能交付 final_scene.json。有任何 ❌ 必须修正后重新自检,直到全部通过。
 ⛔ 第九层失败时**绝不能直接交付 JSON**,因为 S7 脚本会抽不出 Component。
 ⛔ 第十层失败时**绝不能粘到 Figma 插件**,因为下拉切换会缺项,设计师没法用。
+⛔ 第十一层失败时**绝不能跑 .red 生成**,因为引擎渲染会父子尺寸不匹配视觉错位。
+⛔ 第十二层失败时**绝不能粘到 Figma 插件**,因为组件库 Set 会创建失败 / 漏网 FRAME 让设计师困惑。

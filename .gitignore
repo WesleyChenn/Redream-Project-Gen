@@ -20,6 +20,7 @@ venv/
 
 # Reference video frames (大体积参考资料，建议本地保留，不上传 Git)
 component_extractor/video_frames/
+component_extractor/video_frames_v2/
 
 # 临时输出
 red_output*/

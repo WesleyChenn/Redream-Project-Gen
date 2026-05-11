@@ -1,5 +1,43 @@
 # Changelog
 
+## v8.1.0 / v8-5.9 (2026-05-09)
+
+在 v8-5.6 基础上的增量更新，覆盖 RoyalPass 项目实战教训 + 工具/规范同步。
+
+### 升级（覆盖式替换，新版 WIN）
+
+- **`MEMORY.md`**（顶层）：22 KB → 含 RoyalPass 项目最新内存规则
+- **`references/RED-Tool-v20.7-guide.md`**：来自引擎组最新 SKILL.md（替换旧版）
+- **`phase1-figma-json/00_core_rules.md`**：638 → **997 行**
+- **`phase1-figma-json/04_component_match.md`**：527 → **530 行**
+- **`phase1-figma-json/06_selfcheck.md`**：215 → **421 行**
+- **`phase1-figma-json/07_export_v20_6.md`**：183 → **348 行**
+- **`plugin/code.js`**：57 KB → **75 KB**（v20.6 → 后续修复）
+- **`plugin/ui.html`**：22 KB → **30 KB**
+- **`red_tool/app.py`**：1631 行（实战修复版）
+- **`red_tool/templates/index.html`**：634 行
+- **`component_extractor/`** 全部 .py 与 .json 同步最新
+
+### 新增
+
+- **`lessons/lesson_component_no_delete.md`**：RoyalPass 项目教训档案
+  - 教训："Component 修复时绝不擅自删除 Component"（2026-05-09）
+- **`component_extractor/build_scene_v2.py`**：第二代场景构建脚本
+- **`component_extractor/test_nested.json`**：嵌套结构测试用例
+- **`component_extractor/video_frames_v2/`**：第二批参考帧（已加入 `.gitignore`，不上传 GitHub）
+
+### 配置变更
+
+- **`.gitignore`**：新增 `component_extractor/video_frames_v2/` 排除规则
+
+### 跳过未集成
+
+- `4.22最新skill/output/`（项目生成产物，不属于 Skill 内容）
+- `最新插件/*.bak.*`（plugin 备份文件）
+- `red_tool/__pycache__/`（Python 运行时缓存）
+
+---
+
 ## v8.0.0 (2026-05-06)
 
 从 v7 升级到 v8，整合了 5 个外部更新源，覆盖规范升级 + 完整工具栈。

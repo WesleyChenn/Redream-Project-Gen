@@ -300,12 +300,12 @@ name, w, h, property_name, variants[]
 ## 16. V1 排除项（V2 再做）
 
 🔥 **V2 第一批（绝对要做）**：
-- **4.3 嵌套子 CCB**（component A 内部 INSTANCE 引用 component B）
-  - 实施关键：传递引用追溯（A → B → C 链路全部生成）
-  - V1 兜底：未注册引用降级空 CCNode 占位（已实装）
-  - V2 改造点：api_generate_red 加传递追溯过滤；build_child INSTANCE 分支去掉"未注册降级"
+- ✅ **4.3 嵌套子 CCB（已实装 v20.7.x V2 / 2026-05-06）**
+  - api_generate_red BFS 传递追溯，自动确定嵌套深度
+  - 自动去重防循环引用
+  - 已测试 Shop 模型 4 层嵌套追溯通过
 - 4.12 Instance 缩放（待 Redream 测试）
-- 嵌套子节点 constraints 处理（响应式补全）
+- **嵌套子节点 constraints 处理（V2 第一批，约束完整翻译）**
 - 4.6 多分辨率配置（5 种：设计/正常/偏宽/偏高/Node）
 
 ⚠️ **V2 第二批**：
@@ -353,12 +353,14 @@ name, w, h, property_name, variants[]
 0. CORS 头允许跨域
 1. 解析 body `{output_path, scene{components, screens, flow}}`
 2. ensure_project（new-project + add-resource-path Resources）
-3. **v20.7.x: 反查屏幕 INSTANCE 直接引用的 component_name（V1 不做嵌套追溯）**
-   - 只扫 screens.layers 收集屏幕直接 INSTANCE 引用
-   - 跳过所有未被屏幕直接引用的（Figma _组件库 误传 / component_ref 老体系 / 自动占位等）
-   - V1 不做传递引用追溯（嵌套子 CCB → V2 必做）
-   - V1 兜底：build_child 处理 INSTANCE 时，未注册的 component 引用降级空 CCNode 占位，
-     避免 inspect_check 报 broken reference
+3. **v20.7.x V2: 反查 component 引用（含传递追溯，支持多层嵌套）**
+   - 第 1 轮扫 screens.layers 收集屏幕直接 INSTANCE 引用
+   - 第 N 轮扫已收集 component 的 variants[*].layers 找嵌套 INSTANCE
+   - 收敛条件：某轮没有新 component 出现
+   - 嵌套深度 = BFS 轮数（屏幕→A→B→C 4 层即 BFS 跑 4 轮）
+   - 自动去重防循环引用（A→B→A 仍能正确收敛）
+   - 跳过所有未被任何 INSTANCE 引用的（Figma _组件库 误传 / 自动占位）
+   - build_child INSTANCE 分支保留"未注册降级空 CCNode"作为兜底防御
 4. 先生成所有子 CCB → `Resources/控件库/<name>.red`（用过滤后的 components）
 5. register_component_variants(components_filtered) 填充 variant→seqId 映射
 6. 再生成主屏 → `Resources/<name>.red`
