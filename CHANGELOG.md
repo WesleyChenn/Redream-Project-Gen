@@ -1,5 +1,46 @@
 # Changelog
 
+## v8.3.0 (2026-05-14)
+
+main 分支首次直接迭代（v8-5.11 已合并）。引入两套新 Skill 组织结构供横向对比。
+
+### 新增目录
+
+- **`phase1-figma-json-v2/`**：4.22skill_v2 整套（按 S0–S11 分步组织，19 个 .md + memory/）
+  - 11 主步骤：00_S0_context → 11_S11_抽取导出
+  - S7 子拆 5 文件（基础铁律 / 按钮 / 进度条 / 嵌套 / 布局）
+  - `memory/`：17 个本地内存档案（UI pattern + feedback + visual priors）
+- **`phase1-figma-json-v3/`**：4.22skill_v3 整套（用子目录组织）
+  - `SKILL.md`（入口，18 KB）+ `命名_参考.md`
+  - `steps/`（17 步骤文件，与 v2 同名）
+  - `lessons/`（5 个教训档案，bug-archive + 4 个 lesson）
+  - `memory/`（已解引用 symlink，17 个文件）
+
+⚠️ v2/v3 是两种组织哲学的对比版本，旧的 `phase1-figma-json/` 保留供参考，**下次迭代选定后再清理**。
+
+### 升级
+
+- **`references/RED-Tool-v20.7/01_schema_coord.md`**：160 → 177 行
+- **`references/RED-Tool-v20.7/SKILL.md`**：55 → 56 行（索引微调）
+- **`plugin/code.js`**：76 KB → 84 KB
+- **`plugin/ui.html`**：30 KB → 33 KB
+- **`red_tool/app.py`**：1725 → 1732 行
+
+### component_extractor 重构（新增 3 文件）
+
+- **`component_library_normalized.json`**（42 KB）：归一化后的组件库（set 重构产物）
+- **`component_library_plugin.json`**（40 KB）：插件可消费版本
+- **`normalization_spec.json`**（5 KB）：归一化规则定义
+
+### 未变化（无需操作）
+
+- 顶层 `MEMORY.md`、`SKILL.md`
+- 引擎 skill 7 文件中的 6 个（00 / 02 / 03 / 04 / 05 / 06_misc）
+- `red_tool/templates/index.html`、`plugin/manifest.json`
+- 旧 `phase1-figma-json/`（v8-5.11 的 9 文件）暂保留
+
+---
+
 ## v8.2.0 / v8-5.11 (2026-05-11)
 
 在 v8-5.9 基础上的增量更新，重点：引擎 SKILL 文档重构 + 工具链小修。

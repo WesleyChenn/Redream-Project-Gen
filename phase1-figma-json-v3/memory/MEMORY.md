@@ -1,0 +1,16 @@
+- [Component 修复绝不擅自删 Component](feedback_component_repair.md) — 优先加 Variant,删 Component 必须先问用户
+- [组团识别和 Variant 最小化抽取](feedback_grouping.md) — S3 按 5 步法识别组团;变化下沉到最小单元,大组不做排列组合 Variant
+- [下结论前先验证](feedback_verify_before_claim.md) — 声明"X 改了/跑了/存在"前必须 grep/ls/lsof 验证
+- [用户项目金币堆视觉先验](user_visual_priors_金币堆.md) — 竖排带丝带 / 顶图标+中丝带+下数字嵌丝带,不要套通用横排胶囊
+- [用户项目盾牌等级视觉先验](user_visual_priors_盾牌等级.md) — 大盾牌外凸+右胶囊数字,不要套方块内数字
+- [UI 模式:横排徽章_左图右文](ui_pattern_横排徽章_左图右文.md) — 长胶囊底板 + 左侧 icon(上下溢出)+ 右侧数字
+- [UI 模式:角标_状态](ui_pattern_角标_状态.md) — 主体边缘小角标, 分带底板/不带底板, 位置 4 处固定
+- [UI 模式:单图标_无角标](ui_pattern_单图标_无角标.md) — 独立 icon, 近正方形, 无附加, 分按钮型(底板+icon)和纯物品(占位 RECT)两类
+- [UI 模式:进度条_横向](ui_pattern_进度条_横向.md) — **单节点** 长条 + 双层 RECT + X/Y 文本居中, 可选左 icon / 右奖励/角标
+- [UI 模式:进度条_多节点](ui_pattern_进度条_多节点.md) — **多节点(≥3)** 长条 + 节点沿条分布, 分嵌入式 / 底标式 / 上标式 三类
+- [UI 模式:浮层_活动入口](ui_pattern_浮层_活动入口.md) — 全屏弹窗 layout: 顶 i+X + 中装饰 + 标题 + 倒计时 + 可选副标题
+- [UI 模式:icon 带底部文本](ui_pattern_icon_带底部文本.md) — icon 正下方挂文本(丝带/圆角数字/按钮/纯文本 4 子形态);跟 narrow `底标_倒计时` 区分
+- [UI 模式:按钮_纯文本](ui_pattern_按钮_纯文本.md) — 圆角矩形 + 文本(1-2 行)居中, 无 icon, 行数不抽 Variant
+- [UI 模式:按钮_文本加icon](ui_pattern_按钮_文本加icon.md) — 文本+icon 按钮;**icon 左/右是 layout 不是 Variant**;附加角标多态 S7 用 visible:false, S11 抽空 Variant
+- [UI 模式:使用通则](ui_pattern_使用通则.md) — **元规则**:通则是通常情况, 实际以视频为准;任何 icon 都可能有角标;"该状态不显示" S7 用 visible:false, S11 自动转空 Variant
+- [CCNode 0×0 + constraints V2 整体重构](project_ccnode_v2_constraints.md) — red_tool wrapper CCNode 改 0×0+anchor=(0,0) 跟 constraints 字段读取 V2 一起做,V1 不动

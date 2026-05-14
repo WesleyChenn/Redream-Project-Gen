@@ -1711,11 +1711,210 @@ function splitInstancesByVariantSize() {
   };
 }
 
+// ── [v20.7.x+] 原地规范化组件库 ──
+// 读 normalization_spec.json 形式的 spec, 对现有 Figma 组件库做:
+//   1. rename(组件作用域内 oldName → newName)
+//   2. moveAndResize(调 FRAME 位置/尺寸, 为 reparent 铺路)
+//   3. reparent(挪图层进 FRAME 容器)
+//   4. combineAsVariants(合并多个 Component → COMPONENT_SET)
+//   5. convertToComponent(FRAME → Component)
+// 不动视觉, 只动命名 + 结构。
+async function applyNormalization(spec) {
+  var logLines = [];
+  function L(msg) { logLines.push(msg); console.log('[规范化] ' + msg); }
+
+  // 全文件扫描所有 COMPONENT / COMPONENT_SET, 建 name → node 映射
+  function scanAllComponents() {
+    var map = {};
+    function visit(node) {
+      if ((node.type === 'COMPONENT' || node.type === 'COMPONENT_SET') && !map[node.name]) {
+        map[node.name] = node;
+      }
+      if ('children' in node) {
+        for (var i = 0; i < node.children.length; i++) visit(node.children[i]);
+      }
+    }
+    for (var i = 0; i < figma.root.children.length; i++) visit(figma.root.children[i]);
+    return map;
+  }
+
+  // 在某个根节点的子树里按 name 找
+  function findByName(root, name) {
+    if (root.name === name) return root;
+    if ('children' in root) {
+      for (var i = 0; i < root.children.length; i++) {
+        var r = findByName(root.children[i], name);
+        if (r) return r;
+      }
+    }
+    return null;
+  }
+
+  // 全文件按 name + type 找(用于 convertToComponent 找 FRAME)
+  function findInFileByNameAndType(name, type) {
+    var hit = null;
+    function visit(n) {
+      if (hit) return;
+      if (n.type === type && n.name === name) { hit = n; return; }
+      if ('children' in n) {
+        for (var i = 0; i < n.children.length; i++) visit(n.children[i]);
+      }
+    }
+    for (var i = 0; i < figma.root.children.length; i++) visit(figma.root.children[i]);
+    return hit;
+  }
+
+  var compMap = scanAllComponents();
+  L('扫描全文件: 找到 ' + Object.keys(compMap).length + ' 个 COMPONENT / COMPONENT_SET');
+
+  var stats = { renames: 0, renamesMissed: 0, reparents: 0, reparentsMissed: 0,
+                moveResize: 0, combines: 0, converts: 0, errors: 0 };
+
+  // ── 1. Renames ──
+  L('');
+  L('═ Phase 1: Renames ═');
+  var renames = spec.renames || {};
+  for (var compName in renames) {
+    var comp = compMap[compName];
+    if (!comp) { L('⚠ 组件未找到: ' + compName); stats.renamesMissed++; continue; }
+    var renameMap = renames[compName];
+    for (var oldName in renameMap) {
+      if (oldName.indexOf('_') === 0) continue; // 跳过 _note 这种字段
+      var newName = renameMap[oldName];
+      var node = findByName(comp, oldName);
+      if (node) {
+        node.name = newName;
+        L('  ✓ ' + compName + ': "' + oldName + '" → "' + newName + '"');
+        stats.renames++;
+      } else {
+        L('  ⚠ ' + compName + ': 内部未找到 "' + oldName + '"');
+        stats.renamesMissed++;
+      }
+    }
+  }
+
+  // ── 2. MoveAndResize ──
+  L('');
+  L('═ Phase 2: MoveAndResize ═');
+  var movesAndResizes = spec.moveAndResize || [];
+  for (var mi = 0; mi < movesAndResizes.length; mi++) {
+    var op = movesAndResizes[mi];
+    var comp = compMap[op.componentName];
+    if (!comp) { L('⚠ 组件未找到 (move): ' + op.componentName); stats.errors++; continue; }
+    var node = findByName(comp, op.layerName);
+    if (!node) { L('⚠ ' + op.componentName + ': 未找到 layer "' + op.layerName + '"'); stats.errors++; continue; }
+    try {
+      node.x = op.newX;
+      node.y = op.newY;
+      if (typeof node.resize === 'function') node.resize(op.newW, op.newH);
+      L('  ✓ moveAndResize: ' + op.componentName + ' / ' + op.layerName +
+        ' → (' + op.newX + ',' + op.newY + ') ' + op.newW + '×' + op.newH);
+      stats.moveResize++;
+    } catch (e) { L('  ✗ moveAndResize 失败: ' + op.layerName + ' — ' + e.message); stats.errors++; }
+  }
+
+  // ── 3. Reparent ──
+  L('');
+  L('═ Phase 3: Reparent ═');
+  var reparents = spec.reparent || [];
+  for (var ri = 0; ri < reparents.length; ri++) {
+    var op = reparents[ri];
+    var comp = compMap[op.componentName];
+    if (!comp) { L('⚠ 组件未找到 (reparent): ' + op.componentName); stats.reparentsMissed++; continue; }
+    var child = findByName(comp, op.layerName);
+    var newParent = findByName(comp, op.newParentName);
+    if (!child) { L('⚠ ' + op.componentName + ': 未找到 child "' + op.layerName + '"'); stats.reparentsMissed++; continue; }
+    if (!newParent) { L('⚠ ' + op.componentName + ': 未找到 newParent "' + op.newParentName + '"'); stats.reparentsMissed++; continue; }
+    try {
+      newParent.appendChild(child);
+      child.x = op.newX;
+      child.y = op.newY;
+      L('  ✓ reparent: ' + op.layerName + ' → ' + op.newParentName + ' @ (' + op.newX + ',' + op.newY + ')');
+      stats.reparents++;
+    } catch (e) { L('  ✗ reparent 失败: ' + op.layerName + ' — ' + e.message); stats.errors++; }
+  }
+
+  // ── 4. CombineAsVariants ──
+  L('');
+  L('═ Phase 4: CombineAsVariants ═');
+  var combines = spec.combineAsVariants || [];
+  for (var ci = 0; ci < combines.length; ci++) {
+    var op = combines[ci];
+    var comps = [];
+    var miss = false;
+    for (var cj = 0; cj < op.componentNames.length; cj++) {
+      var c = compMap[op.componentNames[cj]];
+      if (!c) { L('⚠ combine 缺组件: ' + op.componentNames[cj]); miss = true; break; }
+      comps.push(c);
+    }
+    if (miss) { stats.errors++; continue; }
+    if (comps.length < 2) { L('⚠ combine 需要 ≥2 个组件, 实际 ' + comps.length); stats.errors++; continue; }
+    try {
+      // 先把每个 Component 改名为 "PropertyName=Value" 形式, 这样 combineAsVariants 后
+      // Figma 会用 PropertyName 作为 Variant 维度名
+      for (var cj2 = 0; cj2 < comps.length; cj2++) {
+        comps[cj2].name = op.propertyName + '=' + op.variantValues[cj2];
+      }
+      var parent = comps[0].parent;
+      var compSet = figma.combineAsVariants(comps, parent);
+      compSet.name = op.newName;
+      L('  ✓ combineAsVariants: [' + op.componentNames.join(', ') + '] → ' + op.newName +
+        ' (' + op.propertyName + '=[' + op.variantValues.join('/') + '])');
+      compMap[op.newName] = compSet;
+      stats.combines++;
+    } catch (e) { L('  ✗ combineAsVariants 失败: ' + op.newName + ' — ' + e.message); stats.errors++; }
+  }
+
+  // ── 5. ConvertToComponent ──
+  L('');
+  L('═ Phase 5: ConvertToComponent ═');
+  var converts = spec.convertToComponent || [];
+  for (var vi = 0; vi < converts.length; vi++) {
+    var op = converts[vi];
+    var node = findInFileByNameAndType(op.layerName, 'FRAME');
+    if (!node) { L('⚠ 未找到 FRAME: ' + op.layerName); stats.errors++; continue; }
+    try {
+      var comp = figma.createComponentFromNode(node);
+      // createComponentFromNode 在 Figma API 里把节点替换为 Component, 名字保留
+      L('  ✓ convertToComponent: ' + op.layerName + ' → COMPONENT');
+      compMap[comp.name] = comp;
+      stats.converts++;
+    } catch (e) { L('  ✗ convertToComponent 失败: ' + op.layerName + ' — ' + e.message); stats.errors++; }
+  }
+
+  L('');
+  L('═ 完成 ═');
+  L('  renames:      ' + stats.renames + ' ✓ / ' + stats.renamesMissed + ' miss');
+  L('  reparents:    ' + stats.reparents + ' ✓ / ' + stats.reparentsMissed + ' miss');
+  L('  moveResize:   ' + stats.moveResize + ' ✓');
+  L('  combines:     ' + stats.combines + ' ✓');
+  L('  converts:     ' + stats.converts + ' ✓');
+  L('  errors:       ' + stats.errors);
+
+  return { log: logLines, stats: stats };
+}
+
+
 // ── 消息处理 ──
 figma.ui.onmessage = function(msg) {
   if (msg.type === 'generate') {
     generate(msg.data).catch(function(e) {
       figma.ui.postMessage({ type:'error', message:String(e) });
+    });
+  }
+
+  // [v20.7.x+] 原地规范化现有组件库
+  if (msg.type === 'normalize_library') {
+    applyNormalization(msg.spec).then(function(result) {
+      figma.ui.postMessage({ type: 'normalize_done', result: result });
+      var s = result.stats;
+      figma.notify('✅ 规范化完成: rename=' + s.renames + ' reparent=' + s.reparents +
+                   ' combine=' + s.combines + ' convert=' + s.converts +
+                   (s.errors ? ' ⚠ errors=' + s.errors : ''),
+                   { timeout: 6000 });
+    }).catch(function(e) {
+      figma.ui.postMessage({ type: 'normalize_error', error: String(e) });
+      figma.notify('❌ 规范化失败: ' + String(e), { timeout: 6000, error: true });
     });
   }
 

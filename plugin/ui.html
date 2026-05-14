@@ -206,6 +206,7 @@ textarea::placeholder { color: #bbb; }
     <div class="tab" data-tab="export">⬇ 组件库</div>
     <div class="tab" data-tab="exportjson">📄 导出JSON</div>
     <div class="tab" data-tab="genred">🚀 生成 .red</div>
+    <div class="tab" data-tab="normalize">🔧 规范化</div>
   </div>
 </div>
 
@@ -316,6 +317,23 @@ textarea::placeholder { color: #bbb; }
   <div class="file-list" id="redFileList"></div>
 </div>
 
+<!-- [v20.7.x+] 规范化页 -->
+<div class="page" id="page-normalize">
+  <div class="export-info">
+    原地规范化现有组件库 — <b>不改视觉, 只改命名 + 结构 + 合并 Variant</b>。<br>
+    粘贴 <code>normalization_spec.json</code> 内容,点下方按钮 → 插件会扫描全文件,
+    按 spec 在每个 Component 内部 rename / reparent / combineAsVariants / convertToComponent。
+  </div>
+  <div class="label">规范化 Spec(JSON)</div>
+  <textarea id="normalizeInput" placeholder="粘贴 normalization_spec.json..."></textarea>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="btnNormalize">🔧 应用规范化</button>
+    <button class="btn btn-secondary" id="btnNormalizeClear">清空</button>
+  </div>
+  <div class="status" id="normalizeStatus">等待 spec 输入...</div>
+  <div class="report" id="normalizeReport"></div>
+</div>
+
 <script>
 var DEMO = {"meta":{"design_size":{"w":1080,"h":2400}},"screens":[{"id":"screen_demo","name":"界面_示例","width":1080,"height":2400,"layers":[{"type":"RECTANGLE","name":"背景图_全屏","x":0,"y":0,"w":1080,"h":2400,"fill":"#E8E8E8","constraints":{"horizontal":"SCALE","vertical":"SCALE"}},{"type":"TEXT","name":"文本_标题","x":0,"y":100,"w":1080,"h":120,"content":"示例界面","font_size":72,"font_weight":"Bold","textAlignHorizontal":"CENTER"}]}],"flow":[]};
 
@@ -385,6 +403,24 @@ document.getElementById('btnGen').onclick = function() {
   setLog('');
   setStatus('genStatus', '开始生成...', 'running');
   parent.postMessage({ pluginMessage: { type: 'generate', data: data } }, '*');
+};
+
+// [v20.7.x+] 规范化按钮
+document.getElementById('btnNormalize').onclick = function() {
+  var raw = document.getElementById('normalizeInput').value.trim();
+  if (!raw) { setStatus('normalizeStatus', '请先粘贴 spec JSON', 'err'); return; }
+  var spec;
+  try { spec = JSON.parse(raw); }
+  catch(e) { setStatus('normalizeStatus', 'JSON 解析失败: ' + e.message, 'err'); return; }
+  setStatus('normalizeStatus', '开始规范化...', 'running');
+  document.getElementById('normalizeReport').textContent = '';
+  parent.postMessage({ pluginMessage: { type: 'normalize_library', spec: spec } }, '*');
+};
+
+document.getElementById('btnNormalizeClear').onclick = function() {
+  document.getElementById('normalizeInput').value = '';
+  document.getElementById('normalizeReport').textContent = '';
+  setStatus('normalizeStatus', '等待 spec 输入...', '');
 };
 
 // 导出组件库按钮
@@ -675,6 +711,26 @@ window.onmessage = function(e) {
     var count = Object.keys(msg.data).length;
     document.getElementById('exportOutput').value = JSON.stringify(msg.data, null, 2);
     setStatus('exportStatus', '✅ 导出成功：' + count + ' 个组件', 'ok');
+  }
+
+  // [v20.7.x+] 规范化结果
+  if (msg.type === 'normalize_done') {
+    var r = msg.result || {};
+    var s = r.stats || {};
+    var hasErr = (s.errors || 0) > 0 || (s.renamesMissed || 0) > 0 || (s.reparentsMissed || 0) > 0;
+    setStatus('normalizeStatus',
+      (hasErr ? '⚠ ' : '✅ ') + '完成 — rename ' + (s.renames||0) +
+      ' / reparent ' + (s.reparents||0) +
+      ' / combine ' + (s.combines||0) +
+      ' / convert ' + (s.converts||0) +
+      (hasErr ? '  (miss/err)' : ''),
+      hasErr ? 'warn' : 'ok');
+    document.getElementById('normalizeReport').textContent = (r.log || []).join('\n');
+    document.getElementById('normalizeReport').classList.add('visible');
+  }
+
+  if (msg.type === 'normalize_error') {
+    setStatus('normalizeStatus', '❌ ' + msg.error, 'err');
   }
 
   if (msg.type === 'export_json_done') {

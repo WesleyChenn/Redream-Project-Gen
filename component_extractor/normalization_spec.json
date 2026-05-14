@@ -1,0 +1,159 @@
+{
+  "__meta": {
+    "version": "v1-phase1",
+    "date": "2026-05-11",
+    "description": "Figma 组件库规范化 spec — 原地改名 + 挪结构 + 合并 Variant + 转 Component,不动视觉",
+    "fileKey": "XRe442c3mJ0UvzuQF7vIVT",
+    "execution_order": [
+      "1. renames — 改名(组件作用域 + 子图层 oldName → newName)",
+      "2. moveAndResize — 调整 FRAME 位置/尺寸(为 reparent 铺路)",
+      "3. reparent — 把图层挪进 FRAME 容器(用 NEW 名字)",
+      "4. combineAsVariants — 合并多个独立 Component 为 COMPONENT_SET",
+      "5. convertToComponent — 普通 FRAME 升格为 Component"
+    ]
+  },
+
+  "renames": {
+    "圆形按钮_退出": {
+      "Vector 3": "按钮_退出_线1",
+      "Vector 4": "按钮_退出_线2",
+      "Vector 1": "按钮_退出_线3",
+      "Vector 2": "按钮_退出_线4"
+    },
+    "圆形按钮_信息": {
+      "Ellipse 8": "按钮_信息_点",
+      "Vector 5": "按钮_信息_竖"
+    },
+    "图标_金币": {
+      "按钮_金币消耗_图标": "图片_金币"
+    },
+    "图标_锁": {
+      "Vector": "图片_锁"
+    },
+    "头像_朋友": {
+      "活动按钮_角标_底板": "底板_头像",
+      "活动按钮_角标_好友": "图片_头像_朋友"
+    },
+    "椭圆按钮_活动": {
+      "活动按钮_图标": "底板_活动",
+      "活动按钮_开始_图标": "图标_装饰_活动"
+    }
+  },
+
+  "moveAndResize": [
+    {
+      "_note": "按钮_信息 FRAME 当前误置于 (80,44),搬回 (11,5) 让 Ellipse + Vector 能挪进来",
+      "componentName": "圆形按钮_信息",
+      "layerName": "按钮_信息",
+      "newX": 11,
+      "newY": 5,
+      "newW": 4,
+      "newH": 17
+    }
+  ],
+
+  "reparent": [
+    {
+      "_note": "退出按钮 4 个 Vector 全挪进 按钮_退出 FRAME (FRAME 已在 6,7)",
+      "componentName": "圆形按钮_退出",
+      "layerName": "按钮_退出_线1",
+      "newParentName": "按钮_退出",
+      "newX": 0,
+      "newY": 3
+    },
+    {
+      "componentName": "圆形按钮_退出",
+      "layerName": "按钮_退出_线2",
+      "newParentName": "按钮_退出",
+      "newX": 3,
+      "newY": 6
+    },
+    {
+      "componentName": "圆形按钮_退出",
+      "layerName": "按钮_退出_线3",
+      "newParentName": "按钮_退出",
+      "newX": 6,
+      "newY": 0
+    },
+    {
+      "componentName": "圆形按钮_退出",
+      "layerName": "按钮_退出_线4",
+      "newParentName": "按钮_退出",
+      "newX": 1,
+      "newY": 6
+    },
+    {
+      "_note": "信息按钮 2 个图层挪进 按钮_信息 FRAME (FRAME 已在前一步搬到 11,5)",
+      "componentName": "圆形按钮_信息",
+      "layerName": "按钮_信息_点",
+      "newParentName": "按钮_信息",
+      "newX": 0,
+      "newY": 0
+    },
+    {
+      "componentName": "圆形按钮_信息",
+      "layerName": "按钮_信息_竖",
+      "newParentName": "按钮_信息",
+      "newX": 2,
+      "newY": 6
+    }
+  ],
+
+  "combineAsVariants": [
+    {
+      "_note": "合并播放按钮激活/禁用为 Variant Set",
+      "componentNames": ["圆形按钮_播放_激活", "圆形按钮_播放_禁用"],
+      "newName": "圆形按钮_播放",
+      "propertyName": "状态",
+      "variantValues": ["激活", "禁用"]
+    },
+    {
+      "componentNames": ["圆形按钮_加_激活", "圆形按钮_加_禁用"],
+      "newName": "圆形按钮_加",
+      "propertyName": "状态",
+      "variantValues": ["激活", "禁用"]
+    },
+    {
+      "componentNames": ["方形按钮_消息_激活", "方形按钮_消息_禁用"],
+      "newName": "方形按钮_消息",
+      "propertyName": "状态",
+      "variantValues": ["激活", "禁用"]
+    }
+  ],
+
+  "convertToComponent": [
+    {
+      "_note": "气泡底板 当前是游离 FRAME (9951:64031),升格为 Component 入库",
+      "layerName": "气泡底板"
+    }
+  ],
+
+  "phase2_pending": {
+    "_note": "Phase 2 待办 — nested COMPONENT_SET 内部的烂命名;先把 Phase 1 跑通再来做",
+    "renames_component_level": {
+      "Component 2": "底标_主体"
+    },
+    "renames_variant_values": {
+      "Component 2 (将变 底标_主体)": {
+        "Property 1=time": "格式=time",
+        "Property 1=label": "格式=label"
+      },
+      "按钮组_二元开关": {
+        "Property 1=按钮9(导航)_Selected A": "类型=A_选中",
+        "Property 1=按钮11(导航)_Selected B2": "类型=B2_选中",
+        "Property 1=按钮8(导航)_Feedback B2": "类型=B2_反馈",
+        "Property 1=按钮2(ON/OFF)_Default B": "类型=B_默认"
+      },
+      "图片": {
+        "Property 1=图片_信息类图标": "类型=信息类图标"
+      },
+      "信息栏_数据标签": {
+        "Property 1=标签_数字/文本框": "类型=数字_文本框"
+      },
+      "信息栏_状态角标": {
+        "Property 1=角标_事件提示": "类型=事件提示",
+        "Property 1=角标_数量提示": "类型=数量提示"
+      }
+    }
+  }
+}

@@ -1029,8 +1029,15 @@ def generate_red(screen):
         'nodeGraph':         cclayer,
         'rebolt':            {'isRebolted':False,'redInfos':{}},
         'resolutions': [
+            # v20.7.x+ 规约(2026-05-14): 主屏 4 套分辨率, currentResolution=0 默认进入"设计分辨率"
             {'additionalScale':2.0,'centeredOrigin':False,'height':2400,
-             'mainScale':2.0,'name':'1080x2400','resourceScale':2.0,'scale':2.0,'width':1080},
+             'mainScale':2.0,'name':'设计分辨率','resourceScale':2.0,'scale':2.0,'width':1080},
+            {'additionalScale':2.0,'centeredOrigin':False,'height':2080,
+             'mainScale':2.0,'name':'正常分辨率','resourceScale':2.0,'scale':2.0,'width':1080},
+            {'additionalScale':2.0,'centeredOrigin':False,'height':2080,
+             'mainScale':2.0,'name':'偏宽分辨率','resourceScale':2.0,'scale':2.0,'width':1560},
+            {'additionalScale':2.0,'centeredOrigin':False,'height':2800,
+             'mainScale':2.0,'name':'偏高分辨率','resourceScale':2.0,'scale':2.0,'width':1080},
         ],
         'sequences': [{
             'autoPlay': False,

@@ -1,0 +1,1417 @@
+{
+  "__meta": {
+    "version": "v3-plugin-schema-fixed",
+    "date": "2026-05-11",
+    "note": "按 buildV20_6_ComponentSets schema 修正字段名;单 Variant 包成 [默认, 空]",
+    "total_components": 16
+  },
+  "screens": [],
+  "flow": [],
+  "components": [
+    {
+      "name": "圆形按钮_关闭",
+      "w": 25,
+      "h": 25,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_关闭_底板",
+              "x": 0,
+              "y": 0,
+              "w": 25,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_关闭",
+              "x": 7,
+              "y": 7,
+              "w": 11,
+              "h": 11,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "圆形按钮_退出",
+      "w": 26,
+      "h": 26,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_退出_底板",
+              "x": 0,
+              "y": 0,
+              "w": 26,
+              "h": 26,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_退出",
+              "x": 6,
+              "y": 7,
+              "w": 13,
+              "h": 12,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_退出_线1",
+                  "x": 0,
+                  "y": 3,
+                  "w": 3,
+                  "h": 3,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 2
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_退出_线2",
+                  "x": 3,
+                  "y": 6,
+                  "w": 3,
+                  "h": 3,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 2
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_退出_线3",
+                  "x": 6,
+                  "y": 0,
+                  "w": 7,
+                  "h": 12,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 2
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_退出_线4",
+                  "x": 1,
+                  "y": 6,
+                  "w": 8,
+                  "h": 0,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "圆形按钮_信息",
+      "w": 26,
+      "h": 26,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_信息_底板",
+              "x": 0,
+              "y": 0,
+              "w": 26,
+              "h": 26,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_信息",
+              "x": 11,
+              "y": 5,
+              "w": 4,
+              "h": 17,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_信息_点",
+                  "x": 0,
+                  "y": 0,
+                  "w": 4,
+                  "h": 4,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 2
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_信息_竖",
+                  "x": 2,
+                  "y": 6,
+                  "w": 0,
+                  "h": 10,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "圆形按钮_设置",
+      "w": 26,
+      "h": 26,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_设置_底板",
+              "x": 0,
+              "y": 0,
+              "w": 26,
+              "h": 26,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_设置",
+              "x": 4,
+              "y": 4,
+              "w": 18,
+              "h": 18,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "圆形按钮_播放",
+      "w": 25,
+      "h": 25,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "激活",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_播放_底板",
+              "x": 0,
+              "y": 0,
+              "w": 25,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_播放",
+              "x": 0,
+              "y": 9,
+              "w": 18,
+              "h": 18,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 2
+            }
+          ]
+        },
+        {
+          "name": "禁用",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_播放_底板",
+              "x": 0,
+              "y": 0,
+              "w": 25,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_播放",
+              "x": 0,
+              "y": 9,
+              "w": 18,
+              "h": 18,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "圆形按钮_加",
+      "w": 25,
+      "h": 25,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "激活",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_增加_底板",
+              "x": 0,
+              "y": 0,
+              "w": 25,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_增加",
+              "x": 8,
+              "y": 7,
+              "w": 9,
+              "h": 10,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 1
+            }
+          ]
+        },
+        {
+          "name": "禁用",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_增加_底板",
+              "x": 0,
+              "y": 0,
+              "w": 25,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 13
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_增加",
+              "x": 8,
+              "y": 7,
+              "w": 9,
+              "h": 10,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "方形按钮_消息",
+      "w": 26,
+      "h": 25,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "激活",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_消息_底板",
+              "x": 0,
+              "y": 0,
+              "w": 26,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 32
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_消息",
+              "x": 5,
+              "y": 7,
+              "w": 15,
+              "h": 11,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "禁用",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_消息_底板",
+              "x": 0,
+              "y": 0,
+              "w": 26,
+              "h": 25,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 32
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_消息",
+              "x": 5,
+              "y": 7,
+              "w": 15,
+              "h": 11,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "活动按钮_进度标签",
+      "w": 110,
+      "h": 56,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "图标_活动_进度",
+              "x": 35,
+              "y": 8,
+              "w": 82,
+              "h": 48,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_进度_横线1",
+                  "x": 0,
+                  "y": 34,
+                  "w": 48,
+                  "h": 8,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_进度_横线2",
+                  "x": 34,
+                  "y": 40,
+                  "w": 48,
+                  "h": 8,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "椭圆按钮_活动",
+      "w": 250,
+      "h": 250,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_活动",
+              "x": 11,
+              "y": 0,
+              "w": 229,
+              "h": 229,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 115
+            },
+            {
+              "type": "FRAME",
+              "name": "图标_装饰_活动",
+              "x": 53,
+              "y": 8,
+              "w": 146,
+              "h": 183,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 124
+            },
+            {
+              "type": "FRAME",
+              "name": "角标_时间",
+              "x": 11,
+              "y": 191,
+              "w": 229,
+              "h": 59,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 12,
+              "children": [
+                {
+                  "type": "TEXT",
+                  "name": "文本_时间",
+                  "x": 24,
+                  "y": 0,
+                  "w": 181,
+                  "h": 59,
+                  "fill": "←截图读取",
+                  "element_class": "dynamic",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "content": "00:00:00",
+                  "font_size": 42,
+                  "font_weight": "Semibold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "图标_金币",
+      "w": 66,
+      "h": 66,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_金币",
+              "x": 0,
+              "y": 0,
+              "w": 66,
+              "h": 66,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "图标_锁",
+      "w": 76,
+      "h": 76,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_锁",
+              "x": 13,
+              "y": 3,
+              "w": 51,
+              "h": 67,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "底标_倒计时",
+      "w": 134,
+      "h": 33,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "按钮_底标_底板",
+              "x": 0,
+              "y": 0,
+              "w": 134,
+              "h": 33,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              },
+              "corner_radius": 17
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_时间",
+              "x": 41,
+              "y": 9,
+              "w": 78,
+              "h": 15,
+              "fill": "←截图读取",
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              },
+              "content": "00:00:00",
+              "font_size": 18,
+              "font_weight": "Semibold"
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_底标_图标",
+              "x": 2,
+              "y": 2,
+              "w": 29,
+              "h": 29,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_底标_图标_圆",
+                  "x": 2,
+                  "y": 2,
+                  "w": 29,
+                  "h": 29,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  },
+                  "corner_radius": 15
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_底标_图标_刻度12",
+                  "x": 17,
+                  "y": 4,
+                  "w": 4,
+                  "h": 0,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_底标_图标_刻度6",
+                  "x": 17,
+                  "y": 25,
+                  "w": 4,
+                  "h": 0,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_底标_图标_刻度3",
+                  "x": 25,
+                  "y": 16,
+                  "w": 4,
+                  "h": 0,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_底标_图标_刻度9",
+                  "x": 4,
+                  "y": 16,
+                  "w": 4,
+                  "h": 0,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "按钮_底标_图标_中心",
+                  "x": 15,
+                  "y": 15,
+                  "w": 3,
+                  "h": 3,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "头像_朋友",
+      "w": 107,
+      "h": 114,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_头像",
+              "x": 0,
+              "y": 0,
+              "w": 107,
+              "h": 114,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 17
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_头像_朋友",
+              "x": 28,
+              "y": 31,
+              "w": 52,
+              "h": 52,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "导航栏_状态切换",
+      "w": 331,
+      "h": 149,
+      "x": 0,
+      "y": 0,
+      "property_name": "选中状态",
+      "variants": [
+        {
+          "name": "未选中",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮组_二元开关",
+              "x": 62,
+              "y": 33,
+              "w": 207,
+              "h": 82,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 18,
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_按钮组",
+                  "x": 0,
+                  "y": 0,
+                  "w": 207,
+                  "h": 82,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 18
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_按钮组",
+                  "x": 39,
+                  "y": 18,
+                  "w": 130,
+                  "h": 40,
+                  "fill": "←截图读取",
+                  "element_class": "dynamic",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "content": "select",
+                  "font_size": 42,
+                  "font_weight": "Semibold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "选中",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮组_二元开关",
+              "x": 62,
+              "y": 33,
+              "w": 207,
+              "h": 82,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 18,
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_按钮组",
+                  "x": 0,
+                  "y": 0,
+                  "w": 207,
+                  "h": 82,
+                  "fill": "←截图读取",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 18
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_按钮组",
+                  "x": 39,
+                  "y": 18,
+                  "w": 130,
+                  "h": 40,
+                  "fill": "←截图读取",
+                  "element_class": "dynamic",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "content": "select",
+                  "font_size": 42,
+                  "font_weight": "Semibold"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "导航栏_页面切换",
+      "w": 272,
+      "h": 584,
+      "x": 0,
+      "y": 0,
+      "property_name": "选中状态",
+      "variants": [
+        {
+          "name": "选中",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮组_二元开关",
+              "x": 62,
+              "y": 33,
+              "w": 148,
+              "h": 195,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "图片_组",
+                  "x": 0,
+                  "y": 0,
+                  "w": 148,
+                  "h": 148,
+                  "fill": "transparent",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_图片",
+                      "x": 0,
+                      "y": 0,
+                      "w": 148,
+                      "h": 148,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "corner_radius": 74
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "图片_本体",
+                      "x": 30,
+                      "y": 33,
+                      "w": 85,
+                      "h": 85,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "数据标签",
+                  "x": 13,
+                  "y": 157,
+                  "w": 122,
+                  "h": 38,
+                  "fill": "transparent",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_标签",
+                      "x": 0,
+                      "y": 0,
+                      "w": 122,
+                      "h": 38,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "corner_radius": 6
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_标签",
+                      "x": 1,
+                      "y": 2,
+                      "w": 119,
+                      "h": 32,
+                      "fill": "←截图读取",
+                      "element_class": "dynamic",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "content": "select",
+                      "font_size": 32,
+                      "font_weight": "Semibold"
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "信息栏_状态角标",
+                  "x": 103,
+                  "y": -6,
+                  "w": 57,
+                  "h": 57,
+                  "fill": "transparent",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 48,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_角标",
+                      "x": 0,
+                      "y": 0,
+                      "w": 57,
+                      "h": 57,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "corner_radius": 29
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "图标_角标_感叹号",
+                      "x": 25,
+                      "y": 9,
+                      "w": 7,
+                      "h": 40,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "未选中",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮组_二元开关",
+              "x": 62,
+              "y": 65,
+              "w": 146,
+              "h": 132,
+              "fill": "transparent",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "图片_组",
+                  "x": 0,
+                  "y": 11,
+                  "w": 121,
+                  "h": 121,
+                  "fill": "transparent",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_图片",
+                      "x": 0,
+                      "y": 0,
+                      "w": 121,
+                      "h": 121,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "corner_radius": 61
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "图片_本体",
+                      "x": 25,
+                      "y": 27,
+                      "w": 69,
+                      "h": 69,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "信息栏_状态角标",
+                  "x": 89,
+                  "y": 0,
+                  "w": 57,
+                  "h": 57,
+                  "fill": "transparent",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "corner_radius": 44,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_角标",
+                      "x": 0,
+                      "y": 0,
+                      "w": 57,
+                      "h": 57,
+                      "fill": "←截图读取",
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "corner_radius": 29
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_角标_数字",
+                      "x": 0,
+                      "y": 0,
+                      "w": 57,
+                      "h": 57,
+                      "fill": "←截图读取",
+                      "element_class": "dynamic",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      },
+                      "content": "2",
+                      "font_size": 36,
+                      "font_weight": "Semibold"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "气泡底板",
+      "w": 594,
+      "h": 205,
+      "x": 0,
+      "y": 0,
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_气泡",
+              "x": 0,
+              "y": 0,
+              "w": 594,
+              "h": 205,
+              "fill": "←截图读取",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "corner_radius": 20
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "is_default": false,
+          "layers": []
+        }
+      ]
+    }
+  ]
+}

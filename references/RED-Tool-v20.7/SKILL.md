@@ -36,6 +36,7 @@
 3. **REDFile 节点格式**(`03_component.md` 8.8):父 CCNode + 子 REDFile 两层,**不写 anchorPoint**(写了 Redream 崩溃)
 4. **INSTANCE.variant → sequenceId**(`03_component.md` 8.9):主屏 INSTANCE 按 variant 查表得到 animation 字段
 5. **空变体登记表保留**(`_COMPONENT_EMPTY_VARIANTS`):自检 / 文档用,主流程不依赖
+6. **主屏 4 套 resolutions**(v20.7.x+ 2026-05-14,详见 `01_schema_coord.md` 六):主屏 .red 预置 设计(1080×2400)/正常(1080×2080)/偏宽(1560×2080)/偏高(1080×2800) 4 条分辨率, currentResolution=0 默认进入设计分辨率
 
 ## 历史版本
 
