@@ -4,35 +4,54 @@
 
 ---
 
-## 十三、文件管理
+## 十三、文件管理 (v20.7.x+ 2026-05-15 重构, 跟生产 res_juice_pro 100% 对齐)
 
 ### 当前 V1 输出结构
 
 ```
-~/Desktop/red_output/
-├── red_project.redproj
-├── Resources/
-│   ├── 界面_xxx.red
-│   ├── 浮层_xxx.red
-│   └── 控件库/
-│       └── 排行榜行.red
-└── ccb/                    ← Redream 系统目录
+~/Desktop/red_output5.15.X/
+├── red_project.redproj              ← 项目文件 (含 fontStyle 数组 × 3 style × 12 lang)
+├── ccb/
+│   └── <主屏名>/                    ← 一个 scene.json = 一个模块, 用主屏名作模块名
+│       ├── <主屏>.red               ← 主屏
+│       └── <comp>.red               ← 子 CCB (跟主屏同目录)
+├── _img_plist/
+│   └── <主屏名>/
+│       ├── <主屏>_图片资源.plist + .webp  ← UI 类真图集
+│       └── <主屏>_背景大图.plist + .webp  ← 仅在有 背景_ 命名时
+└── font/                            ← 6 语言 BMFont
+    ├── 拉丁语/
+    │   ├── 通用_字体_拉丁语_纯白字体.fnt + .webp
+    │   ├── 通用_字体_拉丁语_描边字体.fnt + .webp
+    │   └── ... 渐变 / 数字
+    └── 阿拉伯语 / 韩语 / 日语 / 俄语 / 繁体中文/
 ```
 
-### 生产项目结构（参考）
+**.redproj resourcePaths 配置**: `_img_plist / _img_single / font / _language` 4 条 (加上 CLI 默认的 `ccb` 共 5 条)。
+
+### 生产项目结构 (参考 res_juice_pro)
 
 ```
-res_m8_proj/
-└── ccb/                    ← 所有 .red 都在这
-    ├── M8P_主页模块/
-    │   ├── M8P_主页模块_背景动画_背景.red
-    │   └── M8P_主页模块_背景动画_熊.red
-    └── M8P_导航页模块/
-        ├── M8P_导航页模块_底部导航栏.red
-        └── M8P_导航页模块_底部导航栏.rebolt
+res_juice_pro/                       ← 顶层项目根 (无 Resources 中间层!)
+├── M8P_总工程.redproj
+├── _ccbi/                           ← Redream 编译产物 .redream
+├── _img_plist/<模块>/               ← 真图集 plist + webp
+├── _img_single/<模块>/              ← 单图 (不进图集的大图)
+├── _language/                       ← .lan 多语言
+├── _spine/  _wise_安卓/             ← 动画/音频
+├── _公共资源/
+├── ccb/<模块>/<name>.red            ← .red 按模块分目录
+├── cfg/  image/  spine/  资源打包/  ← 其他资源
+└── (字体在外部共享 ../res_xxx_common/font/)
 ```
 
-**差异**：生产项目按模块分目录在 `ccb/` 下；V1 RED Tool 用扁平 `Resources/` 结构。这是 V1 简化决策，未来对接生产项目可能要迁移。
+**对齐情况** (2026-05-15):
+| 项 | 之前 | 现在 |
+|---|---|---|
+| Resources/ 中间层 | 有 | **去掉**, 资源直接挂顶层 |
+| .red 文件位置 | Resources/ccb/ 扁平 | ccb/<模块>/ 模块子目录 (跟生产一致) |
+| 图集 plist | Resources/image/ 散 plist | _img_plist/<模块>/ 真图集 (跟生产一致) |
+| 字体 | Resources/<语言>/ | font/<语言>/ (中间层 font, .redproj 加 resourcePath) |
 
 ### 命名规范（生产项目）
 
@@ -142,7 +161,7 @@ RED Tool V1 不生成 `.rebolt`，所以 `animation=-2` 加载后视觉冻结在
 | 错误 | 原因 / 修复 |
 |---|---|
 | Redream 加载主屏后闪退 | REDFile 节点写了 `anchorPoint` 字段；生产样本无此字段 → 移除 anchorPoint，position 改百分比 `[50, 50, 0, 2, 2]` |
-| 控件库出现 `Component 2.red` / `Rectangle 39.red` | Figma 端 buildSceneForRed() 把 _组件库 frame 误识别成 component；引擎做防御过滤（只生成屏幕 INSTANCE 直接引用的）|
+| ccb出现 `Component 2.red` / `Rectangle 39.red` | Figma 端 buildSceneForRed() 把 _组件库 frame 误识别成 component；引擎做防御过滤（只生成屏幕 INSTANCE 直接引用的）|
 | 子 CCB 切 sequence 视觉无变化（5 条 sequence 一样）| ① keyframe 没生成（Figma 端 visible/fill 字段没传）→ 修 code.js: `figmaFillsToHex` 提取颜色 + `keepInvisible` 保留隐藏节点；② 引擎合并 variants 全集 + diff 算法扩展 |
 | Component w=5520 不是 1080 | Figma 端 buildSceneForRed() 用 `compSet.width`（=N variants 横向并排合并宽度）；改用 `compSet.children[0].width`（单 variant 宽度）|
 | 主屏内容右偏 | 子 CCB 根节点 position 写成 `(cw/2, ch/2)`；生产样本是 `(0, 0)` → 改 |
@@ -192,7 +211,7 @@ RED Tool V1 不生成 `.rebolt`，所以 `animation=-2` 加载后视觉冻结在
 ✅ Plan 模式 6 条规范全部确认
 ✅ Figma 插件 v20.7 加 🚀 Tab
 ✅ Python `/api/generate_red` 完整流程通
-✅ 子 CCB 生成实装（`Resources/控件库/<name>.red`）
+✅ 子 CCB 生成实装(`ccb/<module>/<name>.red`,v20.7.x+ 2026-05-15 重构后)
 ✅ 主场景 INSTANCE → REDFile 引用
 
 ### v20.7.x 调优完整 changelog（2026-05-06）
@@ -254,7 +273,7 @@ RED Tool V1 不生成 `.rebolt`，所以 `animation=-2` 加载后视觉冻结在
 1. **判断 Component**：复用 / 动态（V1 排除"独立"）
 2. **判断 Variant**：状态多态（不含文本/数字/图片url 数据驱动差异）
 3. **命名规范**：Component 名 = 文件名 / 默认 Variant = "常态" / 单 Property / "状态"
-4. **路径**：`Resources/控件库/<name>.red`
+4. **路径**(v20.7.x+ 2026-05-15 后):`ccb/<module>/<name>.red`(主屏跟子 CCB 同模块目录)
 5. **REDFile 节点**（v20.7.x）：父 CCNode（displayName=INSTANCE.name，含 contentSize+constraints）+ 子 REDFile（displayName=组件名，reboltName=INSTANCE.name，animation=按 variant 映射的 sequenceId）
 6. **JSON 顶层**：screens + components + flow（meta 可选）
 7. **Instance 限制**：不允许镜像 / 允许缩放（待测试）/ 不嵌套封装

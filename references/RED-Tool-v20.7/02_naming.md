@@ -4,6 +4,30 @@
 
 ---
 
+## 零、SPRITE_NAME_PREFIXES (v20.7.x+ 2026-05-15 修订)
+
+`red_tool/app.py` 里 `SPRITE_NAME_PREFIXES` 决定**哪些图层会走 sprite 分支 + 自动取图**:
+
+```python
+SPRITE_NAME_PREFIXES = ('图片_', '图标_', '背景_', '插图_', '特效_', '底板_', '进度条_')
+```
+
+命中前缀 → `build_child` / `build_top_layer` 走 CCSprite/CCProgressTimer 分支 → `lookup_image()` 查 `_IMAGE_INDEX` → displayFrame 自动填路径。
+
+不命中(如 `文本_/组_/按钮_/容器_/`) → 跳过 sprite 处理。
+
+### 真图集分类规则 (classify_sprite_kind)
+
+- `背景_xxx` → 进 `<scene>_背景大图.{plist,webp}`
+- 其他 sprite 前缀 → 进 `<scene>_图片资源.{plist,webp}`(包括 `底板_xxx`, `进度条_xxx`)
+- "游戏内元件"类外围活动场景暂不实现
+
+### Figma 插件 SPRITE_NAME_PREFIXES_JS
+
+`code.js` 里也有一份相同列表,用于 `exportAllSprites` 决定要 export 哪些图层。**两边必须同步**(改了一边必须改另一边)。
+
+---
+
 ## 六、按钮命名规则（v20）
 
 | 命名 | type | 引擎角色 |

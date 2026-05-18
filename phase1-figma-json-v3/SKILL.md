@@ -24,6 +24,10 @@ description: 视频/截图 → Figma 插件 JSON 端到端工作流 (Redream 游
 │                                                              │
 │  ───→ S4 识别交互 ───→ S5 提取 flow ───→ S6 pattern 命中    │
 │       (滚动+触摸点)    (屏幕跳转表 F/G)   (表 H Variant)     │
+│                                  │                           │
+│                                  ▼                           │
+│                          S6a ccb 抽取标准                    │
+│                  (视觉缩窄 + 3 标准 + ccb维度≠多态维度)      │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
                           │
@@ -50,7 +54,7 @@ description: 视频/截图 → Figma 插件 JSON 端到端工作流 (Redream 游
 
 ## 步骤索引 (按顺序加载)
 
-| 步骤 | 阶段 | 文件 (现位于 4.22skill_v2/) | 输入 | 输出 |
+| 步骤 | 阶段 | 文件 (steps/, v3 已独立) | 输入 | 输出 |
 |---|---|---|---|---|
 | S0 | 上下文 | [`00_S0_context.md`](steps/00_S0_context.md) | (始终首读) | 引擎/Figma/历史背景 |
 | S1 | 识别 | [`01_S1_抽帧.md`](steps/01_S1_抽帧.md) | `.mp4` / `.mov` | N 帧 PNG (3 fps) |
@@ -59,6 +63,7 @@ description: 视频/截图 → Figma 插件 JSON 端到端工作流 (Redream 游
 | S4 | 识别 | [`04_S4_识别交互.md`](steps/04_S4_识别交互.md) | S1+S2+S3 | 表 D 滚动区 + 表 E 触摸点 |
 | S5 | 识别 | [`05_S5_提取flow.md`](steps/05_S5_提取flow.md) | S1+S4 | 表 F 屏幕清单 + 表 G flow 连线 |
 | S6 | 识别 | [`06_S6_pattern命中.md`](steps/06_S6_pattern命中.md) | S3+memory pattern | 表 H pattern + Variant + 节点类型 + 包装类型 |
+| S6a | 识别 | [`06a_S6_ccb抽取标准.md`](steps/06a_S6_ccb抽取标准.md) (必读) | S3 组团 | ccb 3 标准 (复用/动态/独立) + 视觉缩窄 + ccb维度≠多态维度 |
 | S7 | 生成 | [`07_S7_生成骨架.md`](steps/07_S7_生成骨架.md) (主索引) | S6 表 H | 扁平 scene.json (无 INSTANCE/components[]) |
 | S7a | 生成 | [`07a_S7_基础铁律.md`](steps/07a_S7_基础铁律.md) (必读) | 命名/JSON/fill/children/卡片底板 |
 | S7b | 生成 | [`07b_S7_按钮.md`](steps/07b_S7_按钮.md) (按场景) | 按钮外壳/分组/触控范围/嵌套禁忌 |
@@ -66,6 +71,8 @@ description: 视频/截图 → Figma 插件 JSON 端到端工作流 (Redream 游
 | S7d | 生成 | [`07d_S7_嵌套占位背景.md`](steps/07d_S7_嵌套占位背景.md) (按场景) | 子 CCB 显隐/规则 11.5/visible 映射/占位/浮层 |
 | S7e | 生成 | [`07e_S7_布局.md`](steps/07e_S7_布局.md) (必读) | constraints/AL 字段/弹性缝隙/滚动 |
 | S8 | 生成 | [`08_S8_组件库引用.md`](steps/08_S8_组件库引用.md) | S7 含 `component_ref` 时跑, 否则跳过 |
+| S8a | 生成 | [`08a_S8_预制组件.md`](steps/08a_S8_预制组件.md) (仅钟表) | scene 含 `钟表_指针动画` 时, 引擎复用预制 .red |
+| S8b | 生成 | [`08b_组件库理论模型.md`](steps/08b_组件库理论模型.md) (理论) | 组件库最小化决策: 预制→component_ref→子ccb→inline |
 | S9 | 生成 | [`09_S9_字段补全.md`](steps/09_S9_字段补全.md) | S7+S8 | TEXT.content + flow 数组 |
 | S10 | 校验 | [`10_S10_自检.md`](steps/10_S10_自检.md) | S9 完整 scene.json | 9 层 verification 报告 |
 | S11 | 导出 | [`11_S11_抽取导出.md`](steps/11_S11_抽取导出.md) | S10 全 ✅ | final_scene.json (v20.6 schema) |
@@ -96,6 +103,8 @@ description: 视频/截图 → Figma 插件 JSON 端到端工作流 (Redream 游
 | [`lessons/lesson_规则11.5_子节点name一致.md`](lessons/lesson_规则11.5_子节点name一致.md) | 同结构多实例 children name 100% 一致, 否则 S11 抽不出 |
 | [`lessons/lesson_进度条本体一整根.md`](lessons/lesson_进度条本体一整根.md) | 进度条本体永远画一整根 100% 满, 不按节点拆段 |
 | [`lessons/lesson_组团内layout单一化.md`](lessons/lesson_组团内layout单一化.md) | 一个 FRAME 内子节点不能既横排又竖排, 混合时拆 wrapper |
+| [`lessons/lesson_ccb维度vs多态.md`](lessons/lesson_ccb维度vs多态.md) | 🔴 "抽不抽 ccb" 与 "有几个多态" 独立; 复用必抽 ccb (可 0 多态), 有多态必是 ccb, 同一差异只在唯一最小单元做一次 |
+| [`lessons/lesson_v206schema必填字段.md`](lessons/lesson_v206schema必填字段.md) | 🔴 主路径手写 v20.6: component 必有 w/h/variant_property, INSTANCE w/h==component, layer 必有 element_class |
 
 Claude 看新视频前**扫一遍** lessons/, 把这些坑预防到识别 + 生成阶段。 用户跑完发现新坑 → 加新 lesson + 更新索引。
 
@@ -141,6 +150,9 @@ memory 路径: `memory/` (软链接到 `~/.claude/projects/-Users-red-Desktop-4-
 8. **进度条本体永远画 100% 满**: 不写 percentage / `_p<数字>` 后缀, 引擎运行时按 percentage 切割 (07c #1)
 9. **进度条本体永远是一整根**: 即使条上压有节点 icon, `进度条_XXX` RECT 仍画一整根, 不按节点位置拆段 (07c #1)
 10. **角标允许视觉溢出**: 负坐标 / x+w 超出父本边界 OK, 但 constraints 用 LEFT/TOP + 正坐标 (07e #1)
+11. 🔴 **ccb 维度 ≠ 多态维度** (高频反复栽): "抽不抽 ccb" 只看 复用/动态/独立 3 标准, **跟有没有多态无关** — 复用 ≥3 必抽 ccb (可 0 多态); **有多态 → 必然是 ccb** (Variant 只能挂 component); 同一差异**只在唯一最小单元 ccb** 做一次, 外层不重复包 (06a / lessons/lesson_ccb维度vs多态.md)
+12. 🔴 **主路径手写 v20.6 必带字段**: 复杂场景跳脚本手写时, 每个 component 必有 `w/h/variant_property`, 每个 INSTANCE `w/h`==对应 component, 每个 layer 必有 `element_class`; 写前 cat 权威样本对照 (11_S11 主路径自检 / lessons/lesson_v206schema必填字段.md)
+13. 🔴 **S6 覆盖闸门 + 反 from-exemplar 锚定** (高频跳步根治): S6 必产 `s6_coverage.json` (S3 表 C 每组团一行 + 命中 memory pattern 必带 Read 凭证文件名), 跑 gate 脚本退出码 0 才许进 S7 (跟 S10/S11 python 自检同级强制, 自述不算数)。上下文里有相似项目 scene.json = **风险信号不是捷径**, 禁止 from-exemplar 改增量, 每组团独立从视频+memory 重推 (06_S6 "S6 强制覆盖闸门" / memory feedback_s6_pattern_must_scan_memory.md)
 
 ---
 
@@ -217,6 +229,8 @@ S7 子文件路由已在前面 (按钮 → 07b / 进度条角标 → 07c 等)。
 | 视频里某 FRAME 内同时含横排 + 竖排元素 | [`lessons/lesson_组团内layout单一化.md`](lessons/lesson_组团内layout单一化.md) — 拆 wrapper, 不一刀切 AL |
 | 准备在 S7 写 INSTANCE / `variant: 空` / `overrides` 字段 | [`lessons/lesson_扁平vs_v206_schema.md`](lessons/lesson_扁平vs_v206_schema.md) — **不要写**, 那是 S11 自动产物 |
 | 多节点进度条想"按节点位置拆段画" | [`lessons/lesson_进度条本体一整根.md`](lessons/lesson_进度条本体一整根.md) — 永远画一整根 |
+| 大组团重复 ≥3 想"做成扁平 FRAME 平铺" / 看到要离散多态 / 同一差异想在外层和子层各做一遍 | [`lessons/lesson_ccb维度vs多态.md`](lessons/lesson_ccb维度vs多态.md) — 复用必抽 ccb (可 0 多态); 有多态必是 ccb; 同一差异只在唯一最小单元做一次 |
+| S11 主路径 (复杂场景跳脚本) 准备手写 v20.6 schema | [`lessons/lesson_v206schema必填字段.md`](lessons/lesson_v206schema必填字段.md) — 写前 cat 样本; component 必带 w/h/variant_property, INSTANCE w/h==component, layer 必带 element_class |
 
 ### C. 字段 / 命名疑问 → 查阅文件
 
@@ -246,20 +260,22 @@ S7 子文件路由已在前面 (按钮 → 07b / 进度条角标 → 07c 等)。
 ```
 4.22skill_v3/
 ├── SKILL.md              ← 顶层入口 (本文件, frontmatter + 流程图 + 路由 + 铁律)
-├── steps/                ← 17 个 S 文件 (从 v2 复制, 内容相同)
+├── steps/                ← 20 个 S 文件 (从 v2 复制, 内容相同)
 │   ├── 00_S0_context.md
 │   ├── 01_S1_抽帧.md ... 11_S11_抽取导出.md
+│   ├── 06a_S6_ccb抽取标准.md (ccb 3 标准 + 视觉缩窄 + ccb维度≠多态维度)
+│   ├── 08a_S8_预制组件.md (钟表特例) / 08b_组件库理论模型.md
 │   └── 07a_*.md ... 07e_*.md (S7 子文件)
 ├── lessons/              ← 跨步骤踩坑归档 (新加, 跟 S 文件违规信号互补)
 │   ├── bug-archive.md (索引)
-│   └── lesson_*.md (4 个核心 lesson)
+│   └── lesson_*.md (6 个核心 lesson)
 ├── memory/               ← 软链接到 ~/.claude/projects/.../memory (跟 v2 共享)
 └── 命名_参考.md           ← 命名白名单参考 (从 v2 复制)
 ```
 
 ## 跟 v2 的关系
 
-- **v3 已独立化** — 不依赖 v2, 可以单独工作 (steps/ 含全部 17 个 S 文件)
+- **v3 已独立化** — 不依赖 v2, 可以单独工作 (steps/ 含全部 20 个 S 文件, 含 06a/08a/08b)
 - **v2 内容完全不动** — 所有原 S 文件原位保留在 `/Users/red/Desktop/4.22skill_v2/`, 作为 backup
 - **memory 是软链接共享** — v2 和 v3 都指向同一个 `~/.claude/projects/.../memory/`, 改任何一边的 memory 互通
 - v3 改 SKILL.md / 加新 lessons / 调整 steps/ 内某 S 文件, 都不影响 v2

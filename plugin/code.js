@@ -1711,210 +1711,353 @@ function splitInstancesByVariantSize() {
   };
 }
 
-// ── [v20.7.x+] 原地规范化组件库 ──
-// 读 normalization_spec.json 形式的 spec, 对现有 Figma 组件库做:
-//   1. rename(组件作用域内 oldName → newName)
-//   2. moveAndResize(调 FRAME 位置/尺寸, 为 reparent 铺路)
-//   3. reparent(挪图层进 FRAME 容器)
-//   4. combineAsVariants(合并多个 Component → COMPONENT_SET)
-//   5. convertToComponent(FRAME → Component)
-// 不动视觉, 只动命名 + 结构。
-async function applyNormalization(spec) {
-  var logLines = [];
-  function L(msg) { logLines.push(msg); console.log('[规范化] ' + msg); }
+// ── [v20.7.x+ 2026-05-14] 自动导出 sprite 图层为 PNG ──
+// 扫 scene.json 里出现的 screens + components, 在 figma 树里找对应根节点,
+// 递归遍历所有命名匹配 sprite 前缀 (图片_/图标_/背景_/插图_/特效_) 的图层,
+// exportAsync 拿 PNG 字节 → base64 → 返回数组.
+// 上层把数组 POST 到 Flask /api/upload_images, 写入 ~/Desktop/figma_export/<scene>/<layer>.png
+var SPRITE_NAME_PREFIXES_JS = ['图片_', '图标_', '背景_', '插图_', '特效_', '底板_', '进度条_'];
 
-  // 全文件扫描所有 COMPONENT / COMPONENT_SET, 建 name → node 映射
-  function scanAllComponents() {
-    var map = {};
-    function visit(node) {
-      if ((node.type === 'COMPONENT' || node.type === 'COMPONENT_SET') && !map[node.name]) {
-        map[node.name] = node;
-      }
-      if ('children' in node) {
-        for (var i = 0; i < node.children.length; i++) visit(node.children[i]);
-      }
-    }
-    for (var i = 0; i < figma.root.children.length; i++) visit(figma.root.children[i]);
-    return map;
+function _isSpriteName(name) {
+  if (!name) return false;
+  for (var i = 0; i < SPRITE_NAME_PREFIXES_JS.length; i++) {
+    if (name.indexOf(SPRITE_NAME_PREFIXES_JS[i]) === 0) return true;
   }
-
-  // 在某个根节点的子树里按 name 找
-  function findByName(root, name) {
-    if (root.name === name) return root;
-    if ('children' in root) {
-      for (var i = 0; i < root.children.length; i++) {
-        var r = findByName(root.children[i], name);
-        if (r) return r;
-      }
-    }
-    return null;
-  }
-
-  // 全文件按 name + type 找(用于 convertToComponent 找 FRAME)
-  function findInFileByNameAndType(name, type) {
-    var hit = null;
-    function visit(n) {
-      if (hit) return;
-      if (n.type === type && n.name === name) { hit = n; return; }
-      if ('children' in n) {
-        for (var i = 0; i < n.children.length; i++) visit(n.children[i]);
-      }
-    }
-    for (var i = 0; i < figma.root.children.length; i++) visit(figma.root.children[i]);
-    return hit;
-  }
-
-  var compMap = scanAllComponents();
-  L('扫描全文件: 找到 ' + Object.keys(compMap).length + ' 个 COMPONENT / COMPONENT_SET');
-
-  var stats = { renames: 0, renamesMissed: 0, reparents: 0, reparentsMissed: 0,
-                moveResize: 0, combines: 0, converts: 0, errors: 0 };
-
-  // ── 1. Renames ──
-  L('');
-  L('═ Phase 1: Renames ═');
-  var renames = spec.renames || {};
-  for (var compName in renames) {
-    var comp = compMap[compName];
-    if (!comp) { L('⚠ 组件未找到: ' + compName); stats.renamesMissed++; continue; }
-    var renameMap = renames[compName];
-    for (var oldName in renameMap) {
-      if (oldName.indexOf('_') === 0) continue; // 跳过 _note 这种字段
-      var newName = renameMap[oldName];
-      var node = findByName(comp, oldName);
-      if (node) {
-        node.name = newName;
-        L('  ✓ ' + compName + ': "' + oldName + '" → "' + newName + '"');
-        stats.renames++;
-      } else {
-        L('  ⚠ ' + compName + ': 内部未找到 "' + oldName + '"');
-        stats.renamesMissed++;
-      }
-    }
-  }
-
-  // ── 2. MoveAndResize ──
-  L('');
-  L('═ Phase 2: MoveAndResize ═');
-  var movesAndResizes = spec.moveAndResize || [];
-  for (var mi = 0; mi < movesAndResizes.length; mi++) {
-    var op = movesAndResizes[mi];
-    var comp = compMap[op.componentName];
-    if (!comp) { L('⚠ 组件未找到 (move): ' + op.componentName); stats.errors++; continue; }
-    var node = findByName(comp, op.layerName);
-    if (!node) { L('⚠ ' + op.componentName + ': 未找到 layer "' + op.layerName + '"'); stats.errors++; continue; }
-    try {
-      node.x = op.newX;
-      node.y = op.newY;
-      if (typeof node.resize === 'function') node.resize(op.newW, op.newH);
-      L('  ✓ moveAndResize: ' + op.componentName + ' / ' + op.layerName +
-        ' → (' + op.newX + ',' + op.newY + ') ' + op.newW + '×' + op.newH);
-      stats.moveResize++;
-    } catch (e) { L('  ✗ moveAndResize 失败: ' + op.layerName + ' — ' + e.message); stats.errors++; }
-  }
-
-  // ── 3. Reparent ──
-  L('');
-  L('═ Phase 3: Reparent ═');
-  var reparents = spec.reparent || [];
-  for (var ri = 0; ri < reparents.length; ri++) {
-    var op = reparents[ri];
-    var comp = compMap[op.componentName];
-    if (!comp) { L('⚠ 组件未找到 (reparent): ' + op.componentName); stats.reparentsMissed++; continue; }
-    var child = findByName(comp, op.layerName);
-    var newParent = findByName(comp, op.newParentName);
-    if (!child) { L('⚠ ' + op.componentName + ': 未找到 child "' + op.layerName + '"'); stats.reparentsMissed++; continue; }
-    if (!newParent) { L('⚠ ' + op.componentName + ': 未找到 newParent "' + op.newParentName + '"'); stats.reparentsMissed++; continue; }
-    try {
-      newParent.appendChild(child);
-      child.x = op.newX;
-      child.y = op.newY;
-      L('  ✓ reparent: ' + op.layerName + ' → ' + op.newParentName + ' @ (' + op.newX + ',' + op.newY + ')');
-      stats.reparents++;
-    } catch (e) { L('  ✗ reparent 失败: ' + op.layerName + ' — ' + e.message); stats.errors++; }
-  }
-
-  // ── 4. CombineAsVariants ──
-  L('');
-  L('═ Phase 4: CombineAsVariants ═');
-  var combines = spec.combineAsVariants || [];
-  for (var ci = 0; ci < combines.length; ci++) {
-    var op = combines[ci];
-    var comps = [];
-    var miss = false;
-    for (var cj = 0; cj < op.componentNames.length; cj++) {
-      var c = compMap[op.componentNames[cj]];
-      if (!c) { L('⚠ combine 缺组件: ' + op.componentNames[cj]); miss = true; break; }
-      comps.push(c);
-    }
-    if (miss) { stats.errors++; continue; }
-    if (comps.length < 2) { L('⚠ combine 需要 ≥2 个组件, 实际 ' + comps.length); stats.errors++; continue; }
-    try {
-      // 先把每个 Component 改名为 "PropertyName=Value" 形式, 这样 combineAsVariants 后
-      // Figma 会用 PropertyName 作为 Variant 维度名
-      for (var cj2 = 0; cj2 < comps.length; cj2++) {
-        comps[cj2].name = op.propertyName + '=' + op.variantValues[cj2];
-      }
-      var parent = comps[0].parent;
-      var compSet = figma.combineAsVariants(comps, parent);
-      compSet.name = op.newName;
-      L('  ✓ combineAsVariants: [' + op.componentNames.join(', ') + '] → ' + op.newName +
-        ' (' + op.propertyName + '=[' + op.variantValues.join('/') + '])');
-      compMap[op.newName] = compSet;
-      stats.combines++;
-    } catch (e) { L('  ✗ combineAsVariants 失败: ' + op.newName + ' — ' + e.message); stats.errors++; }
-  }
-
-  // ── 5. ConvertToComponent ──
-  L('');
-  L('═ Phase 5: ConvertToComponent ═');
-  var converts = spec.convertToComponent || [];
-  for (var vi = 0; vi < converts.length; vi++) {
-    var op = converts[vi];
-    var node = findInFileByNameAndType(op.layerName, 'FRAME');
-    if (!node) { L('⚠ 未找到 FRAME: ' + op.layerName); stats.errors++; continue; }
-    try {
-      var comp = figma.createComponentFromNode(node);
-      // createComponentFromNode 在 Figma API 里把节点替换为 Component, 名字保留
-      L('  ✓ convertToComponent: ' + op.layerName + ' → COMPONENT');
-      compMap[comp.name] = comp;
-      stats.converts++;
-    } catch (e) { L('  ✗ convertToComponent 失败: ' + op.layerName + ' — ' + e.message); stats.errors++; }
-  }
-
-  L('');
-  L('═ 完成 ═');
-  L('  renames:      ' + stats.renames + ' ✓ / ' + stats.renamesMissed + ' miss');
-  L('  reparents:    ' + stats.reparents + ' ✓ / ' + stats.reparentsMissed + ' miss');
-  L('  moveResize:   ' + stats.moveResize + ' ✓');
-  L('  combines:     ' + stats.combines + ' ✓');
-  L('  converts:     ' + stats.converts + ' ✓');
-  L('  errors:       ' + stats.errors);
-
-  return { log: logLines, stats: stats };
+  return false;
 }
 
+// 把 Uint8Array 编码成 base64 字符串 (figma 主线程没原生 btoa for binary)
+function _u8ToBase64(u8) {
+  if (typeof figma !== 'undefined' && typeof figma.base64Encode === 'function') {
+    return figma.base64Encode(u8);  // Figma 较新版有原生 helper
+  }
+  // 兼容 fallback: 手动 8K 分块构造字符串再 btoa (避免 stack overflow)
+  var CHUNK = 0x8000;
+  var pieces = [];
+  for (var i = 0; i < u8.length; i += CHUNK) {
+    pieces.push(String.fromCharCode.apply(null, u8.subarray(i, i + CHUNK)));
+  }
+  return btoa(pieces.join(''));
+}
+
+// 全文件按 name + 类型集 找根节点 (用于按 scene_name / component_name 定位).
+// 三重保险:
+//   1. figma.root.findAllWithCriteria - 新 API, 跨 page, 性能最好 (推荐)
+//   2. figma.root.findOne - 跨 page 但需要 loadAllPagesAsync
+//   3. figma.currentPage.findOne - 只搜当前 page (最低保底, 适用 component 在当前 page)
+function _findRootByName(name, typeSet) {
+  // 第 1 套: findAllWithCriteria (Figma 推荐)
+  try {
+    if (typeof figma.root.findAllWithCriteria === 'function') {
+      var all = figma.root.findAllWithCriteria({ types: typeSet });
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].name === name) return all[i];
+      }
+    }
+  } catch (e) {
+    console.warn('[_findRootByName] findAllWithCriteria 失败 (' + name + '):', e.message || e);
+  }
+  // 第 2 套: root.findOne
+  try {
+    var r1 = figma.root.findOne(function(n) {
+      return n && typeSet.indexOf(n.type) >= 0 && n.name === name;
+    });
+    if (r1) return r1;
+  } catch (e) {
+    console.warn('[_findRootByName] root.findOne 失败 (' + name + '):', e.message || e);
+  }
+  // 第 3 套: currentPage.findOne (兜底, component 必然在当前 page 的 📦_组件库 内)
+  try {
+    var r2 = figma.currentPage.findOne(function(n) {
+      return n && typeSet.indexOf(n.type) >= 0 && n.name === name;
+    });
+    if (r2) return r2;
+  } catch (e) {
+    console.warn('[_findRootByName] currentPage.findOne 失败 (' + name + '):', e.message || e);
+  }
+  return null;
+}
+
+// 在 figmaRoot 子树里精确按 name 找一个节点 (深度优先, 命中即返回)
+function _findInSubtreeByName(root, name) {
+  if (!root || !name) return null;
+  if (root.name === name) return root;
+  if ('children' in root) {
+    for (var i = 0; i < root.children.length; i++) {
+      var r = _findInSubtreeByName(root.children[i], name);
+      if (r) return r;
+    }
+  }
+  return null;
+}
+
+// 遍历 scene.json 里某一层 (screen.layers 或 variant.layers), 对每个 sprite 命名节点:
+// - 在指定 figmaRoot 子树内按 name 精确查找对应 Figma 节点
+// - exportAsync → results 收集 (scene_name = 上层 scene/component, layer_name = scene.json 里的 name)
+//
+// 这样保证: 文件名跟 .red 节点名一一对应; 跨 variant 同名图层在各自 figma 子树内查找,不串图。
+async function _exportLayersDriven(layers, sceneName, variantName, figmaRoot, results) {
+  for (var i = 0; i < (layers || []).length; i++) {
+    var l = layers[i];
+    if (!l || !l.name) continue;
+
+    if (_isSpriteName(l.name)) {
+      var node = _findInSubtreeByName(figmaRoot, l.name);
+      if (node) {
+        try {
+          var bytes = await node.exportAsync({
+            format: 'PNG',
+            constraint: { type: 'SCALE', value: 1 }
+          });
+          results.push({
+            scene_name: sceneName,
+            variant_name: variantName || '',  // 屏幕级图层 = '', component variant 内图层 = variant.name
+            layer_name: l.name,
+            png_b64: _u8ToBase64(bytes)
+          });
+        } catch (e) {
+          console.warn('[exportAsync 失败]', sceneName, variantName, l.name, e);
+        }
+      } else {
+        console.warn('[exportAllSprites] 在', sceneName, '(variant=' + (variantName||'-') + ') 内未找到图层:', l.name);
+      }
+    }
+
+    // 嵌套 children (variant 上下文不变)
+    if (l.children) {
+      await _exportLayersDriven(l.children, sceneName, variantName, figmaRoot, results);
+    }
+  }
+}
+
+// 在 COMPONENT_SET 内按 variant 名定位对应 COMPONENT 子节点.
+// Figma variant 命名格式通常是 "PropertyName=Value", 取 = 后面的值跟 variant.name 比.
+function _findVariantInSet(setNode, variantName) {
+  if (!setNode) return null;
+  if (setNode.type === 'COMPONENT') return setNode;  // 单 COMPONENT, 整体即 default variant
+  if (setNode.type !== 'COMPONENT_SET' || !setNode.children) return null;
+  for (var i = 0; i < setNode.children.length; i++) {
+    var c = setNode.children[i];
+    var n = c.name || '';
+    var eq = n.indexOf('=');
+    var vn = (eq >= 0) ? n.substring(eq + 1) : n;
+    if (vn === variantName) return c;
+  }
+  return null;
+}
+
+// 入口: 直接通过 selection 节点引用链遍历, 不依赖 figma.root.findOne / findAll 全文件搜索.
+// [v20.7.x+ 2026-05-15] 每条 sprite 带 group_name 字段, 用于 Python 端按大组拆 plist
+// (单 webp ≤ 4096×4096 限制, 装不下按 group 拆多个).
+//   - 屏幕级: group = 屏幕的直接子 frame name (例: 组_顶部条 / 组_装饰区)
+//             如果 sprite 本身就是屏幕直接子 (如 底板_浮层), group = sprite name 自己
+//   - component 级: group = component name (整个 component 一个组, 不拆)
+async function exportAllSprites(scene) {
+  var results = [];
+  var selection = figma.currentPage.selection;
+  var screens = selection.filter(function(n) {
+    return n.type === 'FRAME' &&
+      (n.name.indexOf('界面_') === 0 || n.name.indexOf('浮层_') === 0);
+  });
+
+  // 1. 屏幕级: 每个屏幕的"直接子"作为一个 group, 子树内所有 sprite 都归这个 group
+  for (var i = 0; i < screens.length; i++) {
+    var s = screens[i];
+    if (!('children' in s)) continue;
+    for (var j = 0; j < s.children.length; j++) {
+      var topChild = s.children[j];
+      var groupName = topChild.name || ('组_' + j);
+      await _walkAndExportSubtree(topChild, s.name, '', groupName, results);
+    }
+  }
+
+  // 2. 收集所有 INSTANCE (递归, 但不进入 INSTANCE.children 避免重复)
+  var instances = [];
+  for (var i = 0; i < screens.length; i++) {
+    _collectInstances(screens[i], instances);
+  }
+
+  // 3. 通过 INSTANCE.mainComponent 拿 COMPONENT_SET — 整个 component 当作 1 个 group
+  //    [2026-05-18 修复] 之前只处理"屏幕直达 INSTANCE"对应的 compSet, 不进入 compSet
+  //    的 variant 子树里的嵌套 INSTANCE → "仅嵌套不直达"的多态子 ccb
+  //    (列表项内 组_排名 / 宝箱节点内 子ccb_宝箱 等) 的全部 Variant 图都没导出,
+  //    引擎 missing texture. 现改为 worklist 递归发现嵌套 Component Set.
+  var seenCompSets = {};
+  var compSetQueue = [];
+  function _enqueueCompSetFromInstance(inst) {
+    var mainComp;
+    try { mainComp = inst.mainComponent; } catch (e) { return; }
+    if (!mainComp) return;
+    var cs = (mainComp.parent && mainComp.parent.type === 'COMPONENT_SET') ? mainComp.parent : mainComp;
+    if (!cs || !cs.name || seenCompSets[cs.name]) return;
+    seenCompSets[cs.name] = true;
+    compSetQueue.push(cs);
+  }
+  for (var k = 0; k < instances.length; k++) _enqueueCompSetFromInstance(instances[k]);
+
+  while (compSetQueue.length) {
+    var compSet = compSetQueue.shift();
+    var compName = compSet.name;
+    var variantNodes = (compSet.type === 'COMPONENT_SET' && compSet.children)
+      ? compSet.children : [compSet];
+    for (var vi = 0; vi < variantNodes.length; vi++) {
+      var variantNode = variantNodes[vi];
+      var vName = '常态';
+      if (compSet.type === 'COMPONENT_SET') {
+        var rawVName = variantNode.name || '';
+        var eq = rawVName.indexOf('=');
+        vName = (eq >= 0) ? rawVName.substring(eq + 1) : rawVName;
+      }
+      // 导出本 variant 子树 sprite: PNG 落 figma_export/<compName>/<vName>/<layer>.png
+      await _walkAndExportSubtree(variantNode, compName, vName, compName, results);
+      // [关键] 收集本 variant 子树里的嵌套 INSTANCE, 其 compSet 入队继续递归发现
+      var nestedInsts = [];
+      _collectInstances(variantNode, nestedInsts);
+      for (var n = 0; n < nestedInsts.length; n++) _enqueueCompSetFromInstance(nestedInsts[n]);
+    }
+  }
+
+  figma.notify('🖼 导出 ' + results.length + ' 张 sprite PNG (component: ' +
+               Object.keys(seenCompSets).length + ' 个)', { timeout: 4000 });
+  return results;
+}
+
+// 收集指定根节点子树里所有 INSTANCE 节点 (不进入 INSTANCE 内部, 避免重复)
+function _collectInstances(node, sink) {
+  if (!node) return;
+  if (node.type === 'INSTANCE') {
+    sink.push(node);
+    return;
+  }
+  if ('children' in node) {
+    for (var i = 0; i < node.children.length; i++) {
+      _collectInstances(node.children[i], sink);
+    }
+  }
+}
+
+// 递归 walk 节点子树, 命中 sprite 命名前缀就 exportAsync.
+// 遇到 INSTANCE 不进入. groupName 沿用调用方传入(屏幕直接子名 或 component 名).
+async function _walkAndExportSubtree(node, sceneName, variantName, groupName, results) {
+  if (!node) return;
+  if (node.type === 'INSTANCE') return;
+
+  if (node.name && _isSpriteName(node.name)) {
+    try {
+      var bytes = await node.exportAsync({
+        format: 'PNG',
+        constraint: { type: 'SCALE', value: 1 }
+      });
+      results.push({
+        scene_name: sceneName,
+        variant_name: variantName || '',
+        layer_name: node.name,
+        group_name: groupName || '',
+        png_b64: _u8ToBase64(bytes)
+      });
+    } catch (e) {
+      console.warn('[exportAsync 失败]', sceneName, variantName, node.name, e.message || e);
+    }
+  }
+
+  if ('children' in node) {
+    for (var i = 0; i < node.children.length; i++) {
+      await _walkAndExportSubtree(node.children[i], sceneName, variantName, groupName, results);
+    }
+  }
+}
+
+
+// 🔄 [v20.7.x+ 2026-05-15] 单图更新: 反查选中节点祖先链, 确定 source / variant / layer
+//   - 屏幕级 (顶层直接挂在 界面_/浮层_ FRAME 下): source=屏幕名, variant=''
+//   - 组件 variant 内: source=COMPONENT_SET 名 (或 COMPONENT 名), variant=variant 值
+function _findUpdateContext(node) {
+  if (!node || !_isSpriteName(node.name)) return null;
+  var layer_name = node.name;
+  var variant_comp = null;
+  var compSet = null;
+  var screen = null;
+  var screen_direct_child = null;  // [2026-05-15] 屏幕的直接子, 作为 group_name (屏幕级)
+  var cur = node.parent;
+  var prev = node;  // 跟踪上一个节点, 当 cur 是 screen 时, prev 就是屏幕直接子
+  while (cur) {
+    if (cur.type === 'COMPONENT' && !variant_comp) {
+      variant_comp = cur;
+    } else if (cur.type === 'COMPONENT_SET') {
+      compSet = cur;
+      break;
+    } else if (cur.type === 'FRAME' &&
+               (cur.name.indexOf('界面_') === 0 || cur.name.indexOf('浮层_') === 0)) {
+      screen = cur;
+      screen_direct_child = prev;  // 屏幕的直接子 = prev
+      break;
+    }
+    prev = cur;
+    cur = cur.parent;
+  }
+  if (compSet) {
+    var vname = variant_comp ? variant_comp.name : '';
+    var eq = vname.indexOf('=');
+    if (eq >= 0) vname = vname.substring(eq + 1);
+    // component 整个作为一组 → group = compSet.name
+    return { source_name: compSet.name, variant_name: vname, layer_name: layer_name,
+             group_name: compSet.name };
+  }
+  if (screen) {
+    // 屏幕级: group = 屏幕的直接子 name (如果节点自己就是直接子, prev=node, name=自己)
+    var groupName = (screen_direct_child && screen_direct_child.name) || layer_name;
+    return { source_name: screen.name, variant_name: '', layer_name: layer_name,
+             group_name: groupName };
+  }
+  if (variant_comp) {
+    return { source_name: variant_comp.name, variant_name: '', layer_name: layer_name,
+             group_name: variant_comp.name };
+  }
+  return null;
+}
+
+async function handleUpdateSingleImage(outputPath) {
+  var selection = figma.currentPage.selection;
+  if (selection.length !== 1) {
+    figma.notify('⚠️ 请只选中 1 个图层', { timeout: 4000, error: true });
+    figma.ui.postMessage({ type: 'update_single_image_error',
+                           message: '请只选中 1 个图层(当前选了 ' + selection.length + ' 个)' });
+    return;
+  }
+  var node = selection[0];
+  var ctx = _findUpdateContext(node);
+  if (!ctx) {
+    figma.notify('⚠️ 选中节点不是 sprite 图层 或 找不到所属屏幕/组件', { timeout: 5000, error: true });
+    figma.ui.postMessage({ type: 'update_single_image_error',
+                           message: '选中节点 "' + node.name + '" 不是 sprite 命名 或 没在屏幕/组件内' });
+    return;
+  }
+  // 必要时 loadAllPagesAsync (跨 page 才需要)
+  if (typeof figma.loadAllPagesAsync === 'function') {
+    try { await figma.loadAllPagesAsync(); } catch (e) {}
+  }
+  try {
+    var bytes = await node.exportAsync({
+      format: 'PNG',
+      constraint: { type: 'SCALE', value: 1 }
+    });
+    ctx.png_b64 = _u8ToBase64(bytes);
+    figma.ui.postMessage({
+      type: 'update_single_image_ready',
+      sprite: ctx,
+      output_path: outputPath
+    });
+  } catch (e) {
+    figma.notify('❌ 导出失败: ' + (e.message || e), { timeout: 5000, error: true });
+    figma.ui.postMessage({ type: 'update_single_image_error', message: String(e) });
+  }
+}
 
 // ── 消息处理 ──
 figma.ui.onmessage = function(msg) {
   if (msg.type === 'generate') {
     generate(msg.data).catch(function(e) {
       figma.ui.postMessage({ type:'error', message:String(e) });
-    });
-  }
-
-  // [v20.7.x+] 原地规范化现有组件库
-  if (msg.type === 'normalize_library') {
-    applyNormalization(msg.spec).then(function(result) {
-      figma.ui.postMessage({ type: 'normalize_done', result: result });
-      var s = result.stats;
-      figma.notify('✅ 规范化完成: rename=' + s.renames + ' reparent=' + s.reparents +
-                   ' combine=' + s.combines + ' convert=' + s.converts +
-                   (s.errors ? ' ⚠ errors=' + s.errors : ''),
-                   { timeout: 6000 });
-    }).catch(function(e) {
-      figma.ui.postMessage({ type: 'normalize_error', error: String(e) });
-      figma.notify('❌ 规范化失败: ' + String(e), { timeout: 6000, error: true });
     });
   }
 
@@ -1966,7 +2109,7 @@ figma.ui.onmessage = function(msg) {
     }
   }
 
-  // 🚀 生成 .red：构造 scene.json，传回 ui.html 由 ui.html 调 Python
+  // 🚀 生成 .red：构造 scene.json + 自动导出所有 sprite PNG，传回 ui.html 由 ui.html 调 Python
   if (msg.type === 'gen_red') {
     var scene = buildSceneForRed();
     if (scene.error) {
@@ -1986,12 +2129,27 @@ figma.ui.onmessage = function(msg) {
                  '若确实需要按当前数据强制生成(可能渲染错位),再次点击生成会带 force 标志。'
       });
     } else {
-      figma.ui.postMessage({
-        type: 'gen_red_ready',
-        scene: scene,
-        output_path: msg.output_path
+      // [v20.7.x+ 2026-05-14] 自动 exportAsync 所有 sprite 图层 → 一并传给 ui 层
+      figma.ui.postMessage({ type: 'gen_red_progress', message: '正在导出 sprite 图层为 PNG...' });
+      exportAllSprites(scene).then(function(sprites) {
+        figma.ui.postMessage({
+          type: 'gen_red_ready',
+          scene: scene,
+          sprites: sprites,
+          output_path: msg.output_path
+        });
+      }).catch(function(e) {
+        figma.notify('❌ 自动导出 PNG 失败: ' + String(e), { timeout: 6000, error: true });
+        figma.ui.postMessage({ type: 'gen_red_error', message: '自动导出 PNG 失败: ' + String(e) });
       });
     }
+  }
+
+  // 🔄 [v20.7.x+ 2026-05-15] 单图增量更新: Figma 选中图层 → 替换 PNG + 重打图集
+  if (msg.type === 'update_single_image') {
+    handleUpdateSingleImage(msg.output_path).catch(function(e) {
+      figma.ui.postMessage({ type: 'update_single_image_error', message: String(e) });
+    });
   }
 
   // 加载存储的输出路径

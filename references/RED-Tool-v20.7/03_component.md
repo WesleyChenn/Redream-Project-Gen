@@ -6,12 +6,46 @@
 
 ## 八、封装方案（V1 完整规范）
 
-### 8.1 何时做成 Component Set
+### 8.1 何时做成 Component Set(ccb 抽取 3 标准, 2026-05-15)
 
-满足任一即做：
+#### 引擎护栏:`_detect_repeated_inline_structures` (app.py, 2026-05-15)
 
-- **复用**：同一节点结构在 Figma 多处出现
-- **动态**：运行时代码动态实例化（背包格子、列表 cell 等）
+`generate_red()` 在 `register_component_variants` 之后跑一次,扫主屏 inline 节点找"同结构签名 ≥3 次但没在 `components[]` 声明的"。
+
+签名:`(name 前缀去尾部数字, type, 直接 children 的 (name 前缀, type) 序列)`。`列表项_19 / 列表项_20 / ...` 都归到 `列表项` 这一签名。
+
+命中后日志输出:
+```
+━━━ 重复 inline 结构检测 (视觉缩窄机制护栏) ━━━
+  ⚠️  inline 结构 "列表项" 在主屏出现 8 次但未在 components[] 声明
+      节点样本: ['列表项_19', '列表项_20', ...]
+      建议:Claude 在 S6 阶段按 4.22 SKILL 00f ccb 3 标准 #1 (复用) 抽为子 ccb
+```
+
+**不自动抽**(避免误判),只 warning 提示 Claude/设计师在 4.22 SKILL S3-S6 阶段补抽。
+
+跳过条件:
+- `name in PREFAB_NAMES`(已走预制路径)
+- `name in declared`(已在 components[] 声明)
+- `type == 'INSTANCE'` 或带 `component_ref`(已是组件引用)
+- 直接 children 数 < 2(避免叶子节点误判)
+
+---
+
+#### 抽取标准
+
+满足任一即做(参考 [`4.22最新skill/00f_视觉缩窄_ccb_3标准.md`](/Users/red/Desktop/4.22最新skill/00f_视觉缩窄_ccb_3标准.md)):
+
+- **复用**:同一节点结构在 Figma 多处出现(`列表项 / 组_气泡底板 / 组_奖励` 等)
+- **动态**:运行时代码动态实例化(背包格子、列表 cell 等)
+- **独立**:有独立动画或行为(`钟表_指针动画` 走预制特例;其他 spine 动画等)
+
+**判断方法**:Claude 在 4.22 SKILL S3 阶段按 **视觉缩窄机制**(递归下钻找重复结构)走,每一层稳定结构用 3 标准判断;**不限缩窄层数,该抽就抽**。
+
+注:**ccb 嵌套层数 ≠ Variant 粒度**(两者不是同一回事)。一句话核心原则(2026-05-17):
+- **多态(Variant)= 最小化** — 抽 Variant 让被复用组件**尽可能小**(差异下沉到最小变化单元),见 [`4.22最新skill/00d`](/Users/red/Desktop/4.22最新skill/00d_Variant抽取与修复.md)
+- **子 ccb = 最大化** — 抽子 ccb 让复用**尽可能多次发生**(能复用就抽,层数不限),见 [`4.22最新skill/00f`](/Users/red/Desktop/4.22最新skill/00f_视觉缩窄_ccb_3标准.md)
+- ccb 决定"抽什么出来反复用",Variant 决定"这个被反复用的东西内部差异压到多小"
 
 ### 8.2 何时给 Component Set 加 Variants
 
@@ -33,15 +67,19 @@
 - **Property 取值数量不限**（"常态/选中/禁用/已领取/未解锁" 5 个值都允许）
 - **默认 Variant 必须叫"常态"**（对应 sequenceId=0）
 
-### 8.4 Component → 子 CCB 文件名映射
+### 8.4 Component → 子 CCB 文件名映射 (v20.7.x+ 2026-05-15 重构后)
 
 ```
-Figma Component Set "排行榜行"   →  Resources/控件库/排行榜行.red
+Figma Component Set "排行榜行"   →  ccb/<module>/排行榜行.red
+                                     (module = 主屏 scene_name, 跟主屏放同一目录)
 
 Figma 内部 Variant "排行榜行=常态"
                   "排行榜行=带徽章"   →  同一个 .red 内的多条 sequence
                   "排行榜行=带道具"
 ```
+
+注意 (2026-05-15): 之前是 `Resources/ccb/排行榜行.red` (Resources 中间层), 现已对齐生产 `res_juice_pro/ccb/<模块>/<name>.red` 结构. 主屏 .red 也在同模块目录下。
+INSTANCE 引用子 CCB 时, redFile 写 `<module>/<comp>.red`(相对 ccb resource path).
 
 - Component Set 名字 = 子 CCB 文件名（去掉 `=Variant` 后缀）
 - 命名禁止字符：`/ \ : * ? " < > |` 和空格
@@ -129,7 +167,7 @@ INSTANCE 不再扁平化成单个 REDFile，而是**父 CCNode + 子 REDFile** �
     ├── anchorPoint = (0.5, 0.5)
     ├── opacity = 255
     ├── color = [255, 255, 255]
-    ├── redFile = "控件库/列表项_排名.red"
+    ├── redFile = "ccb/列表项_排名.red"
     ├── animation = 4              ← 按 INSTANCE.variant 映射 sequenceId（"当前用户"→4）
     ├── reboltId = {12位随机ID}
     └── reboltName = INSTANCE.name   ← "列表项_排名6"，留给行为树定位用
@@ -362,6 +400,157 @@ animation     type=15
 #### 设计师 / Claude 视角
 
 设计师/Claude 在 Figma 端做空 Variant(`layers=[]`,语义名"空")。引擎自动按上述流程处理,**不需要手写 INSTANCE.visible=false**。
+
+---
+
+### 8.13 预制组件库(v20.7.x+,2026-05-15)
+
+#### 动机
+
+部分 Component 在所有 scene 复用,且**视觉/结构毫无变化**(典型:`预制_钟表指针动画`、`预制_底标倒计时` 这种)。每次生成都跑一遍 `generate_red_component` + `build-scene` 是浪费,且生成管线还在迭代,容易引入回归 bug。
+
+预制组件库的思路:**已经验证 OK 的 .red 沉淀到工程目录 → 之后命中即复用,绕开生成流程**。
+
+#### 目录与触发
+
+- 预制库目录:`red_tool/prefabs/`(跟 `app.py` 同级,纳入工程)
+- 预制源**三件套**:
+  - `prefabs/<cname>.red` — 预制场景文件,文件名 = 组件名
+  - `prefabs/<cname>.plist` — 预制自带独立小图集 plist(可选,无图组件可省)
+  - `prefabs/<cname>.webp` — 预制自带独立小图集 webp(跟 plist 配对)
+- 触发集合(2026-05-15,**单一钟表特例**,`预制_` 前缀 C 方案已回退):
+  ```python
+  PREFAB_NAMES = {'钟表_指针动画'}  # 钟面+指针旋转动画+Scale9 底板+CCLabelPlus 占位文本
+  ```
+  其他子 ccb 都走 `components[]` + `generate_red_component` 普通生成。Figma 端命名规约见 [`4.22最新skill/00e_预制组件命名.md`](/Users/red/Desktop/4.22最新skill/00e_预制组件命名.md)。ccb 3 标准抽取参考 [`4.22最新skill/00f_视觉缩窄_ccb_3标准.md`](/Users/red/Desktop/4.22最新skill/00f_视觉缩窄_ccb_3标准.md)(待 C 阶段新建)。
+- 触发条件(2026-05-15 升级):**`_collect_prefab_refs(scene)` 递归扫整个 scene.json**,任意位置出现 `component_ref` / `component_name` / **`name`** 命中 `PREFAB_NAMES` 即触发 — **不再要求 scene.json 的 `components[]` 数组里也声明一遍**。这是"开箱即用预制"的关键 — 设计师/Claude 在 Figma 端把 frame **命名**为预制名(精确字符串匹配),引擎自动拷预制,无需重复声明、无需 component_ref。
+- Figma 端命名规约权威文档:[`4.22最新skill/00e_预制组件命名.md`](/Users/red/Desktop/4.22最新skill/00e_预制组件命名.md)(给设计师/Claude 看)
+
+#### 预制 .red 的 frame 命名规约
+
+预制自带图集时,`.red` 里的 `displayFrame` 必须用**通用化命名**,避免跟项目内 scene 图集 frame 名冲突:
+
+```
+displayFrame.value = [
+    "<cname>.plist",                 # 指向自带图集 (不带模块前缀)
+    "<cname>_<layer>.png",           # frame 名以预制名打头,自动 namespace
+]
+```
+
+**例**(`钟表_指针动画`):
+```
+["钟表_指针动画.plist", "钟表_指针动画_图标_时钟.png"]
+["钟表_指针动画.plist", "钟表_指针动画_图标_指针.png"]
+["钟表_指针动画.plist", "钟表_指针动画_时效组_底板.png"]
+```
+
+⚠️ **不要**用 `M8P_<模块>_xxx.png` 这种生产项目的具体模块前缀 — 跨项目复用时会找不到 frame。沉淀新预制时,必须重写源 .red 的 spriteFrame 引用为预制专用 frame 名。
+
+#### 拦截逻辑
+
+`app.py` 在 `generate_red()` 里分 3 步处理(2026-05-15 升级):
+
+**步骤 1**:在 `register_component_variants(components)` 后扫预制引用 + 自动注册:
+
+```python
+prefab_refs_in_use = _collect_prefab_refs(scene)
+for pname in prefab_refs_in_use:
+    if pname not in _COMPONENT_VARIANT_SEQID:
+        _COMPONENT_VARIANT_SEQID[pname] = {'default': 0, '常态': 0, '': 0}
+```
+
+注册后 `build_top_layer` 处理 INSTANCE 时,L1208 / L1229 兜底不再触发,直接走 REDFile 引用 `<module>/<pname>.red`。
+
+**步骤 2**:独立预制循环(在 `for comp in components` 之前):
+
+```python
+if prefab_refs_in_use:
+    for pname in sorted(prefab_refs_in_use):
+        prefab_src = prefabs/<pname>.red
+        if not prefab_src 存在:
+            log "💡 预制源不存在 → 跳过"
+            _COMPONENT_VARIANT_SEQID.pop(pname)  # 撤销注册避免破引用 → 走兜底空 CCNode
+            continue
+        shutil.copyfile(prefab_src, ccb/<module>/<pname>.red)
+        for ext in (plist, webp):
+            if prefabs/<pname>.<ext> 存在:
+                shutil.copyfile(..., _img_plist/<module>/<pname>.<ext>)
+        log "♻️ 拷预制 .red + ↳ 同步图集"
+```
+
+**步骤 3**:`for comp in components` 循环里防覆盖:
+
+```python
+for comp in components:
+    cname = comp.get('name')
+    if cname in prefab_refs_in_use:
+        log "(跳过常规生成, 已走预制)"
+        continue   # 避免 components[] 同名声明覆盖预制 .red
+```
+
+**步骤 4**:`build_top_layer` L1229 老体系兜底改成:
+
+```python
+if n.get('component_ref'):
+    comp_name = n.get('component_ref')
+    if comp_name in _COMPONENT_VARIANT_SEQID:  # 预制已通过步骤 1 注册
+        # 走 REDFile 引用 <module>/<comp_name>.red
+        return make_redfile(...)
+    return make_ccnode(...)  # 否则原空 CCNode 路径
+```
+
+资源命中:`_img_plist/` 已在 `.redproj.resourcePaths` 里,同步过去的 `<pname>.plist` 自动被 Redream 加载,跟 `<scene>_图片资源.plist` 平级共存。
+
+#### 与 INSTANCE 映射的关系
+
+主屏 INSTANCE 引用 `钟表_指针动画` 时:
+- `register_component_variants(components)` 仍按 scene.json 注册 variant 列表(预制路径下这个表用不上但跑一遍无害)
+- `lookup_variant_seqid('钟表_指针动画', variant)`:
+  - 如果 variant 在表里 → 返回对应 seqid
+  - 不在 / 没声明 → 返回 0(默认)
+- 预制 .red 必含 sequence 0(default sequence),所以**无 variant / 单 variant 的预制**总能正确回放
+
+⚠️ **多 variant 预制超出本期范围** — 因为预制 .red 里的 sequence ID 跟 scene.json 注册的 seqid 必须**人工对齐**,出错率高。多 variant 组件目前老老实实走 generate。
+
+#### 如何沉淀预制
+
+**路径 A — 从当前管线生成结果沉淀**(组件结构 OK,只复用):
+
+1. 用当前管线跑一次生成,得到 `ccb/<module>/<cname>.red`
+2. 用 Redream 打开主屏验证该组件渲染正确
+3. 拷贝:`cp red_output<X>/ccb/<module>/<cname>.red red_tool/prefabs/<cname>.red`
+4. 该 .red 引用的 frame 都在 `<scene>_图片资源.plist` 里 → **图集复用 scene 自己的**,不需要单独打小图集
+
+**路径 B — 从生产 res_juice_pro 手搓 .red 沉淀**(2026-05-15 引入,自带独立图集):
+
+1. 锁定生产 .red(典型:`res_juice_pro 2/ccb/<模块>/<comp>.red`)
+2. 锁定它引用的所有 PNG 源(在 `res_juice_pro 2/image/<模块>/...`)
+3. 写一次性脚本(参考 `2026-05-15 沉淀 钟表_指针动画`):
+   - 调 `app.pack_atlas(png_entries, prefabs/<cname>.plist, prefabs/<cname>.webp)`,frame 名通用化为 `<cname>_<layer>.png`
+   - 用 `plistlib` 加载源 .red,递归找所有 `displayFrame` 改写:plist 路径 → `<cname>.plist`,frame 名 → `<cname>_<layer>.png`
+   - 保存到 `prefabs/<cname>.red`
+4. 交叉验证:.red 引用的每个 frame 都在生成的 plist 里
+
+⚠️ **不自动沉淀** — 避免把一份带 bug 的生成结果缓存进预制。沉淀必须人工确认。
+
+#### 适用判定
+
+加入 `PREFAB_NAMES` 的标准:
+- ✅ 视觉跨 scene 完全一致(钟表 icon 形状/颜色不变)
+- ✅ 内容由运行时数据驱动(倒计时数字),**不由设计 / scene.json 切换**
+- ✅ 无 variant 或仅 1 个默认 variant
+- ❌ 多 variant + 视觉差异(那叫"组件",不叫"预制")
+- ❌ 跨项目复用但每个项目美术皮肤不同(那需要 variant 或独立组件)
+
+#### app.py 实现指向(2026-05-15 升级版)
+
+- 常量:`PREFAB_DIR` / `PREFAB_NAMES`(L249 附近,紧跟 `ATLAS_MAX_SIZE`)
+- 工具:`_collect_prefab_refs(scene)`(L257 附近,递归扫 scene.json 找预制引用)
+- 自动注册:`generate_red()` 内 `register_component_variants(components)` 之后(L2387 附近)
+- 独立预制循环:`for comp in components` 循环之前(L2418 附近,先于常规生成)
+- 防覆盖:`for comp in components` 循环里 `if cname in prefab_refs_in_use: continue`
+- L1229 老体系兜底:`component_ref` 命中已注册预制时走 REDFile,否则空 CCNode
+- 复用 `pack_atlas(png_entries, plist_path, webp_path)` 工具函数沉淀新预制图集
 
 ---
 

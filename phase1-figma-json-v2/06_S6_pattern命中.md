@@ -109,6 +109,14 @@ S3 表 C 最小组团 (输入)
 >
 > **简单说**: 你 S7 永远写扁平 FRAME, **不写** `type: INSTANCE`, **不写** `variant: 空`, 实例间差异直接写在每个 FRAME 内部, 隐藏用 `visible: false`。所有"INSTANCE / Variant"概念都是 S11 自动产物, 跟你 S7 无关。
 
+> 🔴 **元铁律 — 上下文里有相似项目产物 = 风险信号, 不是捷径 (2026-05-18 Team Tournament 复盘)**
+>
+> 当上下文里已载入**某个相似项目的 scene.json / final_scene** (为复用结构而读入), 这是**高危信号**, 不是省力捷径:
+> - ❌ **禁止 from-exemplar 改增量** — "这屏跟 X 项目 80% 像, 照搬结构改差异"。80% 像恰恰掩盖那 20% 不一样的(它没有的那块)
+> - ✅ **必须逐组团从视频 + memory 重推** — S3 表 C 每个组团**独立**走 #1 memory 命中 + Step 3 Read pattern.md, 跟"那个项目怎么做的"无关
+> - 相似样本只能在**字段写法 / 坐标体系**层面借鉴, **不能替代逐组团识别**
+> - 教训: Team Tournament 中部多节点进度条被照搬 Team Battle(无此面板)结构 → 进度条本体整根丢失。详 memory `feedback_s6_pattern_must_scan_memory.md`
+
 #### Step 1: 先按 `ui_pattern_使用通则` (元规则) 校准
 
 **使用通则**是 memory 的**元规则**, 永远先看它:
@@ -251,6 +259,8 @@ S6 标记某组团 = `component_ref xxx` 之前, 必须先对**整个组件库**
 - **状态切换**: **不生成 flow** (屏内切换, 不跨屏)
 
 ### 3. Variant 抽取 (5 大原则 + 两类例外)
+
+> **2026-05-15 措辞修正**:之前用"Variant 抽取最小化"易被误读为"ccb 嵌套层数也最小化"。**Variant 粒度最小化(差异下沉) ≠ ccb 嵌套层数最小化** — ccb 嵌套按 [06a_S6_ccb抽取标准.md](./06a_S6_ccb抽取标准.md)(待新建)决定,**不限制层数**。本节只管"Variant 在某个组件内部怎么抽得最小粒度"。
 
 #### 5 大设计原则 (vs RoyalPass 教训, 来自旧 00d)
 
@@ -737,12 +747,77 @@ Component | S6 期望 Variants 数 | S7 children 设计 (视觉差异表达方�
 ## 验证 (S6 输出前必过)
 
 1. **覆盖率**: S3 表 C 里**每个**最小组团, 表 H 都有对应行 (pattern / 组件库 / 手搓 / 无 Variant 都标清楚)
-2. **memory pattern 引用准确**: 命中的 pattern 在 memory 里真实存在 (不是猜测的名字), 必要时 Read 对应 pattern.md 验证视觉特征匹配
+2. **memory pattern 命中必 Read**: 命中的 pattern 在 memory 里真实存在; **命中即 Read 对应 pattern.md** 逐项对照视频 (**不是"必要时"**), 表 H + `s6_coverage.json` 注明 Read 凭证 (文件名)
 3. **三项预检通过**: 用 component_ref 的, 组件库 constraints + 尺寸基准 + 嵌套按钮 三项预检都通过 (否则停下让用户改)
 4. **Variant 抽取符合 5 原则 + 例外**: 没有大组团排列组合 / 没有数据驱动做 Variant / 没有运行时数值做 Variant / 不显示用空 Variant
 5. **子 CCB 显隐合规**: 所有同形态父级的 children 结构一致, 没有用增删 children 表达显隐
 6. **进度条主动问过用户**: 凡是进度条都明确了"可点 / 不可点" 包装类型
+7. **S6 覆盖闸门通过** 🔴: `s6_coverage.json` 已产出, gate 脚本退出码 0 (每组团一行 / 命中带 Read 凭证 / S3 表 C 无遗漏) — 见下方"S6 强制覆盖闸门"
 
 ---
 
-⛔ 表 H 输出后立即停止, 等待用户回复"继续 S7"。
+## 🔴 S6 强制覆盖闸门 (forcing function — 杜绝静默跳步, 2026-05-18 新增)
+
+> 根因: S6 此前只有散文自述 ("memory pattern 真实存在 ✓"), 没有机器可校验产物 → 在"相似样本在场 + 自主连跑"下被类比替代, 静默漏匹配 (Team Tournament 进度条事故)。
+> 对策: S6 必须额外产出**结构化覆盖产物**, 跑 gate 脚本, ❌ 不得进 S7 (跟 S10/S11 的 python 自检**同级强制**)。
+
+### 必产物: `s6_coverage.json` (跟 scene.json 同目录) + `s3_groups.txt` (S3 表 C 组团名, 空白分隔)
+
+S3 表 C 每个组团**一行**, 无遗漏:
+
+```json
+{
+  "groupings": [
+    {
+      "group": "组_奖励进度面板",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_进度条_多节点",
+      "read_evidence": "ui_pattern_进度条_多节点.md",
+      "subclass_or_note": "上标式C类(+横排徽章)",
+      "conclusion": "组_进度_奖励三层+4节点占位+4横排徽章标签"
+    }
+  ]
+}
+```
+
+字段约定:
+- `group`: 必来自 S3 表 C
+- `scanned_A_table`: 是否逐项过了 SKILL 路由 A 表 12 视觉特征 (true/false)
+- `pattern_hit`: 命中的 memory pattern 名; 无命中写 `无(手搓)` 或 `component_ref:xxx`
+- `read_evidence`: 命中 ui_pattern 则**必填实际 Read 的 memory 文件名**; 未命中写 `""`
+- `subclass_or_note`: 命中子类 / 差异点 / 手搓理由
+- `conclusion`: 该组团最终结构结论
+
+### Gate 脚本 (S6 输出后必跑, ❌ 卡死, 自述不算数)
+
+```bash
+python3 -c "
+import json,os,sys
+MEM='/Users/red/.claude/projects/-Users-red-Desktop-4-22--skill/memory'
+cov=json.load(open('s6_coverage.json'))
+EXPECT=set(open('s3_groups.txt').read().split()) if os.path.exists('s3_groups.txt') else None
+iss=[]; seen=set()
+for r in cov['groupings']:
+    g=r.get('group','?'); seen.add(g)
+    if not r.get('scanned_A_table'): iss.append(f'{g}: scanned_A_table!=true (没扫A表)')
+    ph=r.get('pattern_hit','')
+    if not ph: iss.append(f'{g}: pattern_hit 空 (未判定)')
+    if str(ph).startswith('ui_pattern'):
+        ev=r.get('read_evidence','')
+        if not ev: iss.append(f'{g}: 命中{ph}但read_evidence空(没Read正文)')
+        elif not os.path.exists(os.path.join(MEM,ev)): iss.append(f'{g}: read_evidence {ev} 文件不存在(凭证伪造/拼错)')
+if EXPECT:
+    miss=EXPECT-seen
+    if miss: iss.append(f'S3表C组团未覆盖: {sorted(miss)}')
+print('✅ S6 覆盖闸门通过' if not iss else '❌ S6 闸门未过:\n'+'\n'.join(iss))
+sys.exit(0 if not iss else 1)
+"
+```
+
+⛔ **gate 输出 ❌ → 必须回 S6 补全 (扫 A 表 / Read pattern.md / 补组团行), 重跑直到 ✅, 才允许进 S7。** 自述"我扫过了"不算数, 以 gate 退出码为准。
+
+> gate 消灭**静默跳步**(没产物 / 没凭证 / 漏组团 → 机器卡死), 但**消灭不了判断错**(填了行但 pattern 归类错, gate 照样放行)。判断错靠 ① S6 #6 S7 落地预演 + ② 用户/复核抓。gate 是地板不是天花板。
+
+---
+
+⛔ 表 H + `s6_coverage.json` 输出 + gate ✅ 后立即停止, 等待用户回复"继续 S7"。

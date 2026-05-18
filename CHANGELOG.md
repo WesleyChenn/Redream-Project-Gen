@@ -1,5 +1,47 @@
 # Changelog
 
+## v8.4.0 (2026-05-18)
+
+main 分支迭代。v2/v3 双结构持续演进 + 引擎 skill 大幅扩充。
+
+### phase1-figma-json-v2/（整目录重建）
+
+- 新增步骤：`06a_S6_ccb抽取标准.md`、`08a_S8_预制组件.md`、`08b_组件库理论模型.md`
+- `memory/` 17 → 20 文件
+- 顶层 19 → 22 文件
+
+### phase1-figma-json-v3/（整目录重建）
+
+- 新增 lessons：`lesson_ccb维度vs多态.md`、`lesson_v206schema必填字段.md`（5 → 7）
+- 新增 steps：`06a_S6_ccb抽取标准.md`、`08a_S8_预制组件.md`、`08b_组件库理论模型.md`（17 → 20）
+- `memory/` 17 → 20 文件
+- 已剔除源里的 `output/`（视频帧产物）与 `*.bak`
+
+### 升级 references/RED-Tool-v20.7/
+
+- `02_naming.md`：80 → 104 行
+- `03_component.md`：367 → 556 行（大幅扩充）
+- `04_cli_python.md`：143 → 259 行
+- `06_misc.md`：263 → 282 行
+- `SKILL.md`：56 → 88 行（索引扩充）
+
+### 升级工具链
+
+- `plugin/code.js`：84 → 91 KB
+- `plugin/ui.html`：32.7 → 33.5 KB
+- `red_tool/app.py`：1732 → 2747 行（重大扩充）
+- **新增 `red_tool/prefabs/`**：3 文件（钟表_指针动画 .plist/.red/.webp 示例预制）
+
+### 未变化
+
+- 顶层 `MEMORY.md`、`SKILL.md`
+- 引擎 skill：00 / 01 / 05_figma_plugin
+- `plugin/manifest.json`、`red_tool/templates/index.html`
+- `component_extractor/` 全部（与 v8.3 一致，无改动）
+- 旧 `phase1-figma-json/`（v8-5.11，仍保留供对比）
+
+---
+
 ## v8.3.0 (2026-05-14)
 
 main 分支首次直接迭代（v8-5.11 已合并）。引入两套新 Skill 组织结构供横向对比。

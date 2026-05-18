@@ -206,7 +206,6 @@ textarea::placeholder { color: #bbb; }
     <div class="tab" data-tab="export">⬇ 组件库</div>
     <div class="tab" data-tab="exportjson">📄 导出JSON</div>
     <div class="tab" data-tab="genred">🚀 生成 .red</div>
-    <div class="tab" data-tab="normalize">🔧 规范化</div>
   </div>
 </div>
 
@@ -272,6 +271,7 @@ textarea::placeholder { color: #bbb; }
   <div class="btn-row" style="flex-shrink:0;">
     <button class="btn btn-primary" id="btnGenRed">🚀 生成选中屏幕的 .red 文件</button>
     <button class="btn btn-secondary" id="btnOpenFinder">在 Finder 打开</button>
+    <button class="btn btn-secondary" id="btnUpdateImage" style="margin-top:8px;">🔄 更新选中图层(单图换图)</button>
   </div>
   <div class="status" id="genRedStatus" style="flex-shrink:0;">等待操作...</div>
   <div class="svc-status">
@@ -315,23 +315,6 @@ textarea::placeholder { color: #bbb; }
 
   <div class="label" style="margin-top:8px;">已生成文件 (单击在 Finder 打开):</div>
   <div class="file-list" id="redFileList"></div>
-</div>
-
-<!-- [v20.7.x+] 规范化页 -->
-<div class="page" id="page-normalize">
-  <div class="export-info">
-    原地规范化现有组件库 — <b>不改视觉, 只改命名 + 结构 + 合并 Variant</b>。<br>
-    粘贴 <code>normalization_spec.json</code> 内容,点下方按钮 → 插件会扫描全文件,
-    按 spec 在每个 Component 内部 rename / reparent / combineAsVariants / convertToComponent。
-  </div>
-  <div class="label">规范化 Spec(JSON)</div>
-  <textarea id="normalizeInput" placeholder="粘贴 normalization_spec.json..."></textarea>
-  <div class="btn-row">
-    <button class="btn btn-primary" id="btnNormalize">🔧 应用规范化</button>
-    <button class="btn btn-secondary" id="btnNormalizeClear">清空</button>
-  </div>
-  <div class="status" id="normalizeStatus">等待 spec 输入...</div>
-  <div class="report" id="normalizeReport"></div>
 </div>
 
 <script>
@@ -403,24 +386,6 @@ document.getElementById('btnGen').onclick = function() {
   setLog('');
   setStatus('genStatus', '开始生成...', 'running');
   parent.postMessage({ pluginMessage: { type: 'generate', data: data } }, '*');
-};
-
-// [v20.7.x+] 规范化按钮
-document.getElementById('btnNormalize').onclick = function() {
-  var raw = document.getElementById('normalizeInput').value.trim();
-  if (!raw) { setStatus('normalizeStatus', '请先粘贴 spec JSON', 'err'); return; }
-  var spec;
-  try { spec = JSON.parse(raw); }
-  catch(e) { setStatus('normalizeStatus', 'JSON 解析失败: ' + e.message, 'err'); return; }
-  setStatus('normalizeStatus', '开始规范化...', 'running');
-  document.getElementById('normalizeReport').textContent = '';
-  parent.postMessage({ pluginMessage: { type: 'normalize_library', spec: spec } }, '*');
-};
-
-document.getElementById('btnNormalizeClear').onclick = function() {
-  document.getElementById('normalizeInput').value = '';
-  document.getElementById('normalizeReport').textContent = '';
-  setStatus('normalizeStatus', '等待 spec 输入...', '');
 };
 
 // 导出组件库按钮
@@ -594,6 +559,15 @@ document.getElementById('btnForceGenRed').onclick = function() {
   }, '*');
 };
 
+// 🔄 [v20.7.x+ 2026-05-15] 单图增量更新: 设计师 Figma 改一张图后, 点这个按钮一键替换
+document.getElementById('btnUpdateImage').onclick = function() {
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '正在处理选中图层...', 'running');
+  parent.postMessage({
+    pluginMessage: { type: 'update_single_image', output_path: outputPath }
+  }, '*');
+};
+
 // 在 Finder 打开（让 Python 端打开输出目录）
 document.getElementById('btnOpenFinder').onclick = function() {
   var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
@@ -615,6 +589,34 @@ function bindFileRowClick(row, fullPath) {
       body: JSON.stringify({ path: fullPath })
     }).catch(function() { /* ignore */ });
   };
+}
+
+// [v20.7.x+ 2026-05-14] 先把自动导出的 sprite PNG 字节 POST 到 /api/upload_images,
+// 再调 /api/generate_red. 这样 Flask 的 process_images 能找到图 + 生成 plist + 写引用.
+function uploadSpritesThenGenerate(scene, sprites, outputPath) {
+  var n = (sprites || []).length;
+  if (n === 0) {
+    setStatus('genRedStatus', '无 sprite 图层 (Figma 中没找到 图片_/图标_/背景_/插图_/特效_ 命名), 直接生成 .red...', 'running');
+    return sendSceneToPython(scene, outputPath);
+  }
+  setStatus('genRedStatus', '正在上传 ' + n + ' 张 sprite PNG 到 Python 服务...', 'running');
+  fetch(PYTHON_URL + '/api/upload_images', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sprites: sprites })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(result) {
+    if (!result.ok) {
+      setStatus('genRedStatus', '❌ 图片上传失败: ' + (result.error || '未知错误'), 'err');
+      return;
+    }
+    setStatus('genRedStatus', '✅ 已上传 ' + result.count + ' 张 PNG → ' + (result.figma_export_root || '') + ', 继续生成 .red...', 'running');
+    sendSceneToPython(scene, outputPath);
+  })
+  .catch(function(err) {
+    setStatus('genRedStatus', '❌ 上传图片时无法连接 Python 服务', 'err');
+  });
 }
 
 // scene.json 准备好后，code.js 把数据传回 ui.html，由 ui.html 调 Python
@@ -713,36 +715,55 @@ window.onmessage = function(e) {
     setStatus('exportStatus', '✅ 导出成功：' + count + ' 个组件', 'ok');
   }
 
-  // [v20.7.x+] 规范化结果
-  if (msg.type === 'normalize_done') {
-    var r = msg.result || {};
-    var s = r.stats || {};
-    var hasErr = (s.errors || 0) > 0 || (s.renamesMissed || 0) > 0 || (s.reparentsMissed || 0) > 0;
-    setStatus('normalizeStatus',
-      (hasErr ? '⚠ ' : '✅ ') + '完成 — rename ' + (s.renames||0) +
-      ' / reparent ' + (s.reparents||0) +
-      ' / combine ' + (s.combines||0) +
-      ' / convert ' + (s.converts||0) +
-      (hasErr ? '  (miss/err)' : ''),
-      hasErr ? 'warn' : 'ok');
-    document.getElementById('normalizeReport').textContent = (r.log || []).join('\n');
-    document.getElementById('normalizeReport').classList.add('visible');
-  }
-
-  if (msg.type === 'normalize_error') {
-    setStatus('normalizeStatus', '❌ ' + msg.error, 'err');
-  }
-
   if (msg.type === 'export_json_done') {
     if (msg.error) { setStatus('exportJsonStatus', '❌ ' + msg.error, 'err'); return; }
     document.getElementById('exportJsonOutput').value = JSON.stringify(msg.data, null, 2);
     setStatus('exportJsonStatus', '✅ 导出成功:' + msg.screenCount + ' 个屏幕', 'ok');
   }
 
-  // 🚀 生成 .red：code.js 准备好 scene.json，传回 ui.html 由 ui.html 调 Python
+  // 🚀 生成 .red：code.js 准备好 scene.json + 自动导出 sprite PNG，先上传再生成
   if (msg.type === 'gen_red_ready') {
     hideSizeWarn();
-    sendSceneToPython(msg.scene, msg.output_path);
+    uploadSpritesThenGenerate(msg.scene, msg.sprites || [], msg.output_path);
+  }
+
+  // 🔄 [v20.7.x+ 2026-05-15] 单图更新: code.js 把单张 PNG 字节 + 上下文传回, POST 给 Python
+  if (msg.type === 'update_single_image_ready') {
+    var sp = msg.sprite;  // { source_name, variant_name, layer_name, png_b64 }
+    var outputPath = msg.output_path;
+    setStatus('genRedStatus',
+      '正在上传 ' + sp.source_name + (sp.variant_name ? '/' + sp.variant_name : '') +
+      '/' + sp.layer_name + '.png 并重打图集...', 'running');
+    fetch(PYTHON_URL + '/api/update_image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sprite: sp,
+        output_path: outputPath
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(result) {
+      if (result.ok) {
+        setStatus('genRedStatus',
+          '✅ 已更新: ' + sp.layer_name + '.png, 重打 ' + (result.rebuilt || []).length + ' 个图集',
+          'ok');
+      } else {
+        setStatus('genRedStatus', '❌ ' + (result.error || '更新失败'), 'err');
+      }
+    })
+    .catch(function(err) {
+      setStatus('genRedStatus', '❌ Python 服务离线', 'err');
+    });
+  }
+
+  if (msg.type === 'update_single_image_error') {
+    setStatus('genRedStatus', '❌ ' + msg.message, 'err');
+  }
+
+  // [v20.7.x+ 2026-05-14] 自动导出 PNG 阶段的进度提示
+  if (msg.type === 'gen_red_progress') {
+    setStatus('genRedStatus', msg.message || '处理中...', 'running');
   }
 
   if (msg.type === 'gen_red_error') {
