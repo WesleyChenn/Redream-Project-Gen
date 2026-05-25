@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px; color: #1a1a1a;
+  background: #fff; overflow: hidden;
+  height: 620px; display: flex; flex-direction: column;
+}
+.top-bar {
+  padding: 12px 16px 0;
+  border-bottom: 1px solid #eee;
+  background: #fafafa; flex-shrink: 0;
+}
+.top-row { display: flex; align-items: center; margin-bottom: 10px; }
+.top-row h1 { font-size: 13px; font-weight: 700; flex: 1; }
+.version {
+  font-size: 10px; padding: 2px 8px; border-radius: 20px;
+  background: #e8f0fe; color: #1a5fb4; font-weight: 600;
+}
+.tabs { display: flex; gap: 2px; }
+.tab {
+  padding: 6px 12px; font-size: 11px; font-weight: 600;
+  color: #888; cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all .15s; user-select: none;
+}
+.tab.active { color: #1a73e8; border-bottom-color: #1a73e8; }
+.tab:hover:not(.active) { color: #555; }
+.page { display: none; flex: 1; flex-direction: column; overflow: hidden; padding: 12px 16px; }
+.page.active { display: flex; }
+.lib-status {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 7px; margin-bottom: 8px;
+  background: #f0f7ff; border: 1px solid #c8dfff;
+  font-size: 10.5px; color: #1a5fb4; font-weight: 500; flex-shrink: 0;
+}
+.lib-dot { width: 7px; height: 7px; border-radius: 50%; background: #c0c0c0; flex-shrink: 0; }
+.lib-dot.ok  { background: #34a853; }
+.lib-dot.err { background: #ea4335; }
+.label { font-size: 10.5px; font-weight: 600; color: #666; margin-bottom: 5px; flex-shrink: 0; }
+textarea {
+  width: 100%; flex: 1;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px; line-height: 1.55; padding: 8px 10px;
+  border: 1px solid #e0e0e0; border-radius: 7px;
+  resize: none; outline: none; color: #2c2c2c; background: #fafafa;
+  transition: border-color .15s, box-shadow .15s;
+}
+textarea:focus { border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,.12); background: #fff; }
+textarea::placeholder { color: #bbb; }
+.btn-row { display: flex; gap: 6px; margin-top: 8px; flex-shrink: 0; }
+.btn {
+  flex: 1; padding: 8px 0; border: none; border-radius: 7px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  transition: filter .15s, transform .1s;
+}
+.btn:hover  { filter: brightness(.92); }
+.btn:active { transform: scale(.97); }
+.btn-primary   { background: #1a73e8; color: #fff; flex: 2; }
+.btn-secondary { background: #f1f3f4; color: #444; }
+.btn-green     { background: #34a853; color: #fff; flex: 2; }
+.status {
+  margin-top: 8px; padding: 6px 9px; border-radius: 6px;
+  font-size: 11px; min-height: 20px;
+  background: #f5f5f5; color: #999; flex-shrink: 0;
+}
+.status.ok      { background: #e6f9ee; color: #1e8e3e; }
+.status.err     { background: #fce8e6; color: #c5221f; }
+.status.warn    { background: #fef7e0; color: #b06000; }
+.status.running { background: #e8f0fe; color: #1a5fb4; }
+.logline { margin-top: 4px; font-size: 10px; color: #aaa; min-height: 14px; flex-shrink: 0; font-family: 'SF Mono', Menlo, monospace; }
+.report {
+  margin-top: 8px; border-radius: 7px; font-size: 10px; line-height: 1.7;
+  display: none; flex-shrink: 0; max-height: 160px; overflow-y: auto;
+  border: 1px solid #e0e0e0; background: #fafafa;
+}
+.report.visible { display: block; }
+.report-line { padding: 1px 11px; white-space: pre-wrap; word-break: break-all; color: #555; font-family: 'SF Mono', Menlo, monospace; }
+.report-line:first-child { padding-top: 8px; }
+.report-line:last-child  { padding-bottom: 8px; }
+.report-line.ok   { color: #1e8e3e; }
+.report-line.warn { color: #b06000; }
+.report-line.err  { color: #c5221f; }
+.report-line.info { color: #1a5fb4; }
+.report-line.head { color: #1a1a1a; font-weight: 600; }
+.export-info {
+  padding: 10px 12px; border-radius: 8px;
+  background: #f8f9fa; border: 1px solid #e8eaed;
+  font-size: 11px; line-height: 1.7; color: #555;
+  margin-bottom: 10px; flex-shrink: 0;
+}
+.export-info b { color: #1a1a1a; }
+.export-output {
+  flex: 1; width: 100%;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px; line-height: 1.55; padding: 8px 10px;
+  border: 1px solid #e0e0e0; border-radius: 7px;
+  resize: none; outline: none; color: #2c2c2c; background: #fafafa;
+}
+.copy-hint { margin-top: 5px; font-size: 10px; color: #aaa; text-align: right; flex-shrink: 0; }
+.path-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-shrink: 0; }
+.path-row input {
+  flex: 1; padding: 6px 9px; font-size: 11px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  border: 1px solid #e0e0e0; border-radius: 6px;
+  outline: none; color: #2c2c2c; background: #fafafa;
+  transition: border-color .15s, box-shadow .15s;
+}
+.path-row input:focus { border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,.12); background: #fff; }
+.path-row label { font-size: 10.5px; font-weight: 600; color: #666; flex-shrink: 0; }
+.file-list {
+  flex: 1; min-height: 80px;
+  border: 1px solid #e0e0e0; border-radius: 7px;
+  background: #fafafa;
+  overflow-y: auto;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px;
+  padding: 6px 0;
+}
+.file-list:empty::before {
+  content: '生成的文件将显示在这里...';
+  color: #bbb;
+  font-family: Inter, sans-serif;
+  display: block;
+  padding: 8px 12px;
+}
+.file-row {
+  padding: 4px 12px;
+  cursor: pointer;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background .1s;
+}
+.file-row:hover { background: #eef4ff; color: #1a5fb4; }
+.file-row.error { color: #c5221f; }
+.svc-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10.5px; color: #888; margin-top: 4px;
+  flex-shrink: 0;
+}
+.svc-dot { width: 7px; height: 7px; border-radius: 50%; background: #c0c0c0; flex-shrink: 0; }
+.svc-dot.ok  { background: #34a853; }
+.svc-dot.err { background: #ea4335; }
+
+/* [v20.7+] INSTANCE 尺寸不一致警告框（.red tab） */
+.size-warn {
+  display: none;
+  margin-top: 8px;
+  border: 1px solid #f5c2c0;
+  background: #fff7f6;
+  border-radius: 7px;
+  padding: 10px 11px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  flex-shrink: 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.size-warn.visible { display: block; }
+.size-warn-title {
+  font-size: 11px; font-weight: 700; color: #c5221f;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}
+.size-warn-list {
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px; color: #5a1714;
+  background: #fdebe9; border-radius: 5px;
+  padding: 7px 9px; margin-bottom: 8px;
+  max-height: 110px; overflow-y: auto;
+  white-space: pre-wrap; word-break: break-all;
+}
+.size-warn-fix {
+  background: #fff;
+  border: 1px solid #f5d6d3;
+  border-radius: 5px;
+  padding: 7px 9px;
+  margin-bottom: 8px;
+  font-size: 10.5px;
+  line-height: 1.65;
+  color: #444;
+}
+.size-warn-fix b { color: #1a1a1a; }
+.size-warn-btns { display: flex; gap: 6px; }
+.size-warn-btns .btn { flex: 1; padding: 7px 0; font-size: 11px; }
+.btn-retry { background: #1a73e8; color: #fff; }
+.btn-force { background: #fff; color: #c5221f; border: 1px solid #f5c2c0; }
+.btn-force:hover { background: #fce8e6; }
+.btn-sync { background: #34a853; color: #fff; flex: 1; font-weight: 700; }
+.btn-split { background: #6f42c1; color: #fff; flex: 1; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-row">
+    <h1>Elsa UI 生成器</h1>
+    <span class="version">v20.7</span>
+  </div>
+  <div class="tabs">
+    <div class="tab active" data-tab="gen">▶ 生成</div>
+    <div class="tab" data-tab="export">⬇ 组件库</div>
+    <div class="tab" data-tab="exportjson">📄 导出JSON</div>
+    <div class="tab" data-tab="genred">🚀 生成 .red</div>
+  </div>
+</div>
+
+<!-- 生成页 -->
+<div class="page active" id="page-gen">
+  <div class="lib-status">
+    <div class="lib-dot" id="libDot"></div>
+    <span id="libText">正在检测「组件库」页面...</span>
+  </div>
+  <div class="label">结构化 JSON（支持 component_ref / COMPONENT_SET / 底板分离）</div>
+  <textarea id="jsonInput" placeholder="粘贴 Elsa 输出的 JSON..."></textarea>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="btnGen">▶ 生成 + 自检</button>
+    <button class="btn btn-secondary" id="btnDemo">示例</button>
+    <button class="btn btn-secondary" id="btnClear">清空</button>
+  </div>
+  <div class="status" id="genStatus">等待输入...</div>
+  <div class="logline" id="logLine"></div>
+  <div class="report" id="genReport"></div>
+</div>
+
+<!-- 导出组件库页 -->
+<div class="page" id="page-export">
+  <div class="export-info" style="flex-shrink:0;">
+    点击「导出」后，插件扫描 Figma 文件中名为 <b>「组件库」</b> 的页面，
+    将所有 <b>Component</b> 节点转为 <b>Elsa JSON 模板</b>。
+  </div>
+  <div class="btn-row" style="margin-bottom:8px; flex-shrink:0;">
+    <button class="btn btn-green" id="btnExport">⬇ 导出组件库 JSON</button>
+    <button class="btn btn-secondary" id="btnCopyExport">复制全部</button>
+  </div>
+  <div class="status" id="exportStatus" style="flex-shrink:0;">点击「导出」开始扫描...</div>
+  <textarea class="export-output" id="exportOutput" readonly placeholder="导出结果将显示在这里..." style="flex:1; min-height:0;"></textarea>
+  <div class="copy-hint" id="copyHint" style="flex-shrink:0;"></div>
+</div>
+
+<!-- 导出 JSON 页 -->
+<div class="page" id="page-exportjson">
+  <div class="export-info">
+    在 Figma 中<b>选中一个或多个 Frame</b>，点击「导出」，
+    生成可直接用于转换器的 <b>Wireframe JSON</b>。
+  </div>
+  <div class="btn-row" style="margin-bottom:8px; flex-shrink:0;">
+    <button class="btn btn-green" id="btnExportJson">📄 导出选中 Frame JSON</button>
+    <button class="btn btn-secondary" id="btnCopyJson">复制全部</button>
+  </div>
+  <div class="status" id="exportJsonStatus" style="flex-shrink:0;">点击「导出」开始...</div>
+  <textarea class="export-output" id="exportJsonOutput" readonly placeholder="导出结果将显示在这里..." style="flex:1; min-height:0;"></textarea>
+  <div class="copy-hint" id="copyJsonHint" style="flex-shrink:0;"></div>
+</div>
+
+<!-- 生成 .red 页 -->
+<div class="page" id="page-genred">
+  <div class="export-info">
+    在 Figma 中<b>选中一个或多个</b> <code>界面_</code>/<code>浮层_</code> 开头的 Frame，
+    点击下方按钮生成对应 <b>.red</b> 文件。
+    引用的子 CCB 自动连带生成。
+  </div>
+  <div class="path-row">
+    <label>📁 输出路径</label>
+    <input type="text" id="redOutputPath" placeholder="~/Desktop/red_output">
+  </div>
+  <div class="btn-row" style="flex-shrink:0;">
+    <button class="btn btn-primary" id="btnGenRed">🚀 生成选中屏幕的 .red 文件</button>
+    <button class="btn btn-secondary" id="btnOpenFinder">在 Finder 打开</button>
+    <button class="btn btn-secondary" id="btnUpdateImage" style="margin-top:8px;">🔄 更新选中图层(单图换图)</button>
+  </div>
+  <div class="status" id="genRedStatus" style="flex-shrink:0;">等待操作...</div>
+  <div class="svc-status">
+    <div class="svc-dot" id="svcDot"></div>
+    <span id="svcText">Python 服务: 未检测</span>
+    <span style="margin-left:auto; cursor:pointer; color:#1a73e8;" id="btnCheckSvc">[重检]</span>
+  </div>
+
+  <!-- [v20.7+] INSTANCE 尺寸不一致警告框 -->
+  <div class="size-warn" id="sizeWarn">
+    <div class="size-warn-title">
+      <span>⛔</span>
+      <span id="sizeWarnTitle">INSTANCE 尺寸与 Component 本体不一致</span>
+    </div>
+    <div class="size-warn-list" id="sizeWarnList"></div>
+    <div class="size-warn-fix">
+      <b>📌 修复方式选择</b><br>
+      <br>
+      <b>情况 A：所有尺寸应该是同一个</b>（设计师误拖了边框）<br>
+      → 在屏幕里选中<b>目标尺寸</b>的那个 INSTANCE → 点下方 <b>「🔁 用选中 INSTANCE 同步全部尺寸」</b><br>
+      插件会把 main Component + 所有同源 INSTANCE 都同步到此尺寸。<br>
+      <br>
+      <b>情况 B：不同尺寸代表不同 Variant</b>（如"大档/小档"两个版本）<br>
+      → 选中所有需要拆分的 INSTANCE（≥2 个）→ 点下方 <b>「📐 按尺寸拆分为多个 Variant」</b><br>
+      插件会按尺寸分组：实例数最多的尺寸保留原 Variant，其余尺寸 clone 出新 Variant 并把对应 INSTANCE 重指向。<br>
+      <br>
+      <b>替代方案（手动）</b>：去 <code>📦_组件库</code> 直接改 Component 本体 W/H → 框选屏幕里所有 INSTANCE → 右键 <code>Reset all changes</code>。<br>
+      <i style="color:#999;">（新版 Figma 已删除 "Push to main component"，无法走旧版 ⌥⌘Y 路径）</i>
+    </div>
+    <div class="size-warn-btns" style="margin-bottom:6px;">
+      <button class="btn btn-sync" id="btnSyncSize">🔁 用选中 INSTANCE 同步全部尺寸</button>
+    </div>
+    <div class="size-warn-btns" style="margin-bottom:6px;">
+      <button class="btn btn-split" id="btnSplitSize">📐 按尺寸拆分为多个 Variant</button>
+    </div>
+    <div class="size-warn-btns">
+      <button class="btn btn-retry" id="btnRetryGenRed">🔄 重新尝试生成</button>
+      <button class="btn btn-force" id="btnForceGenRed">⛔ 忽略并强制生成</button>
+    </div>
+  </div>
+
+  <div class="label" style="margin-top:8px;">已生成文件 (单击在 Finder 打开):</div>
+  <div class="file-list" id="redFileList"></div>
+</div>
+
+<script>
+var DEMO = {"meta":{"design_size":{"w":1080,"h":2400}},"screens":[{"id":"screen_demo","name":"界面_示例","width":1080,"height":2400,"layers":[{"type":"RECTANGLE","name":"背景图_全屏","x":0,"y":0,"w":1080,"h":2400,"fill":"#E8E8E8","constraints":{"horizontal":"SCALE","vertical":"SCALE"}},{"type":"TEXT","name":"文本_标题","x":0,"y":100,"w":1080,"h":120,"content":"示例界面","font_size":72,"font_weight":"Bold","textAlignHorizontal":"CENTER"}]}],"flow":[]};
+
+// 选项卡
+document.querySelectorAll('.tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById('page-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+function setStatus(id, msg, type) {
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'status' + (type ? ' ' + type : '');
+}
+function setLog(msg) { document.getElementById('logLine').textContent = msg; }
+
+function classifyLine(line) {
+  var t = line.trim();
+  if (!t) return 'empty';
+  if (t.startsWith('【') || t.startsWith('##')) return 'head';
+  if (t.startsWith('✅')) return 'ok';
+  if (t.startsWith('⚠') || t.startsWith('  •')) return 'warn';
+  if (t.startsWith('❌')) return 'err';
+  if (t.startsWith('💡') || t.startsWith('◆')) return 'info';
+  return '';
+}
+
+function showReport(text) {
+  var el = document.getElementById('genReport');
+  el.innerHTML = '';
+  (text || '').split('\n').forEach(function(line) {
+    var div = document.createElement('div');
+    var cls = classifyLine(line);
+    div.className = 'report-line' + (cls && cls !== 'empty' ? ' ' + cls : '');
+    div.textContent = line;
+    el.appendChild(div);
+  });
+  el.classList.add('visible');
+}
+
+// 生成页按钮
+document.getElementById('btnDemo').onclick = function() {
+  document.getElementById('jsonInput').value = JSON.stringify(DEMO, null, 2);
+  document.getElementById('genReport').classList.remove('visible');
+  setLog('');
+  setStatus('genStatus', '示例已加载，点击「生成」');
+};
+
+document.getElementById('btnClear').onclick = function() {
+  document.getElementById('jsonInput').value = '';
+  document.getElementById('genReport').classList.remove('visible');
+  setLog('');
+  setStatus('genStatus', '等待输入...');
+};
+
+document.getElementById('btnGen').onclick = function() {
+  var raw = document.getElementById('jsonInput').value.trim();
+  if (!raw) { setStatus('genStatus', '请先粘贴 JSON', 'err'); return; }
+  var data;
+  try { data = JSON.parse(raw); }
+  catch(e) { setStatus('genStatus', 'JSON 解析失败：' + e.message, 'err'); return; }
+  document.getElementById('genReport').classList.remove('visible');
+  setLog('');
+  setStatus('genStatus', '开始生成...', 'running');
+  parent.postMessage({ pluginMessage: { type: 'generate', data: data } }, '*');
+};
+
+// 导出组件库按钮
+document.getElementById('btnExport').onclick = function() {
+  setStatus('exportStatus', '正在扫描「组件库」页面...', 'running');
+  document.getElementById('exportOutput').value = '';
+  document.getElementById('copyHint').textContent = '';
+  parent.postMessage({ pluginMessage: { type: 'export_lib' } }, '*');
+};
+
+document.getElementById('btnCopyExport').onclick = function() {
+  var txt = document.getElementById('exportOutput').value;
+  if (!txt) return;
+  navigator.clipboard.writeText(txt).then(function() {
+    document.getElementById('copyHint').textContent = '✅ 已复制';
+    setTimeout(function() { document.getElementById('copyHint').textContent = ''; }, 2000);
+  });
+};
+
+// 导出 JSON 按钮
+document.getElementById('btnExportJson').onclick = function() {
+  setStatus('exportJsonStatus', '正在导出当前页面...', 'running');
+  document.getElementById('exportJsonOutput').value = '';
+  document.getElementById('copyJsonHint').textContent = '';
+  parent.postMessage({ pluginMessage: { type: 'export_json' } }, '*');
+};
+
+document.getElementById('btnCopyJson').onclick = function() {
+  var txt = document.getElementById('exportJsonOutput').value;
+  if (!txt) return;
+  navigator.clipboard.writeText(txt).then(function() {
+    document.getElementById('copyJsonHint').textContent = '✅ 已复制';
+    setTimeout(function() { document.getElementById('copyJsonHint').textContent = ''; }, 2000);
+  });
+};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🚀 生成 .red 文件
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+var PYTHON_URL = 'http://localhost:5001';
+var DEFAULT_OUTPUT_PATH = '~/Desktop/red_output';
+
+// 路径输入框：插件加载时请求 code.js 读取存储的值
+parent.postMessage({ pluginMessage: { type: 'load_red_path' } }, '*');
+
+// 用户改路径时，通知 code.js 保存
+document.getElementById('redOutputPath').addEventListener('change', function(e) {
+  var val = e.target.value.trim() || DEFAULT_OUTPUT_PATH;
+  e.target.value = val;
+  parent.postMessage({ pluginMessage: { type: 'save_red_path', path: val } }, '*');
+});
+
+// 检测 Python 服务连通性
+function checkPythonService() {
+  var dot = document.getElementById('svcDot');
+  var text = document.getElementById('svcText');
+  dot.className = 'svc-dot';
+  text.textContent = 'Python 服务: 检测中...';
+  fetch(PYTHON_URL + '/api/ping', { method: 'GET' })
+    .then(function(r) {
+      if (r.ok) {
+        dot.className = 'svc-dot ok';
+        text.textContent = 'Python 服务: 在线 (' + PYTHON_URL + ')';
+      } else {
+        dot.className = 'svc-dot err';
+        text.textContent = 'Python 服务: 响应异常';
+      }
+    })
+    .catch(function() {
+      dot.className = 'svc-dot err';
+      text.textContent = 'Python 服务: 离线 (请运行 python3 app.py)';
+    });
+}
+
+// 切到 🚀 tab 时自动检测一次
+document.querySelector('.tab[data-tab="genred"]').addEventListener('click', checkPythonService);
+document.getElementById('btnCheckSvc').onclick = checkPythonService;
+
+// 生成 .red 按钮
+document.getElementById('btnGenRed').onclick = function() {
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '正在收集选中屏幕...', 'running');
+  document.getElementById('redFileList').innerHTML = '';
+  hideSizeWarn();
+  // 通知 code.js 收集选中屏幕 + 反查 Component → 整理成 scene.json
+  parent.postMessage({
+    pluginMessage: { type: 'gen_red', output_path: outputPath }
+  }, '*');
+};
+
+// [v20.7+] 警告框相关
+function hideSizeWarn() {
+  var w = document.getElementById('sizeWarn');
+  if (w) w.classList.remove('visible');
+}
+function showSizeWarn(warnings) {
+  var list = document.getElementById('sizeWarnList');
+  var title = document.getElementById('sizeWarnTitle');
+  list.innerHTML = '';
+  var lines = [];
+  (warnings || []).forEach(function(it) {
+    if (it.kind === 'inconsistent_instance_sizes') {
+      lines.push('❌ Component "' + it.component + '" 的 INSTANCE 尺寸不一致:');
+      (it.instances || []).forEach(function(i) {
+        lines.push('     - ' + i.name + ': ' + i.w + '×' + i.h);
+      });
+    } else if (it.kind === 'instance_vs_component_mismatch') {
+      lines.push('❌ ' + it.component + ' / ' + it.instance_name +
+                 ': INSTANCE ' + it.instance_size.w + '×' + it.instance_size.h +
+                 '  ≠  Component 本体 ' + it.component_size.w + '×' + it.component_size.h);
+    }
+  });
+  list.textContent = lines.join('\n');
+  title.textContent = 'INSTANCE 尺寸与 Component 本体不一致（' + (warnings || []).length + ' 条）';
+  document.getElementById('sizeWarn').classList.add('visible');
+}
+
+// 重新尝试 - 不带 force,正常走一遍
+document.getElementById('btnRetryGenRed').onclick = function() {
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '重新检测 INSTANCE 尺寸...', 'running');
+  hideSizeWarn();
+  parent.postMessage({
+    pluginMessage: { type: 'gen_red', output_path: outputPath }
+  }, '*');
+};
+
+// [v20.7+] 用选中 INSTANCE 同步全部尺寸 — 替代被新版 Figma 删掉的 Push to main
+document.getElementById('btnSyncSize').onclick = function() {
+  setStatus('genRedStatus', '正在同步 INSTANCE 尺寸到 main + 兄弟实例...', 'running');
+  parent.postMessage({
+    pluginMessage: { type: 'sync_instance_size' }
+  }, '*');
+};
+
+// [v20.7+] 按尺寸拆分为多个 Variant — 把不同尺寸视作不同档位
+document.getElementById('btnSplitSize').onclick = function() {
+  var ok = confirm(
+    '📐 按尺寸拆分为多个 Variant\n\n' +
+    '操作:\n' +
+    '  1. 在屏幕里选中所有要拆分的 INSTANCE (≥2 个)\n' +
+    '  2. 它们必须都引用同一个 Component Set\n' +
+    '  3. 实例数最多的尺寸保留原 Variant\n' +
+    '  4. 其余尺寸自动 clone 新 Variant + 重指向\n\n' +
+    '会修改 Component Set,继续吗?'
+  );
+  if (!ok) return;
+  setStatus('genRedStatus', '正在按尺寸拆分 Variant...', 'running');
+  parent.postMessage({
+    pluginMessage: { type: 'split_instance_by_size' }
+  }, '*');
+};
+
+// 忽略并强制生成 - 二次确认后带 force:true
+document.getElementById('btnForceGenRed').onclick = function() {
+  var ok = confirm(
+    '⚠️ 强制生成会按当前不一致的尺寸生成 .red\n\n' +
+    '引擎按数据如实生成时:\n' +
+    '  • 主屏父 CCNode 用 INSTANCE 尺寸\n' +
+    '  • 子 CCB 用 Component 本体尺寸\n' +
+    '  → 父子尺寸不匹配,渲染视觉错位\n\n' +
+    '确认要继续吗?'
+  );
+  if (!ok) return;
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '⚠ 强制生成中（尺寸已知不一致）...', 'warn');
+  hideSizeWarn();
+  parent.postMessage({
+    pluginMessage: { type: 'gen_red', output_path: outputPath, force: true }
+  }, '*');
+};
+
+// 🔄 [v20.7.x+ 2026-05-15] 单图增量更新: 设计师 Figma 改一张图后, 点这个按钮一键替换
+document.getElementById('btnUpdateImage').onclick = function() {
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  setStatus('genRedStatus', '正在处理选中图层...', 'running');
+  parent.postMessage({
+    pluginMessage: { type: 'update_single_image', output_path: outputPath }
+  }, '*');
+};
+
+// 在 Finder 打开（让 Python 端打开输出目录）
+document.getElementById('btnOpenFinder').onclick = function() {
+  var outputPath = document.getElementById('redOutputPath').value.trim() || DEFAULT_OUTPUT_PATH;
+  fetch(PYTHON_URL + '/api/open_finder', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path: outputPath })
+  }).catch(function(err) {
+    setStatus('genRedStatus', '❌ Python 服务离线，无法打开 Finder', 'err');
+  });
+};
+
+// 文件列表点击 → 让 Python 在 Finder 中显示
+function bindFileRowClick(row, fullPath) {
+  row.onclick = function() {
+    fetch(PYTHON_URL + '/api/open_finder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: fullPath })
+    }).catch(function() { /* ignore */ });
+  };
+}
+
+// [v20.7.x+ 2026-05-14] 先把自动导出的 sprite PNG 字节 POST 到 /api/upload_images,
+// 再调 /api/generate_red. 这样 Flask 的 process_images 能找到图 + 生成 plist + 写引用.
+function uploadSpritesThenGenerate(scene, sprites, outputPath) {
+  var n = (sprites || []).length;
+  if (n === 0) {
+    setStatus('genRedStatus', '无 sprite 图层 (Figma 中没找到 图片_/图标_/背景_/插图_/特效_ 命名), 直接生成 .red...', 'running');
+    return sendSceneToPython(scene, outputPath);
+  }
+  setStatus('genRedStatus', '正在上传 ' + n + ' 张 sprite PNG 到 Python 服务...', 'running');
+  fetch(PYTHON_URL + '/api/upload_images', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sprites: sprites })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(result) {
+    if (!result.ok) {
+      setStatus('genRedStatus', '❌ 图片上传失败: ' + (result.error || '未知错误'), 'err');
+      return;
+    }
+    setStatus('genRedStatus', '✅ 已上传 ' + result.count + ' 张 PNG → ' + (result.figma_export_root || '') + ', 继续生成 .red...', 'running');
+    sendSceneToPython(scene, outputPath);
+  })
+  .catch(function(err) {
+    setStatus('genRedStatus', '❌ 上传图片时无法连接 Python 服务', 'err');
+  });
+}
+
+// scene.json 准备好后，code.js 把数据传回 ui.html，由 ui.html 调 Python
+function sendSceneToPython(scene, outputPath) {
+  setStatus('genRedStatus', '正在调用 Python 生成 .red...', 'running');
+  fetch(PYTHON_URL + '/api/generate_red', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      output_path: outputPath,
+      scene: scene
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(result) {
+    if (result.ok) {
+      setStatus('genRedStatus',
+        '✅ 生成成功: ' + (result.files || []).length + ' 个文件',
+        'ok');
+      var list = document.getElementById('redFileList');
+      list.innerHTML = '';
+      (result.files || []).forEach(function(f) {
+        var row = document.createElement('div');
+        row.className = 'file-row';
+        row.textContent = '📄 ' + f;
+        bindFileRowClick(row, (result.output_dir || outputPath) + '/' + f);
+        list.appendChild(row);
+      });
+    } else {
+      setStatus('genRedStatus', '❌ ' + (result.error || '生成失败'), 'err');
+      var list = document.getElementById('redFileList');
+      list.innerHTML = '';
+      var row = document.createElement('div');
+      row.className = 'file-row error';
+      row.textContent = '失败阶段: ' + (result.stage || 'unknown');
+      list.appendChild(row);
+      if (result.log) {
+        (result.log || '').split('\n').forEach(function(line) {
+          if (!line.trim()) return;
+          var l = document.createElement('div');
+          l.className = 'file-row error';
+          l.textContent = line;
+          list.appendChild(l);
+        });
+      }
+    }
+  })
+  .catch(function(err) {
+    setStatus('genRedStatus',
+      '❌ 无法连接 Python 服务，请运行 python3 app.py',
+      'err');
+  });
+}
+
+
+
+
+
+// 消息处理
+window.onmessage = function(e) {
+  var msg = e.data.pluginMessage;
+  if (!msg) return;
+
+  if (msg.type === 'log') {
+    setLog(msg.msg);
+    if (msg.msg.indexOf('✅ 组件库') >= 0) {
+      document.getElementById('libDot').className = 'lib-dot ok';
+      document.getElementById('libText').textContent = msg.msg.replace('✅ ', '');
+    } else if (msg.msg.indexOf('⚠ 未找到') >= 0) {
+      document.getElementById('libDot').className = 'lib-dot err';
+      document.getElementById('libText').textContent = '未找到「组件库」页面';
+    }
+  }
+
+  if (msg.type === 'progress') {
+    setStatus('genStatus', msg.message, 'running');
+  }
+
+  if (msg.type === 'done') {
+    var hasIssues = (msg.issueCount || 0) > 0;
+    setStatus('genStatus',
+      hasIssues ? '⚠ 完成，' + msg.issueCount + ' 个问题' : '✅ 生成完成（' + msg.count + ' 个屏幕）',
+      hasIssues ? 'warn' : 'ok');
+    if (msg.report) showReport(msg.report);
+    setLog('');
+  }
+
+  if (msg.type === 'error') {
+    setStatus('genStatus', '❌ ' + msg.message, 'err');
+  }
+
+  if (msg.type === 'export_done') {
+    if (msg.data.error) { setStatus('exportStatus', '❌ ' + msg.data.error, 'err'); return; }
+    var count = Object.keys(msg.data).length;
+    document.getElementById('exportOutput').value = JSON.stringify(msg.data, null, 2);
+    setStatus('exportStatus', '✅ 导出成功：' + count + ' 个组件', 'ok');
+  }
+
+  if (msg.type === 'export_json_done') {
+    if (msg.error) { setStatus('exportJsonStatus', '❌ ' + msg.error, 'err'); return; }
+    document.getElementById('exportJsonOutput').value = JSON.stringify(msg.data, null, 2);
+    setStatus('exportJsonStatus', '✅ 导出成功:' + msg.screenCount + ' 个屏幕', 'ok');
+  }
+
+  // 🚀 生成 .red：code.js 准备好 scene.json + 自动导出 sprite PNG，先上传再生成
+  if (msg.type === 'gen_red_ready') {
+    hideSizeWarn();
+    uploadSpritesThenGenerate(msg.scene, msg.sprites || [], msg.output_path);
+  }
+
+  // 🔄 [v20.7.x+ 2026-05-15] 单图更新: code.js 把单张 PNG 字节 + 上下文传回, POST 给 Python
+  if (msg.type === 'update_single_image_ready') {
+    var sp = msg.sprite;  // { source_name, variant_name, layer_name, png_b64 }
+    var outputPath = msg.output_path;
+    setStatus('genRedStatus',
+      '正在上传 ' + sp.source_name + (sp.variant_name ? '/' + sp.variant_name : '') +
+      '/' + sp.layer_name + '.png 并重打图集...', 'running');
+    fetch(PYTHON_URL + '/api/update_image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sprite: sp,
+        output_path: outputPath
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(result) {
+      if (result.ok) {
+        setStatus('genRedStatus',
+          '✅ 已更新: ' + sp.layer_name + '.png, 重打 ' + (result.rebuilt || []).length + ' 个图集',
+          'ok');
+      } else {
+        setStatus('genRedStatus', '❌ ' + (result.error || '更新失败'), 'err');
+      }
+    })
+    .catch(function(err) {
+      setStatus('genRedStatus', '❌ Python 服务离线', 'err');
+    });
+  }
+
+  if (msg.type === 'update_single_image_error') {
+    setStatus('genRedStatus', '❌ ' + msg.message, 'err');
+  }
+
+  // [v20.7.x+ 2026-05-14] 自动导出 PNG 阶段的进度提示
+  if (msg.type === 'gen_red_progress') {
+    setStatus('genRedStatus', msg.message || '处理中...', 'running');
+  }
+
+  if (msg.type === 'gen_red_error') {
+    setStatus('genRedStatus', '❌ ' + msg.message, 'err');
+  }
+
+  // [v20.7+] INSTANCE 尺寸不一致 — code.js 阻止了生成,显示详情让用户决定
+  if (msg.type === 'gen_red_size_blocked') {
+    setStatus('genRedStatus',
+      '⛔ 阻止生成: INSTANCE 尺寸不一致 ' + (msg.warnings || []).length + ' 条',
+      'err');
+    showSizeWarn(msg.warnings || []);
+    document.getElementById('redFileList').innerHTML = '';
+  }
+
+  // [v20.7+] 同步 INSTANCE 尺寸结果
+  if (msg.type === 'sync_instance_size_done') {
+    var r = msg.result || {};
+    if (r.ok) {
+      setStatus('genRedStatus',
+        '✅ 已同步 ' + r.component_name + ' → ' +
+        r.target_size.w + '×' + r.target_size.h +
+        '（main + ' + r.siblings_resized + ' 个 INSTANCE）。点「重新尝试生成」继续。',
+        'ok');
+    } else {
+      setStatus('genRedStatus', '❌ 同步失败: ' + r.error, 'err');
+    }
+  }
+
+  // [v20.7+] 按尺寸拆分 Variant 结果
+  if (msg.type === 'split_instance_by_size_done') {
+    var sr = msg.result || {};
+    if (sr.ok) {
+      var details = (sr.variants_created || []).map(function(v) {
+        return v.name + ' (' + v.w + '×' + v.h + ', ' + v.instances + '个)';
+      }).join(', ');
+      setStatus('genRedStatus',
+        '✅ 已拆分 ' + sr.component_set + ' → ' +
+        sr.total_sizes + ' 个 Variant。新增: ' + details + '。点「重新尝试生成」继续。',
+        'ok');
+    } else {
+      setStatus('genRedStatus', '❌ 拆分失败: ' + sr.error, 'err');
+    }
+  }
+
+  // 加载存储的输出路径
+  if (msg.type === 'red_path_loaded') {
+    document.getElementById('redOutputPath').value = msg.path || DEFAULT_OUTPUT_PATH;
+  }
+
+};
+</script>
+</body>
+</html>

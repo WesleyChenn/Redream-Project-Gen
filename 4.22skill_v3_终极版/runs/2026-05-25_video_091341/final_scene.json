@@ -1,0 +1,3381 @@
+{
+  "screens": [
+    {
+      "name": "界面_主屏",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "FRAME",
+          "name": "组_顶部插画区",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 488,
+          "layoutMode": "NONE",
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_顶部插画",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 488,
+              "element_class": "static"
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_信息",
+              "x": 13,
+              "y": 16,
+              "w": 80,
+              "h": 80,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_信息",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "element_class": "static",
+                  "corner_radius": 40
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_信息",
+                  "x": 0,
+                  "y": 15,
+                  "h": 50,
+                  "content": "!",
+                  "element_class": "static",
+                  "font_size": 44,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 80
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_宝箱",
+              "x": 870,
+              "y": 30,
+              "w": 130,
+              "h": 145,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_宝箱_入口",
+                  "x": 0,
+                  "y": 0,
+                  "w": 130,
+                  "h": 130,
+                  "element_class": "static",
+                  "corner_radius": 65
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_宝箱_入口",
+                  "x": 20,
+                  "y": 15,
+                  "w": 90,
+                  "h": 100,
+                  "element_class": "static"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_收藏banner",
+              "x": 248,
+              "y": 380,
+              "w": 540,
+              "h": 108,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_收藏banner",
+                  "x": 0,
+                  "y": 0,
+                  "w": 540,
+                  "h": 108,
+                  "element_class": "static",
+                  "corner_radius": 54
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_收藏标题",
+                  "x": 0,
+                  "y": 25,
+                  "h": 65,
+                  "content": "收藏!",
+                  "element_class": "static",
+                  "font_size": 64,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 540
+                }
+              ]
+            }
+          ],
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "组_奖励进度面板",
+          "x": 30,
+          "y": 488,
+          "w": 1020,
+          "h": 622,
+          "layoutMode": "NONE",
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_奖励物板",
+              "x": 0,
+              "y": 0,
+              "w": 1020,
+              "h": 360,
+              "element_class": "static",
+              "corner_radius": 40
+            },
+            {
+              "type": "FRAME",
+              "name": "组_奖励chip",
+              "x": 380,
+              "y": -30,
+              "w": 260,
+              "h": 80,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_奖励chip",
+                  "x": 0,
+                  "y": 0,
+                  "w": 260,
+                  "h": 80,
+                  "element_class": "static",
+                  "corner_radius": 40
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_奖励chip",
+                  "x": 0,
+                  "y": 12,
+                  "h": 50,
+                  "content": "奖励",
+                  "element_class": "static",
+                  "font_size": 44,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 260
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_奖励物横排",
+              "x": 30,
+              "y": 60,
+              "w": 960,
+              "h": 280,
+              "layoutMode": "HORIZONTAL",
+              "children": [
+                {
+                  "type": "INSTANCE",
+                  "name": "组_奖励物_1",
+                  "component_name": "奖励物",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 200,
+                  "h": 200,
+                  "overrides": {
+                    "文本_奖励物_数量": "x10000"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "组_奖励物_2",
+                  "component_name": "奖励物",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 200,
+                  "h": 200,
+                  "overrides": {
+                    "文本_奖励物_数量": "x10"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "组_奖励物_3",
+                  "component_name": "奖励物",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 200,
+                  "h": 200,
+                  "overrides": {
+                    "文本_奖励物_数量": "x10"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "组_奖励物_4",
+                  "component_name": "奖励物",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 200,
+                  "h": 200,
+                  "overrides": {
+                    "文本_奖励物_数量": "x10"
+                  }
+                }
+              ],
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 30,
+              "paddingLeft": 30,
+              "paddingRight": 30
+            },
+            {
+              "type": "FRAME",
+              "name": "组_进度_星卡",
+              "x": 50,
+              "y": 400,
+              "w": 920,
+              "h": 90,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_星卡",
+                  "x": 0,
+                  "y": 0,
+                  "w": 920,
+                  "h": 90,
+                  "element_class": "static",
+                  "corner_radius": 45
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "进度条_星卡",
+                  "x": 10,
+                  "y": 10,
+                  "w": 900,
+                  "h": 70,
+                  "element_class": "static",
+                  "corner_radius": 35
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_星卡chip",
+                  "x": -20,
+                  "y": -10,
+                  "w": 110,
+                  "h": 110,
+                  "layoutMode": "NONE",
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_星卡chip",
+                      "x": 0,
+                      "y": 0,
+                      "w": 110,
+                      "h": 110,
+                      "element_class": "static",
+                      "corner_radius": 20
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "图标_星",
+                      "x": 25,
+                      "y": 25,
+                      "w": 60,
+                      "h": 60,
+                      "element_class": "static"
+                    }
+                  ]
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_星卡_进度",
+                  "x": 0,
+                  "y": 15,
+                  "h": 50,
+                  "content": "2/135",
+                  "element_class": "dynamic",
+                  "font_size": 42,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 920
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_倒计时",
+              "x": 385,
+              "y": 520,
+              "w": 250,
+              "h": 80,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_倒计时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 250,
+                  "h": 80,
+                  "element_class": "static",
+                  "corner_radius": 40
+                },
+                {
+                  "type": "FRAME",
+                  "name": "内容区_倒计时",
+                  "x": 0,
+                  "y": 0,
+                  "w": 250,
+                  "h": 80,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "图标_倒计时",
+                      "x": 0,
+                      "y": 0,
+                      "w": 50,
+                      "h": 50,
+                      "element_class": "static"
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_倒计时",
+                      "x": 0,
+                      "y": 0,
+                      "h": 50,
+                      "content": "32d14h",
+                      "element_class": "dynamic",
+                      "font_size": 38,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "CENTER",
+                      "w": 180
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 10,
+                  "paddingLeft": 20,
+                  "paddingRight": 20
+                }
+              ]
+            }
+          ],
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "容器_收集列表滚动区",
+          "x": 30,
+          "y": 1110,
+          "w": 1020,
+          "h": 1046,
+          "layoutMode": "VERTICAL",
+          "children": [
+            {
+              "type": "FRAME",
+              "name": "组_滚动内容",
+              "x": 0,
+              "y": 0,
+              "w": 1020,
+              "h": 0,
+              "layoutMode": "VERTICAL",
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "组_行",
+                  "x": 0,
+                  "y": 0,
+                  "w": 1020,
+                  "h": 490,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "绿",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "運動裝備"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "橙",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "飲品世界"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "1/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "常态",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "红",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "速食狂歡"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 30
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_行",
+                  "x": 0,
+                  "y": 0,
+                  "w": 1020,
+                  "h": 490,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "黄",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "玩具樂園"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "紫",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "水果天地"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "绿",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "甜點誘惑"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "1/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "常态",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 30
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_行",
+                  "x": 0,
+                  "y": 0,
+                  "w": 1020,
+                  "h": 490,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "绿",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "戶外露營"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "蓝",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "辦公神器"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "紫",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "清潔用品"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 30
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_行",
+                  "x": 0,
+                  "y": 0,
+                  "w": 1020,
+                  "h": 490,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "紫",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "潮流服飾"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "橙",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "數碼產品"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "绿",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "家居好物"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 30
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_行",
+                  "x": 0,
+                  "y": 0,
+                  "w": 1020,
+                  "h": 490,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "绿",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "藝術品"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "蓝",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "旅行必備"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_收集类别",
+                      "x": 0,
+                      "y": 0,
+                      "w": 310,
+                      "h": 490,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_收集物",
+                          "component_name": "收集物",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 0,
+                          "w": 310,
+                          "h": 310
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_文本卡_类别",
+                          "component_name": "文本卡_类别",
+                          "variant": "蓝",
+                          "x": 0,
+                          "y": 350,
+                          "w": 310,
+                          "h": 60,
+                          "overrides": {
+                            "文本_类别": "節日限定"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "组_进度_收集",
+                          "component_name": "进度条_收集",
+                          "variant": "常态",
+                          "x": 0,
+                          "y": 420,
+                          "w": 310,
+                          "h": 50,
+                          "overrides": {
+                            "文本_收集_进度": "0/9"
+                          }
+                        },
+                        {
+                          "type": "INSTANCE",
+                          "name": "角标_New",
+                          "component_name": "角标_New",
+                          "variant": "空",
+                          "x": 220,
+                          "y": 0,
+                          "w": 110,
+                          "h": 80
+                        }
+                      ]
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 30
+                }
+              ],
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "layoutSizingHorizontal": "FIXED",
+              "layoutSizingVertical": "HUG",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 40,
+              "paddingTop": 20,
+              "paddingBottom": 20
+            }
+          ],
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "clip_content": true,
+          "overflow": "VERTICAL",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "组_底部tab",
+          "x": 0,
+          "y": 2156,
+          "w": 1080,
+          "h": 244,
+          "layoutMode": "HORIZONTAL",
+          "children": [
+            {
+              "type": "INSTANCE",
+              "name": "按钮_tab",
+              "component_name": "tab_按钮",
+              "variant": "購物未选中",
+              "x": 0,
+              "y": 0,
+              "w": 195,
+              "h": 220
+            },
+            {
+              "type": "INSTANCE",
+              "name": "按钮_tab",
+              "component_name": "tab_按钮",
+              "variant": "獎杯未选中",
+              "x": 0,
+              "y": 0,
+              "w": 195,
+              "h": 220
+            },
+            {
+              "type": "INSTANCE",
+              "name": "按钮_tab",
+              "component_name": "tab_按钮",
+              "variant": "家未选中",
+              "x": 0,
+              "y": 0,
+              "w": 195,
+              "h": 220
+            },
+            {
+              "type": "INSTANCE",
+              "name": "按钮_tab",
+              "component_name": "tab_按钮",
+              "variant": "花未选中",
+              "x": 0,
+              "y": 0,
+              "w": 195,
+              "h": 220
+            },
+            {
+              "type": "INSTANCE",
+              "name": "按钮_tab",
+              "component_name": "tab_按钮",
+              "variant": "收藏选中",
+              "x": 0,
+              "y": 0,
+              "w": 195,
+              "h": 220
+            }
+          ],
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "MAX",
+          "itemSpacing": 0,
+          "paddingTop": 24,
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "BOTTOM"
+          }
+        }
+      ],
+      "flow": [
+        {
+          "trigger": "ON_CLICK",
+          "from": "界面_主屏",
+          "from_node": "按钮_宝箱",
+          "to": "浮层_卡片星星",
+          "animation": "dissolve 300ms (OVERLAY)",
+          "_note": "来源未确认 (Show Taps 未开); S4 候选: 按钮_宝箱 [极高契合]"
+        }
+      ]
+    },
+    {
+      "name": "浮层_卡片星星",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "RECTANGLE",
+          "name": "遮罩_浮层背景",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 2400,
+          "element_class": "static",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "弹窗_卡片星星",
+          "x": 40,
+          "y": 98,
+          "w": 999,
+          "h": 2080,
+          "layoutMode": "NONE",
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_弹窗",
+              "x": 0,
+              "y": 0,
+              "w": 999,
+              "h": 2080,
+              "element_class": "static",
+              "corner_radius": 50
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_关闭",
+              "x": 815,
+              "y": 30,
+              "w": 100,
+              "h": 100,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_关闭",
+                  "x": 0,
+                  "y": 0,
+                  "w": 100,
+                  "h": 100,
+                  "element_class": "static",
+                  "corner_radius": 50
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_关闭",
+                  "x": 0,
+                  "y": 15,
+                  "h": 70,
+                  "content": "×",
+                  "element_class": "static",
+                  "font_size": 60,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 100
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_banner_卡片星星",
+              "x": 180,
+              "y": -8,
+              "w": 645,
+              "h": 145,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_banner",
+                  "x": 0,
+                  "y": 0,
+                  "w": 645,
+                  "h": 145,
+                  "element_class": "static",
+                  "corner_radius": 72
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_banner_标题",
+                  "x": 0,
+                  "y": 35,
+                  "h": 70,
+                  "content": "卡片星星",
+                  "element_class": "static",
+                  "font_size": 64,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 645
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_弹窗内容",
+              "x": 30,
+              "y": 200,
+              "w": 939,
+              "h": 1850,
+              "layoutMode": "VERTICAL",
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "组_3礼物卡横排",
+                  "x": 0,
+                  "y": 0,
+                  "w": 939,
+                  "h": 320,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "INSTANCE",
+                      "name": "组_礼物卡_1",
+                      "component_name": "组_礼物卡",
+                      "variant": "蓝",
+                      "x": 0,
+                      "y": 0,
+                      "w": 290,
+                      "h": 320,
+                      "overrides": {
+                        "文本_物品名": "Ikebana"
+                      }
+                    },
+                    {
+                      "type": "INSTANCE",
+                      "name": "组_礼物卡_2",
+                      "component_name": "组_礼物卡",
+                      "variant": "紫",
+                      "x": 0,
+                      "y": 0,
+                      "w": 290,
+                      "h": 320,
+                      "overrides": {
+                        "文本_物品名": "Handle"
+                      }
+                    },
+                    {
+                      "type": "INSTANCE",
+                      "name": "组_礼物卡_3",
+                      "component_name": "组_礼物卡",
+                      "variant": "浅",
+                      "x": 0,
+                      "y": 0,
+                      "w": 290,
+                      "h": 320,
+                      "overrides": {
+                        "文本_物品名": "Ice cream"
+                      }
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 25
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_提示",
+                  "x": 30,
+                  "y": 0,
+                  "h": 100,
+                  "content": "使用你的重複的卡片星星打開箱子!",
+                  "element_class": "static",
+                  "font_size": 36,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 879
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_你有状态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 939,
+                  "h": 80,
+                  "layoutMode": "HORIZONTAL",
+                  "children": [
+                    {
+                      "type": "TEXT",
+                      "name": "文本_你有_label",
+                      "x": 0,
+                      "y": 0,
+                      "h": 60,
+                      "content": "你有:",
+                      "element_class": "static",
+                      "font_size": 40,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER",
+                      "w": 160
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "图标_星",
+                      "x": 0,
+                      "y": 0,
+                      "w": 60,
+                      "h": 60,
+                      "element_class": "static",
+                      "corner_radius": 30
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_你有_数量",
+                      "x": 0,
+                      "y": 0,
+                      "h": 60,
+                      "content": "0",
+                      "element_class": "dynamic",
+                      "font_size": 44,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "LEFT",
+                      "textAlignVertical": "CENTER",
+                      "w": 120
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 15
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_3行宝箱列表",
+                  "x": 0,
+                  "y": 0,
+                  "w": 939,
+                  "h": 920,
+                  "layoutMode": "VERTICAL",
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_宝箱",
+                      "x": 0,
+                      "y": 0,
+                      "w": 960,
+                      "h": 280,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_行",
+                          "x": 0,
+                          "y": 0,
+                          "w": 960,
+                          "h": 280,
+                          "element_class": "static",
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_内容",
+                          "x": 30,
+                          "y": 30,
+                          "w": 900,
+                          "h": 220,
+                          "layoutMode": "HORIZONTAL",
+                          "children": [
+                            {
+                              "type": "INSTANCE",
+                              "name": "组_宝箱",
+                              "component_name": "组_宝箱",
+                              "variant": "金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 220,
+                              "h": 220
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_箭头",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 60,
+                              "element_class": "static"
+                            },
+                            {
+                              "type": "INSTANCE",
+                              "name": "按钮_领取",
+                              "component_name": "按钮_领取",
+                              "variant": "未达成",
+                              "x": 0,
+                              "y": 0,
+                              "w": 460,
+                              "h": 140,
+                              "overrides": {
+                                "文本_领取": "100"
+                              }
+                            }
+                          ],
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 30
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_宝箱",
+                      "x": 0,
+                      "y": 0,
+                      "w": 960,
+                      "h": 280,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_行",
+                          "x": 0,
+                          "y": 0,
+                          "w": 960,
+                          "h": 280,
+                          "element_class": "static",
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_内容",
+                          "x": 30,
+                          "y": 30,
+                          "w": 900,
+                          "h": 220,
+                          "layoutMode": "HORIZONTAL",
+                          "children": [
+                            {
+                              "type": "INSTANCE",
+                              "name": "组_宝箱",
+                              "component_name": "组_宝箱",
+                              "variant": "银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 220,
+                              "h": 220
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_箭头",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 60,
+                              "element_class": "static"
+                            },
+                            {
+                              "type": "INSTANCE",
+                              "name": "按钮_领取",
+                              "component_name": "按钮_领取",
+                              "variant": "未达成",
+                              "x": 0,
+                              "y": 0,
+                              "w": 460,
+                              "h": 140,
+                              "overrides": {
+                                "文本_领取": "200"
+                              }
+                            }
+                          ],
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 30
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "列表项_宝箱",
+                      "x": 0,
+                      "y": 0,
+                      "w": 960,
+                      "h": 280,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_行",
+                          "x": 0,
+                          "y": 0,
+                          "w": 960,
+                          "h": 280,
+                          "element_class": "static",
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_内容",
+                          "x": 30,
+                          "y": 30,
+                          "w": 900,
+                          "h": 220,
+                          "layoutMode": "HORIZONTAL",
+                          "children": [
+                            {
+                              "type": "INSTANCE",
+                              "name": "组_宝箱",
+                              "component_name": "组_宝箱",
+                              "variant": "铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 220,
+                              "h": 220
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_箭头",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 60,
+                              "element_class": "static"
+                            },
+                            {
+                              "type": "INSTANCE",
+                              "name": "按钮_领取",
+                              "component_name": "按钮_领取",
+                              "variant": "未达成",
+                              "x": 0,
+                              "y": 0,
+                              "w": 460,
+                              "h": 140,
+                              "overrides": {
+                                "文本_领取": "400"
+                              }
+                            }
+                          ],
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 30
+                        }
+                      ]
+                    }
+                  ],
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 30
+                }
+              ],
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 50
+            }
+          ],
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "CENTER"
+          }
+        }
+      ],
+      "flow": [
+        {
+          "trigger": "ON_CLICK",
+          "from": "浮层_卡片星星",
+          "from_node": "按钮_关闭",
+          "to": "",
+          "animation": "CLOSE",
+          "_note": "来源未确认; S4 候选: 按钮_关闭 [极高契合]"
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "收集物",
+      "w": 310,
+      "h": 310,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_圆形",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 310,
+              "element_class": "static",
+              "corner_radius": 155
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_收集物",
+              "x": 55,
+              "y": 55,
+              "w": 200,
+              "h": 200,
+              "element_class": "static"
+            }
+          ]
+        },
+        {
+          "name": "高亮",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_圆形",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 310,
+              "element_class": "static",
+              "corner_radius": 155.5
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_收集物",
+              "x": 55,
+              "y": 55,
+              "w": 200,
+              "h": 200,
+              "element_class": "static"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "角标_New",
+      "w": 110,
+      "h": 80,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_丝带",
+              "x": 0,
+              "y": 0,
+              "w": 110,
+              "h": 80,
+              "element_class": "static",
+              "corner_radius": 15
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_New",
+              "x": 0,
+              "y": 15,
+              "h": 50,
+              "content": "New",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 110
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "文本卡_类别",
+      "w": 310,
+      "h": 60,
+      "variant_property": "颜色",
+      "variants": [
+        {
+          "name": "绿",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_文本卡",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 60,
+              "element_class": "static",
+              "corner_radius": 30.0
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_类别",
+              "x": 0,
+              "y": 5,
+              "h": 50,
+              "content": "绿",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "橙",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_文本卡",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 60,
+              "element_class": "static",
+              "corner_radius": 30.01
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_类别",
+              "x": 0,
+              "y": 5,
+              "h": 50,
+              "content": "橙",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        },
+        {
+          "name": "红",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_文本卡",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 60,
+              "element_class": "static",
+              "corner_radius": 30.02
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_类别",
+              "x": 0,
+              "y": 5,
+              "h": 50,
+              "content": "红",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        },
+        {
+          "name": "黄",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_文本卡",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 60,
+              "element_class": "static",
+              "corner_radius": 30.03
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_类别",
+              "x": 0,
+              "y": 5,
+              "h": 50,
+              "content": "黄",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        },
+        {
+          "name": "紫",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_文本卡",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 60,
+              "element_class": "static",
+              "corner_radius": 30.04
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_类别",
+              "x": 0,
+              "y": 5,
+              "h": 50,
+              "content": "紫",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        },
+        {
+          "name": "蓝",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_文本卡",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 60,
+              "element_class": "static",
+              "corner_radius": 30.05
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_类别",
+              "x": 0,
+              "y": 5,
+              "h": 50,
+              "content": "蓝",
+              "element_class": "dynamic",
+              "font_size": 38,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "进度条_收集",
+      "w": 310,
+      "h": 50,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_收集",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 50,
+              "element_class": "static",
+              "corner_radius": 25
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "进度条_收集",
+              "x": 10,
+              "y": 7,
+              "w": 290,
+              "h": 36,
+              "element_class": "static",
+              "corner_radius": 18
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_收集_进度",
+              "x": 0,
+              "y": 5,
+              "h": 40,
+              "content": "0/9",
+              "element_class": "dynamic",
+              "font_size": 32,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        },
+        {
+          "name": "完成",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_收集",
+              "x": 0,
+              "y": 0,
+              "w": 310,
+              "h": 50,
+              "element_class": "static",
+              "corner_radius": 25.5
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "进度条_收集",
+              "x": 10,
+              "y": 7,
+              "w": 290,
+              "h": 36,
+              "element_class": "static",
+              "corner_radius": 18
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_收集_进度",
+              "x": 0,
+              "y": 5,
+              "h": 40,
+              "content": "9/9",
+              "element_class": "dynamic",
+              "font_size": 32,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 310
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tab_按钮",
+      "w": 195,
+      "h": 220,
+      "variant_property": "tab状态",
+      "variants": [
+        {
+          "name": "購物未选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.0
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.0
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "購物",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "購物选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.0
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "凸出_选中",
+              "x": 10,
+              "y": 0,
+              "w": 175,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 30.0
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.0
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "購物",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "獎杯未选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.01
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.01
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "獎杯",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "獎杯选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.01
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "凸出_选中",
+              "x": 10,
+              "y": 0,
+              "w": 175,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 30.01
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.01
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "獎杯",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "家未选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.02
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.02
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "家",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "家选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.02
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "凸出_选中",
+              "x": 10,
+              "y": 0,
+              "w": 175,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 30.02
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.02
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "家",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "花未选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.03
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.03
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "花",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "花选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.03
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "凸出_选中",
+              "x": 10,
+              "y": 0,
+              "w": 175,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 30.03
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.03
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "花",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "收藏未选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.04
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.04
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "收藏",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        },
+        {
+          "name": "收藏选中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_tab",
+              "x": 0,
+              "y": 60,
+              "w": 195,
+              "h": 160,
+              "element_class": "static",
+              "corner_radius": 25.04
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "凸出_选中",
+              "x": 10,
+              "y": 0,
+              "w": 175,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 30.04
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_tab",
+              "x": 47,
+              "y": 75,
+              "w": 100,
+              "h": 100,
+              "element_class": "static",
+              "corner_radius": 50.04
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_tab",
+              "x": 0,
+              "y": 180,
+              "h": 40,
+              "content": "收藏",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 195
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "奖励物",
+      "w": 200,
+      "h": 200,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_奖励物",
+              "x": 0,
+              "y": 0,
+              "w": 200,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 100
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_奖励物",
+              "x": 30,
+              "y": 20,
+              "w": 140,
+              "h": 130,
+              "element_class": "static"
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_奖励物_数量",
+              "x": 0,
+              "y": 155,
+              "h": 40,
+              "content": "x10",
+              "element_class": "dynamic",
+              "font_size": 34,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 200
+            }
+          ]
+        },
+        {
+          "name": "高亮",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_奖励物",
+              "x": 0,
+              "y": 0,
+              "w": 200,
+              "h": 200,
+              "element_class": "static",
+              "corner_radius": 100.5
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_奖励物",
+              "x": 30,
+              "y": 20,
+              "w": 140,
+              "h": 130,
+              "element_class": "static"
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_奖励物_数量",
+              "x": 0,
+              "y": 155,
+              "h": 40,
+              "content": "x10",
+              "element_class": "dynamic",
+              "font_size": 34,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "组_礼物卡",
+      "w": 290,
+      "h": 320,
+      "variant_property": "卡色",
+      "variants": [
+        {
+          "name": "蓝",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_卡",
+              "x": 0,
+              "y": 0,
+              "w": 290,
+              "h": 320,
+              "element_class": "static",
+              "corner_radius": 20.0
+            },
+            {
+              "type": "FRAME",
+              "name": "组_星组",
+              "x": 60,
+              "y": 10,
+              "w": 170,
+              "h": 50,
+              "layoutMode": "HORIZONTAL",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                }
+              ],
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 12
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_物品",
+              "x": 65,
+              "y": 65,
+              "w": 160,
+              "h": 160,
+              "element_class": "static"
+            },
+            {
+              "type": "FRAME",
+              "name": "组_丝带",
+              "x": 35,
+              "y": 230,
+              "w": 220,
+              "h": 70,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_丝带",
+                  "x": 0,
+                  "y": 0,
+                  "w": 220,
+                  "h": 70,
+                  "element_class": "static",
+                  "corner_radius": 10
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_物品名",
+                  "x": 0,
+                  "y": 12,
+                  "h": 45,
+                  "content": "Item",
+                  "element_class": "dynamic",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 220
+                }
+              ]
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "紫",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_卡",
+              "x": 0,
+              "y": 0,
+              "w": 290,
+              "h": 320,
+              "element_class": "static",
+              "corner_radius": 20.01
+            },
+            {
+              "type": "FRAME",
+              "name": "组_星组",
+              "x": 60,
+              "y": 10,
+              "w": 170,
+              "h": 50,
+              "layoutMode": "HORIZONTAL",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                }
+              ],
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 12
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_物品",
+              "x": 65,
+              "y": 65,
+              "w": 160,
+              "h": 160,
+              "element_class": "static"
+            },
+            {
+              "type": "FRAME",
+              "name": "组_丝带",
+              "x": 35,
+              "y": 230,
+              "w": 220,
+              "h": 70,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_丝带",
+                  "x": 0,
+                  "y": 0,
+                  "w": 220,
+                  "h": 70,
+                  "element_class": "static",
+                  "corner_radius": 10
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_物品名",
+                  "x": 0,
+                  "y": 12,
+                  "h": 45,
+                  "content": "Item",
+                  "element_class": "dynamic",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 220
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "浅",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_卡",
+              "x": 0,
+              "y": 0,
+              "w": 290,
+              "h": 320,
+              "element_class": "static",
+              "corner_radius": 20.02
+            },
+            {
+              "type": "FRAME",
+              "name": "组_星组",
+              "x": 60,
+              "y": 10,
+              "w": 170,
+              "h": 50,
+              "layoutMode": "HORIZONTAL",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_星",
+                  "x": 0,
+                  "y": 0,
+                  "w": 45,
+                  "h": 45,
+                  "element_class": "static",
+                  "corner_radius": 22
+                }
+              ],
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 12
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_物品",
+              "x": 65,
+              "y": 65,
+              "w": 160,
+              "h": 160,
+              "element_class": "static"
+            },
+            {
+              "type": "FRAME",
+              "name": "组_丝带",
+              "x": 35,
+              "y": 230,
+              "w": 220,
+              "h": 70,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_丝带",
+                  "x": 0,
+                  "y": 0,
+                  "w": 220,
+                  "h": 70,
+                  "element_class": "static",
+                  "corner_radius": 10
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_物品名",
+                  "x": 0,
+                  "y": 12,
+                  "h": 45,
+                  "content": "Item",
+                  "element_class": "dynamic",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "w": 220
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "组_宝箱",
+      "w": 220,
+      "h": 220,
+      "variant_property": "宝箱等级",
+      "variants": [
+        {
+          "name": "金",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_宝箱",
+              "x": 0,
+              "y": 0,
+              "w": 220,
+              "h": 220,
+              "element_class": "static",
+              "corner_radius": 10.0
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_宝箱",
+              "x": 25,
+              "y": 30,
+              "w": 170,
+              "h": 160,
+              "element_class": "static"
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "银",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_宝箱",
+              "x": 0,
+              "y": 0,
+              "w": 220,
+              "h": 220,
+              "element_class": "static",
+              "corner_radius": 10.01
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_宝箱",
+              "x": 25,
+              "y": 30,
+              "w": 170,
+              "h": 160,
+              "element_class": "static"
+            }
+          ]
+        },
+        {
+          "name": "铜",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_宝箱",
+              "x": 0,
+              "y": 0,
+              "w": 220,
+              "h": 220,
+              "element_class": "static",
+              "corner_radius": 10.02
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_宝箱",
+              "x": 25,
+              "y": 30,
+              "w": 170,
+              "h": 160,
+              "element_class": "static"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "按钮_领取",
+      "w": 460,
+      "h": 140,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "已领取",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_领取",
+              "x": 0,
+              "y": 0,
+              "w": 460,
+              "h": 140,
+              "element_class": "static",
+              "corner_radius": 40.0
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_勾",
+              "x": 180,
+              "y": 30,
+              "w": 100,
+              "h": 80,
+              "element_class": "static"
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_领取",
+              "x": 0,
+              "y": 30,
+              "h": 80,
+              "content": "",
+              "element_class": "dynamic",
+              "font_size": 42,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "w": 460
+            }
+          ]
+        },
+        {
+          "name": "未达成",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_领取",
+              "x": 0,
+              "y": 0,
+              "w": 460,
+              "h": 140,
+              "element_class": "static",
+              "corner_radius": 40.01
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_勾",
+              "x": 50,
+              "y": 35,
+              "w": 70,
+              "h": 70,
+              "element_class": "static"
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_领取",
+              "x": 140,
+              "y": 30,
+              "h": 80,
+              "content": "100",
+              "element_class": "dynamic",
+              "font_size": 50,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "LEFT",
+              "textAlignVertical": "CENTER",
+              "w": 300
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "达成可领取",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_领取",
+              "x": 0,
+              "y": 0,
+              "w": 460,
+              "h": 140,
+              "element_class": "static",
+              "corner_radius": 40.02
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_勾",
+              "x": 50,
+              "y": 35,
+              "w": 70,
+              "h": 70,
+              "element_class": "static"
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_领取",
+              "x": 140,
+              "y": 30,
+              "h": 80,
+              "content": "100",
+              "element_class": "dynamic",
+              "font_size": 50,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "LEFT",
+              "textAlignVertical": "CENTER",
+              "w": 300
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

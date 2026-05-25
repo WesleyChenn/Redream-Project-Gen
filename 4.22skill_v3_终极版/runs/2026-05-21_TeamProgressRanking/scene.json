@@ -1,0 +1,3979 @@
+{
+  "screens": [
+    {
+      "name": "界面_Team_Treasure",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layoutMode": "NONE",
+      "flow": [],
+      "layers": [
+        {
+          "type": "FRAME",
+          "name": "组_顶banner区",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 281,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_banner",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 281,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_标题",
+              "x": 219,
+              "y": 90,
+              "h": 90,
+              "content": "Team Treasure",
+              "font_size": 70,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_关闭",
+              "x": 952,
+              "y": 56,
+              "w": 109,
+              "h": 113,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_关闭",
+                  "x": 0,
+                  "y": 0,
+                  "w": 109,
+                  "h": 113,
+                  "corner_radius": 55
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_海盗装饰",
+          "x": 0,
+          "y": 281,
+          "w": 1080,
+          "h": 694,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_海盗主图",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 600,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_信息",
+              "x": 40,
+              "y": 0,
+              "w": 91,
+              "h": 94,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_信息",
+                  "x": 0,
+                  "y": 0,
+                  "w": 91,
+                  "h": 94,
+                  "corner_radius": 47
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_时间徽章",
+              "x": 358,
+              "y": 559,
+              "w": 365,
+              "h": 135,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_时间徽章",
+                  "x": 0,
+                  "y": 0,
+                  "w": 365,
+                  "h": 135,
+                  "corner_radius": 67
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_沙漏",
+                  "x": -10,
+                  "y": -10,
+                  "w": 130,
+                  "h": 155
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_时间",
+                  "x": 130,
+                  "y": 40,
+                  "h": 55,
+                  "content": "2d 1h",
+                  "font_size": 48,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_装饰_金币堆",
+              "x": 100,
+              "y": 544,
+              "w": 200,
+              "h": 150,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_Choisss总进度行",
+          "x": 0,
+          "y": 1013,
+          "w": 1080,
+          "h": 112,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": 15,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_Choisss行",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 112,
+              "corner_radius": 40,
+              "layoutPositioning": "ABSOLUTE"
+            },
+            {
+              "type": "FRAME",
+              "name": "组_头像名",
+              "w": 350,
+              "h": 95,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 12,
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_盾头像",
+                  "w": 95,
+                  "h": 95,
+                  "corner_radius": 12
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_玩家名_Choisss",
+                  "content": "Choisss",
+                  "h": 60,
+                  "font_size": 50,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "LEFT",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "弹性缝隙",
+              "w": 0,
+              "h": 0,
+              "layoutMode": "NONE",
+              "layoutSizingHorizontal": "FILL"
+            },
+            {
+              "type": "FRAME",
+              "name": "组_数字进度",
+              "w": 340,
+              "h": 97,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_数字进度",
+                  "x": 80,
+                  "y": 18,
+                  "w": 260,
+                  "h": 60,
+                  "corner_radius": 30
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_舵轮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 95,
+                  "h": 97
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_总进度",
+                  "x": 110,
+                  "y": 30,
+                  "h": 36,
+                  "content": "1906/5000",
+                  "font_size": 32,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_进度条与宝箱",
+          "x": 0,
+          "y": 1125,
+          "w": 1080,
+          "h": 506,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "图标_进度起点",
+              "x": 27,
+              "y": 50,
+              "w": 164,
+              "h": 169,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "组_进度_团队",
+              "x": 55,
+              "y": 100,
+              "w": 985,
+              "h": 75,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_团队",
+                  "x": 0,
+                  "y": 0,
+                  "w": 985,
+                  "h": 75,
+                  "corner_radius": 37
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "进度条_团队",
+                  "x": 10,
+                  "y": 10,
+                  "w": 965,
+                  "h": 55,
+                  "corner_radius": 27
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "宝箱",
+              "x": 130,
+              "y": 80,
+              "w": 164,
+              "h": 188,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_金",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": true
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_银",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": false
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_铜",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": false
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "宝箱",
+              "x": 534,
+              "y": 80,
+              "w": 164,
+              "h": 188,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_金",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": false
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_银",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": true
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_铜",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": false
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "宝箱",
+              "x": 889,
+              "y": 80,
+              "w": 164,
+              "h": 188,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_金",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": false
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_银",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": false
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱_铜",
+                  "x": 0,
+                  "y": 0,
+                  "w": 164,
+                  "h": 188,
+                  "visible": true
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "状态",
+              "x": 130,
+              "y": 315,
+              "w": 164,
+              "h": 113,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_对勾",
+                  "x": 40,
+                  "y": 20,
+                  "w": 84,
+                  "h": 68,
+                  "visible": true
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_状态_未完成",
+                  "x": 0,
+                  "y": 20,
+                  "w": 164,
+                  "h": 79,
+                  "corner_radius": 39,
+                  "visible": false
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_状态_数字",
+                  "x": 0,
+                  "y": 35,
+                  "w": 164,
+                  "h": 45,
+                  "content": "",
+                  "font_size": 38,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "visible": false
+                },
+                {
+                  "type": "FRAME",
+                  "name": "按钮_claim",
+                  "x": 0,
+                  "y": 10,
+                  "w": 164,
+                  "h": 95,
+                  "layoutMode": "NONE",
+                  "visible": false,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_claim",
+                      "x": 0,
+                      "y": 0,
+                      "w": 164,
+                      "h": 95,
+                      "corner_radius": 47
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_claim",
+                      "x": 0,
+                      "y": 25,
+                      "w": 164,
+                      "h": 45,
+                      "content": "claim",
+                      "font_size": 38,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "状态",
+              "x": 534,
+              "y": 315,
+              "w": 164,
+              "h": 113,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_对勾",
+                  "x": 40,
+                  "y": 20,
+                  "w": 84,
+                  "h": 68,
+                  "visible": false
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_状态_未完成",
+                  "x": 0,
+                  "y": 20,
+                  "w": 164,
+                  "h": 79,
+                  "corner_radius": 39,
+                  "visible": true
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_状态_数字",
+                  "x": 0,
+                  "y": 35,
+                  "w": 164,
+                  "h": 45,
+                  "content": "3000",
+                  "font_size": 38,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "visible": true
+                },
+                {
+                  "type": "FRAME",
+                  "name": "按钮_claim",
+                  "x": 0,
+                  "y": 10,
+                  "w": 164,
+                  "h": 95,
+                  "layoutMode": "NONE",
+                  "visible": false,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_claim",
+                      "x": 0,
+                      "y": 0,
+                      "w": 164,
+                      "h": 95,
+                      "corner_radius": 47
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_claim",
+                      "x": 0,
+                      "y": 25,
+                      "w": 164,
+                      "h": 45,
+                      "content": "claim",
+                      "font_size": 38,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "状态",
+              "x": 889,
+              "y": 315,
+              "w": 164,
+              "h": 113,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_对勾",
+                  "x": 40,
+                  "y": 20,
+                  "w": 84,
+                  "h": 68,
+                  "visible": false
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_状态_未完成",
+                  "x": 0,
+                  "y": 20,
+                  "w": 164,
+                  "h": 79,
+                  "corner_radius": 39,
+                  "visible": true
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_状态_数字",
+                  "x": 0,
+                  "y": 35,
+                  "w": 164,
+                  "h": 45,
+                  "content": "5000",
+                  "font_size": 38,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "visible": true
+                },
+                {
+                  "type": "FRAME",
+                  "name": "按钮_claim",
+                  "x": 0,
+                  "y": 10,
+                  "w": 164,
+                  "h": 95,
+                  "layoutMode": "NONE",
+                  "visible": false,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_claim",
+                      "x": 0,
+                      "y": 0,
+                      "w": 164,
+                      "h": 95,
+                      "corner_radius": 47
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_claim",
+                      "x": 0,
+                      "y": 25,
+                      "w": 164,
+                      "h": 45,
+                      "content": "claim",
+                      "font_size": 38,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "容器_列表滚动区",
+          "x": 0,
+          "y": 1650,
+          "w": 1080,
+          "h": 750,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "clip_content": true,
+          "overflow": "VERTICAL",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          },
+          "children": [
+            {
+              "type": "FRAME",
+              "name": "组_滚动内容",
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "layoutSizingHorizontal": "FIXED",
+              "layoutSizingVertical": "HUG",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "itemSpacing": 18,
+              "paddingLeft": 15,
+              "paddingRight": 15,
+              "w": 1080,
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名1",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 21,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": true
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "1",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "Choisss",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Grand Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "529",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名2",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": true
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "2",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "onon",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Grand Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "419",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名3",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": true
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "3",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "Choy",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Grand Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "244",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名4",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "4",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "luk",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Grand Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "129",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名5",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "5",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "Kkk",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 5
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "127",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名6",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "6",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "mmmmm",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 5
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "108",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名7",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "7",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "Csl",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 5
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "95",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名8",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "8",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "Arthur",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "65",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名9",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "9",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "TTeresa",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "64",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名10",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "10",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "hshen",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 5
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "58",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名11",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "11",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "Cassandra",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "25",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名12",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "12",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "cyrax",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 6
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "25",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_排名13",
+                  "w": 1050,
+                  "h": 169,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "itemSpacing": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_列表项",
+                      "x": 0,
+                      "y": 0,
+                      "w": 1050,
+                      "h": 169,
+                      "corner_radius": 20,
+                      "layoutPositioning": "ABSOLUTE"
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "排名",
+                      "w": 95,
+                      "h": 95,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_金",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_银",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_排名_铜",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 95,
+                          "corner_radius": 47,
+                          "visible": false
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_排名",
+                          "x": 0,
+                          "y": 25,
+                          "h": 45,
+                          "content": "13",
+                          "font_size": 42,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "头像",
+                      "w": 146,
+                      "h": 135,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_头像",
+                          "x": 23,
+                          "y": 12,
+                          "w": 100,
+                          "h": 110
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_帘子装饰",
+                          "x": 0,
+                          "y": 0,
+                          "w": 146,
+                          "h": 135,
+                          "visible": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物前",
+                      "w": 84,
+                      "h": 75,
+                      "layoutMode": "NONE",
+                      "visible": true,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_装饰物前",
+                          "x": 0,
+                          "y": 0,
+                          "w": 84,
+                          "h": 75
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_名字",
+                      "w": 280,
+                      "h": 113,
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "MIN",
+                      "itemSpacing": 8,
+                      "children": [
+                        {
+                          "type": "TEXT",
+                          "name": "文本_玩家名",
+                          "content": "789",
+                          "h": 45,
+                          "font_size": 40,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "等级",
+                          "w": 240,
+                          "h": 56,
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "MIN",
+                          "counterAxisAlignItems": "CENTER",
+                          "itemSpacing": 10,
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "TEXT",
+                              "name": "文本_等级",
+                              "content": "Knight",
+                              "h": 38,
+                              "font_size": 30,
+                              "font_weight": "Bold",
+                              "textAlignHorizontal": "LEFT",
+                              "textAlignVertical": "CENTER"
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_盾",
+                              "w": 40,
+                              "h": 50,
+                              "corner_radius": 5
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "装饰物后",
+                      "w": 157,
+                      "h": 113,
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "FIXED",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "MIN",
+                      "counterAxisAlignItems": "CENTER",
+                      "itemSpacing": 8,
+                      "visible": false,
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图片_道具",
+                          "w": 90,
+                          "h": 90
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_道具数",
+                          "content": "x2",
+                          "h": 38,
+                          "font_size": 30,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "LEFT",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "收集物数量",
+                      "w": 197,
+                      "h": 97,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "RECTANGLE",
+                          "name": "底板_收集物",
+                          "x": 0,
+                          "y": 18,
+                          "w": 197,
+                          "h": 60,
+                          "corner_radius": 30
+                        },
+                        {
+                          "type": "RECTANGLE",
+                          "name": "图标_舵轮",
+                          "x": 0,
+                          "y": 0,
+                          "w": 95,
+                          "h": 97
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_数量",
+                          "x": 95,
+                          "y": 30,
+                          "w": 95,
+                          "h": 36,
+                          "content": "12",
+                          "font_size": 32,
+                          "font_weight": "Bold",
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "components": []
+}

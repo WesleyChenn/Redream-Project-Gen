@@ -1,0 +1,1238 @@
+{
+  "screens": [
+    {
+      "name": "界面_RoyalPass",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "RECTANGLE",
+          "name": "图片_顶部场景",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 570,
+          "element_class": "static",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "按钮_i",
+          "x": 44,
+          "y": 132,
+          "w": 92,
+          "h": 92,
+          "layoutMode": "NONE",
+          "corner_radius": 46,
+          "constraints": {
+            "horizontal": "LEFT",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_i",
+              "x": 0,
+              "y": 0,
+              "w": 92,
+              "h": 92,
+              "corner_radius": 46,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_i",
+              "x": 0,
+              "y": 0,
+              "w": 92,
+              "h": 92,
+              "content": "i",
+              "element_class": "static",
+              "font_size": 56,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "按钮_X",
+          "x": 944,
+          "y": 132,
+          "w": 92,
+          "h": 92,
+          "layoutMode": "NONE",
+          "corner_radius": 46,
+          "constraints": {
+            "horizontal": "RIGHT",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_X",
+              "x": 0,
+              "y": 0,
+              "w": 92,
+              "h": 92,
+              "corner_radius": 46,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_X",
+              "x": 0,
+              "y": 0,
+              "w": 92,
+              "h": 92,
+              "content": "X",
+              "element_class": "static",
+              "font_size": 56,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_Banner",
+          "x": 0,
+          "y": 570,
+          "w": 1080,
+          "h": 150,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_Banner",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 150,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_RoyalPass",
+              "x": 0,
+              "y": 30,
+              "w": 1080,
+              "h": 60,
+              "content": "Royal Pass",
+              "element_class": "static",
+              "font_size": 52,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_沙漏",
+              "x": 440,
+              "y": 95,
+              "w": 40,
+              "h": 40,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "BOTTOM"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_倒计时",
+              "x": 490,
+              "y": 95,
+              "w": 200,
+              "h": 40,
+              "content": "23d 22h",
+              "element_class": "dynamic",
+              "font_size": 32,
+              "textAlignHorizontal": "LEFT",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "BOTTOM"
+              }
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_进度_季票区",
+          "x": 0,
+          "y": 720,
+          "w": 1080,
+          "h": 180,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "图标_钥匙",
+              "x": 40,
+              "y": 50,
+              "w": 80,
+              "h": 80,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "组_进度_季票",
+              "x": 120,
+              "y": 70,
+              "w": 540,
+              "h": 60,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_季票",
+                  "x": 0,
+                  "y": 0,
+                  "w": 540,
+                  "h": 60,
+                  "corner_radius": 30,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "进度条_季票",
+                  "x": 10,
+                  "y": 10,
+                  "w": 520,
+                  "h": 40,
+                  "corner_radius": 20,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_季票_进度",
+              "x": 250,
+              "y": 75,
+              "w": 200,
+              "h": 50,
+              "content": "39/40",
+              "element_class": "dynamic",
+              "font_size": 34,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_钻石",
+              "x": 660,
+              "y": 50,
+              "w": 80,
+              "h": 80,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_钻石数",
+              "x": 660,
+              "y": 60,
+              "w": 80,
+              "h": 60,
+              "content": "21",
+              "element_class": "static",
+              "font_size": 32,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_Activate",
+              "x": 770,
+              "y": 50,
+              "w": 270,
+              "h": 80,
+              "layoutMode": "NONE",
+              "corner_radius": 40,
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "CENTER"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_Activate",
+                  "x": 0,
+                  "y": 0,
+                  "w": 270,
+                  "h": 80,
+                  "corner_radius": 40,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_Activate",
+                  "x": 0,
+                  "y": 0,
+                  "w": 270,
+                  "h": 80,
+                  "content": "Activate",
+                  "element_class": "static",
+                  "font_size": 36,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "容器_关卡奖励滚动",
+          "x": 0,
+          "y": 900,
+          "w": 1080,
+          "h": 1500,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "clip_content": true,
+          "overflow": "VERTICAL",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "SCALE"
+          },
+          "children": [
+            {
+              "type": "FRAME",
+              "name": "组_滚动内容",
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "layoutSizingHorizontal": "FIXED",
+              "layoutSizingVertical": "HUG",
+              "itemSpacing": 0,
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "children": [
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_20",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "铜宝箱",
+                    "组_气泡_左/角标_状态": "对勾",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "金宝箱",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "20",
+                    "组_气泡_右/奖励物_关卡/文本_数量": "x2"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_21",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 368,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "道具",
+                    "组_气泡_左/角标_状态": "空",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "道具",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "21",
+                    "组_气泡_左/奖励物_关卡/文本_数量": "∞30m",
+                    "组_气泡_右/奖励物_关卡/文本_数量": "x2"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_22",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 736,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "道具",
+                    "组_气泡_左/角标_状态": "对勾",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "金宝箱",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "22",
+                    "组_气泡_左/奖励物_关卡/文本_数量": "x1",
+                    "组_气泡_右/奖励物_关卡/文本_数量": "x2"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_23",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 1104,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "道具",
+                    "组_气泡_左/角标_状态": "对勾",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "银宝箱",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "23",
+                    "组_气泡_左/奖励物_关卡/文本_数量": "x1",
+                    "组_气泡_右/奖励物_关卡/文本_数量": "30m"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_24",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 1472,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "道具",
+                    "组_气泡_左/角标_状态": "对勾",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "道具",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "24",
+                    "组_气泡_左/奖励物_关卡/文本_数量": "x1",
+                    "组_气泡_右/奖励物_关卡/文本_数量": "x3"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_25",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 1840,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "铜宝箱",
+                    "组_气泡_左/角标_状态": "对勾",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "银宝箱",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "25"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_关卡奖励行_26",
+                  "component_name": "列表项_关卡奖励行",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 2208,
+                  "w": 1080,
+                  "h": 368,
+                  "constraints": {
+                    "horizontal": "CENTER",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "组_气泡_左": "常态",
+                    "组_气泡_右": "常态",
+                    "组_进度节点": "未完成",
+                    "组_气泡_左/底板_气泡": "常态",
+                    "组_气泡_左/奖励物_关卡": "道具",
+                    "组_气泡_左/角标_状态": "对勾",
+                    "组_气泡_右/底板_气泡": "待解锁",
+                    "组_气泡_右/奖励物_关卡": "金宝箱",
+                    "组_气泡_右/角标_状态": "锁",
+                    "组_进度节点/文本_关卡号": "26",
+                    "组_气泡_左/奖励物_关卡/文本_数量": "x1",
+                    "组_气泡_右/奖励物_关卡/文本_数量": "x3"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "flow": []
+    }
+  ],
+  "components": [
+    {
+      "name": "底板_气泡",
+      "w": 400,
+      "h": 294,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_气泡",
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 294,
+              "corner_radius": 30,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "待解锁",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_气泡",
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 294,
+              "corner_radius": 31,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "奖励物_关卡",
+      "w": 260,
+      "h": 200,
+      "variant_property": "类型",
+      "variants": [
+        {
+          "name": "金宝箱",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_奖励",
+              "x": 0,
+              "y": 0,
+              "w": 260,
+              "h": 200,
+              "corner_radius": 0,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "银宝箱",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_奖励",
+              "x": 0,
+              "y": 0,
+              "w": 260,
+              "h": 200,
+              "corner_radius": 1,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "铜宝箱",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_奖励",
+              "x": 0,
+              "y": 0,
+              "w": 260,
+              "h": 200,
+              "corner_radius": 2,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "道具",
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "组_奖励单元",
+              "x": 0,
+              "y": 0,
+              "w": 260,
+              "h": 200,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_奖励",
+                  "x": 0,
+                  "y": 0,
+                  "w": 260,
+                  "h": 140,
+                  "element_class": "dynamic",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_数量",
+                  "x": 0,
+                  "y": 150,
+                  "h": 50,
+                  "content": "x1",
+                  "element_class": "dynamic",
+                  "font_size": 36,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "BOTTOM"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "角标_状态",
+      "w": 80,
+      "h": 80,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "锁",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_角标",
+              "x": 0,
+              "y": 0,
+              "w": 80,
+              "h": 80,
+              "corner_radius": 40,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_锁",
+              "x": 20,
+              "y": 20,
+              "w": 40,
+              "h": 40,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "对勾",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_角标",
+              "x": 0,
+              "y": 0,
+              "w": 80,
+              "h": 80,
+              "corner_radius": 40,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_对勾",
+              "x": 18,
+              "y": 22,
+              "w": 44,
+              "h": 36,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "layers": []
+        },
+        {
+          "name": "可领取",
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "组_可领取",
+              "x": 0,
+              "y": 0,
+              "w": 80,
+              "h": 80,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_可领取",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 16,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_claim",
+                  "x": 0,
+                  "y": 20,
+                  "w": 80,
+                  "h": 40,
+                  "content": "CLAIM",
+                  "element_class": "static",
+                  "font_size": 22,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "CENTER"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "组_进度节点",
+      "w": 170,
+      "h": 368,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "未完成",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_短",
+              "x": 78,
+              "y": 0,
+              "w": 14,
+              "h": 368,
+              "corner_radius": 7,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "进度条_短",
+              "x": 80,
+              "y": 2,
+              "w": 10,
+              "h": 364,
+              "corner_radius": 5,
+              "element_class": "static",
+              "visible": false,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_菱形",
+              "x": 55,
+              "y": 154,
+              "w": 60,
+              "h": 60,
+              "corner_radius": 8,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_关卡号",
+              "x": 55,
+              "y": 166,
+              "w": 60,
+              "h": 36,
+              "content": "20",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            }
+          ]
+        },
+        {
+          "name": "已完成",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_短",
+              "x": 78,
+              "y": 0,
+              "w": 14,
+              "h": 368,
+              "corner_radius": 7,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "进度条_短",
+              "x": 80,
+              "y": 2,
+              "w": 10,
+              "h": 364,
+              "corner_radius": 5,
+              "element_class": "static",
+              "visible": true,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_菱形",
+              "x": 55,
+              "y": 154,
+              "w": 60,
+              "h": 60,
+              "corner_radius": 8,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_关卡号",
+              "x": 55,
+              "y": 166,
+              "w": 60,
+              "h": 36,
+              "content": "20",
+              "element_class": "dynamic",
+              "font_size": 30,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "CENTER"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "组_气泡",
+      "w": 400,
+      "h": 294,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "底板_气泡",
+              "component_name": "底板_气泡",
+              "variant": "常态",
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 294,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "奖励物_关卡",
+              "component_name": "奖励物_关卡",
+              "variant": "金宝箱",
+              "x": 70,
+              "y": 30,
+              "w": 260,
+              "h": 200,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "角标_状态",
+              "component_name": "角标_状态",
+              "variant": "锁",
+              "x": 310,
+              "y": 204,
+              "w": 80,
+              "h": 80,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "变体2",
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "底板_气泡",
+              "component_name": "底板_气泡",
+              "variant": "待解锁",
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 294,
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "奖励物_关卡",
+              "component_name": "奖励物_关卡",
+              "variant": "金宝箱",
+              "x": 70,
+              "y": 30,
+              "w": 260,
+              "h": 200,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "角标_状态",
+              "component_name": "角标_状态",
+              "variant": "锁",
+              "x": 310,
+              "y": 204,
+              "w": 80,
+              "h": 80,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "列表项_关卡奖励行",
+      "w": 1080,
+      "h": 368,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "组_气泡_左",
+              "component_name": "组_气泡",
+              "variant": "常态",
+              "x": 50,
+              "y": 37,
+              "w": 400,
+              "h": 294,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_进度节点",
+              "component_name": "组_进度节点",
+              "variant": "未完成",
+              "x": 455,
+              "y": 0,
+              "w": 170,
+              "h": 368,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_气泡_右",
+              "component_name": "组_气泡",
+              "variant": "常态",
+              "x": 630,
+              "y": 37,
+              "w": 400,
+              "h": 294,
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "CENTER"
+              }
+            }
+          ]
+        },
+        {
+          "name": "变体2",
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "组_气泡_左",
+              "component_name": "组_气泡",
+              "variant": "常态",
+              "x": 50,
+              "y": 37,
+              "w": 400,
+              "h": 294,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "CENTER"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_进度节点",
+              "component_name": "组_进度节点",
+              "variant": "已完成",
+              "x": 455,
+              "y": 0,
+              "w": 170,
+              "h": 368,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_气泡_右",
+              "component_name": "组_气泡",
+              "variant": "常态",
+              "x": 630,
+              "y": 37,
+              "w": 400,
+              "h": 294,
+              "constraints": {
+                "horizontal": "RIGHT",
+                "vertical": "CENTER"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

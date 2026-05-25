@@ -1,0 +1,316 @@
+---
+name: video-to-figma-json
+description: 视频/截图 → Figma 插件 JSON 端到端工作流 (Redream 游戏引擎). 当用户说"把视频转成 Figma JSON"、"做 scene.json"、"识别 UI"、"抽 Component"、"跑 S1-S11"、"翻译游戏界面"、"做组件库"时激活此 skill. 11 步严格流水线 (S1 抽帧 → S11 抽 Component + 导出 v20.6 schema). 输出可直接粘到 Figma 插件 '▶ 生成' tab 一键出 Component Set + 屏幕.
+---
+
+## 工作流模式
+
+**严格流水线 + 分步确认** — S1 → S11 顺序执行, **不能跳步**, **每步完成必停下等用户回复「继续 SX」**。
+
+🔴 **分步确认是终极版 (2026-05-22) 的核心**: 不论简单复杂屏, S1/S2/.../S10 每步完成都要 ⛔ 停下等用户回复。实证 (5.21-5.22 多轮测试): 分步确认的产物质量 > 一气呵成 (用户每步 review 一眼能拦截 Phase A 错误, 不让错误连锁放大)。S6 决议表确认是其中最关键的一步, 但**不是唯一停点**, 每步都停。
+
+跟 macOS / 通用任务 skill 的"按需加载 phases" 不同: 这里 S 步骤之间是**强依赖链**:
+- S5 的 flow 是 S9 字段补全的输入
+- S6 的 pattern 命中是 S7 生成骨架的依据
+- S10 通过才能进 S11 抽 Component
+
+---
+
+## 完整流程图
+
+```
+┌── 识别阶段 (S1-S6, 只看不写) ──────────────────────────────┐
+│                                                              │
+│  S1 抽帧 ───→ S2 识别页面内容 ───→ S3 识别布局              │
+│  (3 fps PNG)   (元素清单 + 量测)    (表 A/B/C 骨架/AL/组团)  │
+│                                                              │
+│  ───→ S4 识别交互 ───→ S5 提取 flow ───→ S6 pattern 命中    │
+│       (滚动+触摸点)    (屏幕跳转表 F/G)   (表 H Variant)     │
+│                                  │                           │
+│                                  ▼                           │
+│                          S6a ccb 抽取标准                    │
+│                  (视觉缩窄 + 3 标准 + ccb维度≠多态维度)      │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌── 生成阶段 (S7-S9, 写扁平 scene.json) ──────────────────────┐
+│                                                              │
+│  S7 生成骨架 ───→ S8 component_ref ───→ S9 字段补全 + flow  │
+│  (扁平 FRAME)     (旧组件库引用)        (TEXT.content/flow)  │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌── 校验导出阶段 (S10-S11) ────────────────────────────────────┐
+│                                                              │
+│  S10 自检 (9 层) ───→ S11 抽 Component + 导出 final_scene   │
+│  全 ✅ 才进 S11        (v20.6 schema, 粘 Figma 插件)         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+
+输出: final_scene.json → Figma 插件 '▶ 生成' → Component Set + 屏幕
+```
+
+---
+
+## 步骤索引 (按顺序加载)
+
+| 步骤 | 阶段 | 文件 (steps/, v3 已独立) | 输入 | 输出 |
+|---|---|---|---|---|
+| S0 | 上下文 | [`00_S0_context.md`](steps/00_S0_context.md) | (始终首读) | 引擎/Figma/历史背景 |
+| S1 | 识别 | [`01_S1_抽帧.md`](steps/01_S1_抽帧.md) | `.mp4` / `.mov` | N 帧 PNG (3 fps) |
+| S2 | 识别 | [`02_S2_识别页面内容.md`](steps/02_S2_识别页面内容.md) | S1 帧 / 截图 | 元素清单 + 量测 |
+| S3 | 识别 | [`03_S3_识别布局.md`](steps/03_S3_识别布局.md) | S2 元素清单 | 表 A 骨架 + 表 B AL + 表 C 组团 |
+| S4 | 识别 | [`04_S4_识别交互.md`](steps/04_S4_识别交互.md) | S1+S2+S3 | 表 D 滚动区 + 表 E 触摸点 |
+| S5 | 识别 | [`05_S5_提取flow.md`](steps/05_S5_提取flow.md) | S1+S4 | 表 F 屏幕清单 + 表 G flow 连线 |
+| S6 | 识别 | [`06_S6_pattern命中.md`](steps/06_S6_pattern命中.md) | S3+memory pattern | 表 H pattern + Variant + 节点类型 + 包装类型 |
+| S6a | 识别 | [`06a_S6_ccb抽取标准.md`](steps/06a_S6_ccb抽取标准.md) (必读) | S3 组团 | ccb 3 标准 (复用/动态/独立) + 视觉缩窄 + ccb维度≠多态维度 |
+| S7 | 生成 | [`07_S7_生成骨架.md`](steps/07_S7_生成骨架.md) (主索引) | S6 表 H | 扁平 scene.json (无 INSTANCE/components[]) |
+| S7a | 生成 | [`07a_S7_基础铁律.md`](steps/07a_S7_基础铁律.md) (必读) | 命名/JSON/fill/children/卡片底板 |
+| S7b | 生成 | [`07b_S7_按钮.md`](steps/07b_S7_按钮.md) (按场景) | 按钮外壳/分组/触控范围/嵌套禁忌 |
+| S7c | 生成 | [`07c_S7_进度条角标.md`](steps/07c_S7_进度条角标.md) (按场景) | 进度条三层/角标做法 B/`component_ref` 占位 |
+| S7d | 生成 | [`07d_S7_嵌套占位背景.md`](steps/07d_S7_嵌套占位背景.md) (按场景) | 子 CCB 显隐/规则 11.5/visible 映射/占位/浮层 |
+| S7e | 生成 | [`07e_S7_布局.md`](steps/07e_S7_布局.md) (必读) | constraints/AL 字段/弹性缝隙/滚动 |
+| S8 | 生成 | [`08_S8_组件库引用.md`](steps/08_S8_组件库引用.md) | S7 含 `component_ref` 时跑, 否则跳过 |
+| S8a | 生成 | [`08a_S8_预制组件.md`](steps/08a_S8_预制组件.md) (仅钟表) | scene 含 `钟表_指针动画` 时, 引擎复用预制 .red |
+| S8b | 生成 | [`08b_组件库理论模型.md`](steps/08b_组件库理论模型.md) (理论) | 组件库最小化决策: 预制→component_ref→子ccb→inline |
+| S9 | 生成 | [`09_S9_字段补全.md`](steps/09_S9_字段补全.md) | S7+S8 | TEXT.content + flow 数组 |
+| S10 | 校验 | [`10_S10_自检.md`](steps/10_S10_自检.md) | S9 完整 scene.json | 9 层 verification 报告 |
+| S11 | 导出 | [`11_S11_抽取导出.md`](steps/11_S11_抽取导出.md) | S10 全 ✅ | final_scene.json (v20.6 schema) |
+
+---
+
+## S7 子文件按场景加载路由
+
+| S7 阶段碰到 | 加载文件 |
+|---|---|
+| 任何节点 (命名/JSON 格式/fill 规则) | **07a 必读** |
+| 任何节点的布局 (constraints/AL/滚动) | **07e 必读** |
+| 处理按钮 (手搓按钮/做法 B 包装) | 07b 按场景读 |
+| 处理进度条 / 角标 | 07c 按场景读 |
+| 处理嵌套实例 / 浮层背景 / 占位 RECT | 07d 按场景读 |
+| 命中 component_ref (旧组件库) | S8 |
+
+---
+
+## Lessons 归档 (跨步骤踩坑教训)
+
+跟 S 文件内的"违规信号"表互补 — 违规信号是该步内规则, lessons 是**跨步骤反复出现**的踩坑:
+
+| 文件 | 一句话 |
+|---|---|
+| [`lessons/bug-archive.md`](lessons/bug-archive.md) | Bug 归档索引 + 状态标记 |
+| [`lessons/lesson_扁平vs_v206_schema.md`](lessons/lesson_扁平vs_v206_schema.md) | S7-S9 是扁平 scene.json, INSTANCE/components[] 是 S11 自动产物 |
+| [`lessons/lesson_规则11.5_子节点name一致.md`](lessons/lesson_规则11.5_子节点name一致.md) | 同结构多实例 children name 100% 一致, 否则 S11 抽不出 |
+| [`lessons/lesson_进度条本体一整根.md`](lessons/lesson_进度条本体一整根.md) | 进度条本体永远画一整根 100% 满, 不按节点拆段 |
+| [`lessons/lesson_组团内layout单一化.md`](lessons/lesson_组团内layout单一化.md) | 一个 FRAME 内子节点不能既横排又竖排, 混合时拆 wrapper |
+| [`lessons/lesson_ccb维度vs多态.md`](lessons/lesson_ccb维度vs多态.md) | 🔴 "抽不抽 ccb" 与 "有几个多态" 独立; 复用必抽 ccb (可 0 多态), 有多态必是 ccb, 同一差异只在唯一最小单元做一次 |
+| [`lessons/lesson_v206schema必填字段.md`](lessons/lesson_v206schema必填字段.md) | 🔴 主路径手写 v20.6: component 必有 w/h/variant_property, INSTANCE w/h==component, layer 必有 element_class |
+| [`lessons/lesson_视觉缩窄即AL.md`](lessons/lesson_视觉缩窄即AL.md) | S3 标 HORIZONTAL/VERTICAL → S7 必 AL, 严禁退化 NONE+绝对坐标 (跨层级一致) |
+| [`lessons/lesson_AL内ABSOLUTE底板z序bug.md`](lessons/lesson_AL内ABSOLUTE底板z序bug.md) | 🔴🔴 AL 容器内 ABSOLUTE 底板被 Figma 拉到 z 顶层覆盖内容 → 改用 NONE 外层 + 内层 AL 容器 (2026-05-22 实证 bug 修法) |
+| [`lessons/lesson_列表行数完整性.md`](lessons/lesson_列表行数完整性.md) | 滚动列表识别必逐帧扫描全部行, 不能只识别首屏可见数 — 视频里能滚到几行就要识别几行 (2026-05-22 新) |
+| [`lessons/lesson_复用结构必抽component.md`](lessons/lesson_复用结构必抽component.md) | 复用 ≥3 次的结构必抽 component, S7 写 inline FRAME N 次重复 = ccb 抽取失败 (2026-05-22 新) |
+| [`lessons/lesson_反from-exemplar.md`](lessons/lesson_反from-exemplar.md) | 🔴 上下文里有相似项目 scene.json = 风险信号不是捷径, 禁照搬, 必每组团独立从视频+memory 重推 (2026-05-22 新) |
+| 📚 [`lessons/_template.md`](lessons/_template.md) | Lesson 模板 (统一格式, 写新 lesson 必按本模板, 2026-05-22 系统化) |
+| 📚 [`lessons/_taxonomy.md`](lessons/_taxonomy.md) | Lessons 分类法 (5 大主题 + 命名规范 + 维护流程, 2026-05-22) |
+| 📚 [`lessons/_coverage.md`](lessons/_coverage.md) | 覆盖度地图 (按 S 阶段 × 错误类型, 标 gap, 2026-05-22) |
+
+Claude 看新视频前**扫一遍** lessons/, 把这些坑预防到识别 + 生成阶段。 用户跑完发现新坑 → 加新 lesson + 更新索引。
+
+---
+
+## memory ui_pattern 索引 (skill 一部分, S6 命中时按需读)
+
+memory 路径: `memory/` (软链接到 `~/.claude/projects/-Users-red-Desktop-4-22--skill/memory/`)
+
+通用 ui_pattern (9 个) — S6 pattern 命中时按需读对应文件:
+
+| Pattern | 文件 |
+|---|---|
+| 元规则 | `ui_pattern_使用通则.md` (任何 icon 都可能有角标 / "该状态不显示" 用 visible:false) |
+| 横排徽章_左图右文 | `ui_pattern_横排徽章_左图右文.md` |
+| 角标_状态 | `ui_pattern_角标_状态.md` |
+| 单图标_无角标 | `ui_pattern_单图标_无角标.md` |
+| 进度条_横向 (单节点) | `ui_pattern_进度条_横向.md` |
+| 进度条_多节点 (≥3 节点) | `ui_pattern_进度条_多节点.md` |
+| 浮层_活动入口 | `ui_pattern_浮层_活动入口.md` |
+| icon 带底部文本 | `ui_pattern_icon_带底部文本.md` |
+| 按钮_纯文本 | `ui_pattern_按钮_纯文本.md` |
+| 按钮_文本加icon | `ui_pattern_按钮_文本加icon.md` |
+
+项目专属先验 (2 个):
+
+| 先验 | 文件 |
+|---|---|
+| 用户项目金币堆视觉先验 | `user_visual_priors_金币堆.md` |
+| 用户项目盾牌等级视觉先验 | `user_visual_priors_盾牌等级.md` |
+
+---
+
+## 跨步骤通用铁律 (摘自各 S 文件, 跨步骤都用)
+
+1. **扁平 FRAME**: S7-S9 阶段输出**扁平 scene.json**, 没有 `type: INSTANCE` / `component_name` / `variant` / `overrides` / `components[]` (S11 抽取后才有)
+2. **命名白名单 30 前缀**: 所有节点 `name` 前缀必须来自 `界面_/浮层_/组_/底板_/容器_/导航_/列表项_/...` 30 前缀 (详: 07a #1 / `命名_参考.md`)
+3. **手搓节点 fill 一律省略**: FRAME 永远不填色; RECTANGLE 由插件按命名前缀自动分配灰色 (07a #3)
+4. **字段命名 — 下划线 vs 驼峰**: `clip_content / corner_radius / font_size / font_weight / component_ref` 下划线; `layoutMode / primaryAxisSizingMode / textAlignHorizontal` 驼峰 (07a #2)
+5. **隐藏用 `visible: false`, 不写 `variant: 空`** (仅限 S7-S9 扁平阶段): S7-S9 阶段输出扁平 scene.json, variant/overrides 字段还不存在, 隐藏只能用 `visible: false`; S11 抽取后的 component 可以有 `variants: [{ "name": "空", "layers": [] }]` (角标_状态 / 装饰前 等典型用法 OK) (07d #2.5)
+6. **规则 11.5**: 同结构多实例 FRAME (列表行/网格项) 内部子节点 name **100% 一致**, 否则 S11 抽不出统一 Component
+7. **嵌套按钮禁忌**: `按钮_xxx` FRAME 的 children 递归内**禁止再嵌套** `按钮_` 前缀 (07b #6)
+8. **进度条本体永远画 100% 满**: 不写 percentage / `_p<数字>` 后缀, 引擎运行时按 percentage 切割 (07c #1)
+9. **进度条本体永远是一整根**: 即使条上压有节点 icon, `进度条_XXX` RECT 仍画一整根, 不按节点位置拆段 (07c #1)
+10. **附加元素(角标/溢出装饰)硬夹断**: constraints 一律 `LEFT/TOP` + **正坐标(禁负坐标)**; 视觉溢出靠**主体 x/y 偏移让位 + 绝对定位**实现, 包装层 h 不含溢出 (Figma RIGHT/CENTER/负坐标会飞出 = 引擎 bug 绕过, 07e §1.3)
+11. 🔴 **ccb 维度 ≠ 多态维度** (高频反复栽): "抽不抽 ccb" 只看 复用/动态/独立 3 标准, **跟有没有多态无关** — 复用 ≥3 必抽 ccb (可 0 多态); **有多态 → 必然是 ccb** (Variant 只能挂 component); 同一差异**只在唯一最小单元 ccb** 做一次, 外层不重复包 (06a / lessons/lesson_ccb维度vs多态.md)
+12. 🔴 **主路径手写 v20.6 必带字段**: 复杂场景跳脚本手写时, 每个 component 必有 `w/h/variant_property`, 每个 INSTANCE `w/h`==对应 component, 每个 layer 必有 `element_class`; 写前 cat 权威样本对照 (11_S11 主路径自检 / lessons/lesson_v206schema必填字段.md)
+13. 🔴 **S6 决议表确认 + 反 from-exemplar 锚定** (唯一停点): S6 完成后 inline 输出 ccb/多态决议表 (S3 表 C 每组团一行 + 命中 memory pattern 必带 Read 凭证 + abstract_ccb + variant_axes), **等用户回复"决议 OK"才进 S7**。**这是 S0→S11 唯一停点, 其他步骤 (S1-S5, S7-S11) 一气呵成不停**。不再跑 Python gate 脚本, **用户 review 即 validation**。上下文里有相似项目 scene.json = **风险信号不是捷径**, 禁止 from-exemplar 改增量, 每组团独立从视频+memory 重推 (06_S6 "S6 ccb/多态决议表确认" / memory feedback_s6_pattern_must_scan_memory.md)
+14. 🔴🔴 **约束 = 外侧大组团语义表** (2026-05-21, 全 skill 统一): 约束**只在外侧大组团**(屏幕 `layers[]` 直接子节点)写, 大组团**内部排版用 AutoLayout**, AL 容器的子节点 + 完整控件单元内部 layer **一律不输出 `constraints` 字段**。**横向 default = CENTER, 纵向 default = TOP**。**整体不可 SCALE**(唯一例外: 全屏遮罩 `SCALE/SCALE`)。具体大组团位置/语义 → constraints 对照表 (11 行典型 + 1 行 fallback) 见 `07e §1.1`: 屏幕背景图 `CENTER/CENTER` / 顶部 HUD 及下方进度条 `CENTER/TOP` / 左右活动入口 `LEFT/TOP` 或 `RIGHT/TOP` / 底部 HUD 类 `CENTER/BOTTOM` / 滚动列表区 `CENTER/TOP` (2026-05-22 update: 永远中上, 不写 vertical SCALE/BOTTOM) / 弹窗外壳及内容 `CENTER/CENTER` / 其余 fallback `CENTER/TOP`。完整控件单元(按钮/角标/进度条节点/列表项/任何 INSTANCE) **整体绝不 SCALE** (拉伸即破)。是**约束放置规则, 不触发重抽 ccb**。AL 跨层级一体化决策 → 见铁律 15。
+15. 🔴🔴 **AL = S3 layoutMode 合约 (视觉缩窄即 AL, 跨层级一致)** (2026-05-21): S3 识别每个组团 layoutMode 时(NONE/HORIZONTAL/VERTICAL) = **S7 的合约**, **不论该组团在哪个层级** (屏幕级外侧大组团 / component 内部 / 嵌套子组) **S7 必按此 layoutMode 直接写完整 AL 字段** (`layoutMode` + `primaryAxisSizingMode/counterAxisSizingMode: FIXED/AUTO` + `primaryAxisAlignItems` + `itemSpacing` + `paddings` + 弹性缝隙)。**严禁 S7 把 S3 标的 HORIZONTAL/VERTICAL 改回 NONE + 手算 x/y** — 手算坐标必然出框 (实证: TT 列表项 收集物 出底板 20px / JO 列表项 角标 出 75px, 同根因)。**视觉缩窄识别的"单向排列结构" = AutoLayout 的天然对象**, 二者一体化决策, 不该在 S7 阶段重新独立判断 (详见 03_S3 §"layoutMode 合约 → S7" + lessons/lesson_视觉缩窄即AL.md + 07e §"复用类 component 内部布局")。**按钮 component 内部也按 S3 判**: 按钮内部 layoutMode 不是固定 NONE — S3 标 NONE (如底板+图标+文本叠加居中) 就用 NONE; S3 标 HORIZONTAL (如图标+文本横排) 就用 HORIZONTAL AL; 07b §1 描述的"默认 NONE"只是经验值, **不是硬约束, 以 S3 判定为准**。
+16. 🔴🔴 **按钮命名 = S6 包装类型合约 (引擎合约)** (2026-05-21, 跟铁律 15 同构): S6 判定"这是按钮" (因动作词或可操作语义) → **S7 必命名 `按钮_<动作>` FRAME** (包装底板 + 文本 + 可选 icon), **不能只输出 TEXT layer**, **不能用 `组_`/`容器_`/其他前缀**。**强触发动作词** (任一命中即按钮): `claim` / `Claim` / `CLAIM` / `OPEN` / `Start` / `Play` / `Request` / `GO` / `FREE` / `购买` / `领取` 等动作词 (非 数字/名字/标题 等纯显示文本)。**引擎合约**: 只对 `按钮_` 前缀的 FRAME 生成 REDNodeButton 触控层 — 没有 `按钮_` 前缀, 即使视觉看着像按钮, 引擎不会让它可点 → 设计意图直接丢。实证: TT 进度条 状态 "可领取" variant 在 5.21 大组团语义版跑出 `按钮_claim` FRAME (对), 在 5.21_视觉缩窄即AL 版退化成 `文本_状态_claim` TEXT (错) — S6 决议在 S7 阶段被吞 (详 06_S6 §"包装类型决议 #5" / 07b §"识别为按钮的语义信号")。**例外 (跟铁律 7 嵌套按钮禁忌协调)**: 如果动作词文本**已在某 `按钮_xxx` FRAME 的 children 内** (父按钮整体代触, 例如 大活动按钮内含 "Claim" 文字), 按铁律 7 不再嵌套 `按钮_`, 仅写 `文本_claim` TEXT 即可 (父按钮已经是触控层); 只有**独立的 claim chip / 按钮不在另一个按钮内时**才必命名 `按钮_claim` FRAME。
+
+17. 🔴🔴 **视觉区域底板必有, 1 区域 1 RECT 不分层 (低保真版)** (2026-05-22, 实证 Royal Pass 缺底板): 凡是源视频里能看出"底色 / 材质 / 区域边界"的 FRAME, S7 必生成 `底板_xxx` RECT 作为该 FRAME 的**第一个子 layer** (在 AL 容器内时加 `layoutPositioning: ABSOLUTE`)。**规则**: ① **1 个视觉区域 = 1 个 底板_xxx RECT** (1 个, 不多不少); ② **嵌套区域各自独立 1 个底板** (大底里可有小底, 如 弹窗外底 + 内绿色 panel 底); ③ **图片区域** (插画 / 角色 / 场景) → 用 `图片_xxx` RECT, **不是底板**; ④ **透明结构包装 FRAME** (组_横排 / 弹性缝隙 / 纯排版 wrapper) → **不写底板**; ⑤ **禁止分层** — 不写 `底板_xxx_投影` / `底板_xxx_高光` / `底板_xxx_边框` / `底板_xxx_装饰` / `底板_xxx_左端` / `底板_xxx_右端` / `底板_xxx_trim` 等高保真子层后缀 (本 skill 只做低保真); ⑥ **禁止靠 FRAME 自身填色** (铁律 3, FRAME 永不填色)。实证反例 (Royal Pass 5.22 跑炸): `组_进度_季票区` / `容器_关卡奖励滚动` / `列表项_关卡奖励行` 三个 FRAME 都缺 `底板_xxx` layer → 引擎渲染下方一半屏全透明。映射示例 — Team Treasure: 标题 banner 1 底板 + 国王船 1 图片 (不是底板) + Choisss 行 1 底板 + 进度区 1 底板 + 每行 1 底板; Journey Offer: 弹窗外壳 1 底板 + 国王狗 1 图片 + 内绿色 panel 1 底板 (嵌套) + 每按钮/每行 各 1 底板 (详见 02_S2 §"底板识别" / 10_S10 §"底板自检")。
+
+18. 🔴🔴 **底板永不进入 AL 容器** (2026-05-22 加强, 跟铁律 17 同主题): `底板_xxx` RECT/FRAME **永远在外层 NONE 容器内**作为 `children[0]` 底层, **不能作为 HORIZONTAL / VERTICAL AL 容器的子节点**。**理由 3 条**: (1) **视觉语义** — 底板在所有内容"外侧" (z 序底层, 视觉上包围内容), AL 容器子节点参与 AL 流, 跟底板"外侧"语义冲突; (2) **z 序 bug** (2026-05-22 实证 JO 列表项) — 底板要在 AL 内"脱离布局流"只能用 `layoutPositioning: ABSOLUTE`, 但 Figma 渲染会把 ABSOLUTE 节点拉到 z 顶层覆盖 AL flow 内容 (详见 `lessons/lesson_AL内ABSOLUTE底板z序bug.md`); (3) **AL 算位置干扰** — AL 容器把底板算进 itemSpacing / padding / FILL 分配, 底板尺寸会被错算。**标准实现 (07e §"复用类 component 内部布局" NONE 外层 + AL 内层模式)**: 列表项 / 卡片 / 弹窗 类的外层 component 永远 `layoutMode: NONE`, children[0] = 底板 RECT, children[1] = 内容容器 FRAME (HORIZONTAL/VERTICAL AL), children[-1] = 角标 (可选); 底板跟内容容器是 siblings, 都在 NONE 外层内, 底板天然 children[0] 底层。
+
+---
+
+## 工程默认值
+
+| 项目 | 默认值 | 备注 |
+|---|---|---|
+| 目标设计稿 | **1080 × 2400** | 所有量测 × scale 到这个尺寸 |
+| 源帧典型尺寸 | 1170 × 2532 (iPhone 13/14) | scale_x ≈ 0.923, scale_y ≈ 0.948 |
+| 抽帧 fps | **3 fps** (每 333ms 一帧) | S1 不得跳帧 |
+| flow 默认动画 | `dissolve 300ms` / `slide 300ms` / `OVERLAY` / `CLOSE` | S5 表 G + S9 flow 字段 |
+| 命名前缀白名单数 | 30 | 详: `命名_参考.md` |
+| Component 抽取脚本 | `/Users/red/Desktop/component_extractor/extract_components.py` | S11 备选路径用, 主路径绕开 |
+| 输出 schema | v20.6 (含 INSTANCE + components[] + Variants) | S11 终产物 |
+
+---
+
+## S11 抽取路径选择
+
+| 场景 | 路径 |
+|---|---|
+| 主屏有**奖励物**这种"枚举+占位混合 Variant" Component | 🔴 **主路径** — Claude 直接产 v20.6 (跳过 extract_components.py) |
+| 主屏有 Variant 内部异构 (例: 大炮 Variant 含 FRAME) | 🔴 主路径 |
+| 主屏全是同结构枚举 (例: 排行榜 8 行同构) + 各 Variant 内部同构 | 备选路径 (跑脚本 + 后处理删中间组团 + FRAME→INSTANCE 转换) |
+| 简单主屏单 Component (无大/中间组团复杂度) | 备选路径 |
+
+详: `11_S11_抽取导出.md` "主路径自检清单" + "标准动作 (备选路径)"
+
+---
+
+## 阶段路由
+
+```
+用户请求                                             → 加载文件
+─────────────────────────────────────────────────────────────────
+"把视频转成 Figma JSON" / "做 scene.json"             → S0 → S1 → ... → S11 (全跑)
+"我有截图, 跳过抽帧"                                   → S0 → S2 → ... → S11 (跳过 S1)
+"重跑 S6 修 pattern"                                  → 单独跑 S6 (基于已有 S3 输出)
+"S7 阶段碰到进度条"                                    → 07c 进度条角标
+"S7 阶段碰到按钮"                                      → 07b 按钮
+"S6 pattern 命中"                                     → memory ui_pattern_xxx.md (按 pattern 名读)
+"S10 自检不过"                                        → 回失败层对应的 S 步骤修, 重新 S10
+"我要换组件库"                                        → S8 + 三项预检
+```
+
+---
+
+## 完整加载路由表 (Claude 内部按需查阅, 现象 → 文件)
+
+S7 子文件路由已在前面 (按钮 → 07b / 进度条角标 → 07c 等)。 下面是**更细颗粒度**的 3 张表 — 让 Claude 在跑视频时, 看到具体视觉 / 风险 / 疑问就知道翻哪个文件, 不再凭经验。
+
+### A. S6 视觉命中路由 (看到 X 视觉 → 加载 Y 文件)
+
+| Claude 在 S6 阶段看到的视觉特征 | 加载主文件 | 配套预防 lesson |
+|---|---|---|
+| 🔴🔴 **钟表 icon + 时间文本 + 底板**（任意位置组合，最高优先级，跳过其他 ui_pattern 命中）| [`steps/08a_S8_预制组件.md`](steps/08a_S8_预制组件.md) — 走预制 `钟表_指针动画`，禁手搓拆 3 子节点 | — |
+| 全屏弹窗 (顶 i+X + 中装饰 + 标题 + 倒计时) | [`memory/ui_pattern_浮层_活动入口.md`](memory/ui_pattern_浮层_活动入口.md) | — |
+| 长条横向进度条 + 双层 RECT + X/Y 文本居中 | [`memory/ui_pattern_进度条_横向.md`](memory/ui_pattern_进度条_横向.md) | [`lessons/lesson_进度条本体一整根.md`](lessons/lesson_进度条本体一整根.md) |
+| 长条进度条 + ≥3 节点沿条分布 | [`memory/ui_pattern_进度条_多节点.md`](memory/ui_pattern_进度条_多节点.md) | [`lessons/lesson_进度条本体一整根.md`](lessons/lesson_进度条本体一整根.md) |
+| 长胶囊底板 + 左 icon (上下溢出) + 右数字 | [`memory/ui_pattern_横排徽章_左图右文.md`](memory/ui_pattern_横排徽章_左图右文.md) | — |
+| 主体边缘小角标 (右上/右下/左下/左上 4 处) | [`memory/ui_pattern_角标_状态.md`](memory/ui_pattern_角标_状态.md) | — |
+| 独立 icon, 近正方形, 无附加 | [`memory/ui_pattern_单图标_无角标.md`](memory/ui_pattern_单图标_无角标.md) | — |
+| icon 正下方挂文本 (丝带/圆角数字/按钮/纯文本) | [`memory/ui_pattern_icon_带底部文本.md`](memory/ui_pattern_icon_带底部文本.md) | — |
+| 圆角矩形 + 文本居中, 无 icon | [`memory/ui_pattern_按钮_纯文本.md`](memory/ui_pattern_按钮_纯文本.md) | — |
+| 文本 + icon 按钮 | [`memory/ui_pattern_按钮_文本加icon.md`](memory/ui_pattern_按钮_文本加icon.md) | — |
+| 项目专属: 顶图标 + 中丝带 + 下数字嵌丝带 | [`memory/user_visual_priors_金币堆.md`](memory/user_visual_priors_金币堆.md) | — |
+| 项目专属: 大盾牌外凸 + 右胶囊数字 | [`memory/user_visual_priors_盾牌等级.md`](memory/user_visual_priors_盾牌等级.md) | — |
+| (S6 命中前先读元规则) | [`memory/ui_pattern_使用通则.md`](memory/ui_pattern_使用通则.md) | — |
+
+### B. Lessons 预防触发 (看到 X 风险场景 → 翻 lesson 预防)
+
+| 看到风险场景 (S2-S6 阶段) | 加载 lesson |
+|---|---|
+| 视频里有 8 行 / N 行高度重复结构 | [`lessons/lesson_规则11.5_子节点name一致.md`](lessons/lesson_规则11.5_子节点name一致.md) — **写之前**就固定命名模板, 8 行严格按模板 |
+| 视频里某 FRAME 内同时含横排 + 竖排元素 | [`lessons/lesson_组团内layout单一化.md`](lessons/lesson_组团内layout单一化.md) — 拆 wrapper, 不一刀切 AL |
+| 准备在 S7 写 INSTANCE / `variant: 空` / `overrides` 字段 | [`lessons/lesson_扁平vs_v206_schema.md`](lessons/lesson_扁平vs_v206_schema.md) — **不要写**, 那是 S11 自动产物 |
+| 多节点进度条想"按节点位置拆段画" | [`lessons/lesson_进度条本体一整根.md`](lessons/lesson_进度条本体一整根.md) — 永远画一整根 |
+| 大组团重复 ≥3 想"做成扁平 FRAME 平铺" / 看到要离散多态 / 同一差异想在外层和子层各做一遍 | [`lessons/lesson_ccb维度vs多态.md`](lessons/lesson_ccb维度vs多态.md) — 复用必抽 ccb (可 0 多态); 有多态必是 ccb; 同一差异只在唯一最小单元做一次 |
+| S11 主路径 (复杂场景跳脚本) 准备手写 v20.6 schema | [`lessons/lesson_v206schema必填字段.md`](lessons/lesson_v206schema必填字段.md) — 写前 cat 样本; component 必带 w/h/variant_property, INSTANCE w/h==component, layer 必带 element_class |
+
+### C. 字段 / 命名疑问 → 查阅文件
+
+| 疑问 | 翻哪 |
+|---|---|
+| 这个节点命名前缀对不对 / 30 前缀白名单 | [`命名_参考.md`](命名_参考.md) |
+| 字段名是下划线还是驼峰 (clip_content vs clipsContent) | [`steps/07a_S7_基础铁律.md`](steps/07a_S7_基础铁律.md) #2 字段命名铁律 |
+| AL 容器要写什么字段 (primaryAxisSizingMode 等) | [`steps/07e_S7_布局.md`](steps/07e_S7_布局.md) #2 |
+| 进度条三层怎么命名 (组_进度_X / 底板_X / 进度条_X) | [`steps/07c_S7_进度条角标.md`](steps/07c_S7_进度条角标.md) #1 |
+| 角标包装做法 B (按钮 FRAME 外壳) | [`steps/07c_S7_进度条角标.md`](steps/07c_S7_进度条角标.md) #2 |
+| flow 字段写法 (trigger/from/to/animation) | [`steps/09_S9_字段补全.md`](steps/09_S9_字段补全.md) #4 |
+| `component_ref` 缩放计算 / 三项预检 | [`steps/08_S8_组件库引用.md`](steps/08_S8_组件库引用.md) |
+| S11 抽取后处理 / 中间组团删除 / 主路径 vs 备选 | [`steps/11_S11_抽取导出.md`](steps/11_S11_抽取导出.md) |
+| S10 9 层自检具体每层查什么 | [`steps/10_S10_自检.md`](steps/10_S10_自检.md) |
+| S3 #3.1 layout 单一化具体怎么跑 | [`steps/03_S3_识别布局.md`](steps/03_S3_识别布局.md) #3.1 (Step 1-6) |
+
+### 路由表使用方式
+
+- **S6 阶段必扫 A 表** — 每个组团对照 12 个视觉特征, 命中即读对应 memory pattern 文件
+- **S2-S6 阶段持续扫 B 表** — 看到 4 个风险场景就翻对应 lesson, **写之前**先预防
+- **写 JSON / 自检碰到疑问扫 C 表** — 不在记忆里就查 C 表对应文件
+
+---
+
+## 文件结构
+
+```
+4.22skill_v3/
+├── SKILL.md              ← 顶层入口 (本文件, frontmatter + 流程图 + 路由 + 铁律)
+├── steps/                ← 20 个 S 文件 (从 v2 复制, 内容相同)
+│   ├── 00_S0_context.md
+│   ├── 01_S1_抽帧.md ... 11_S11_抽取导出.md
+│   ├── 06a_S6_ccb抽取标准.md (ccb 3 标准 + 视觉缩窄 + ccb维度≠多态维度)
+│   ├── 08a_S8_预制组件.md (钟表特例) / 08b_组件库理论模型.md
+│   └── 07a_*.md ... 07e_*.md (S7 子文件)
+├── lessons/              ← 跨步骤踩坑归档 (新加, 跟 S 文件违规信号互补)
+│   ├── bug-archive.md (索引)
+│   └── lesson_*.md (6 个核心 lesson)
+├── memory/               ← 软链接到 ~/.claude/projects/.../memory (跟 v2 共享)
+└── 命名_参考.md           ← 命名白名单参考 (从 v2 复制)
+```
+
+## 跟 v2 的关系
+
+- **v3 已独立化** — 不依赖 v2, 可以单独工作 (steps/ 含全部 20 个 S 文件, 含 06a/08a/08b)
+- **v2 内容完全不动** — 所有原 S 文件原位保留在 `/Users/red/Desktop/4.22skill_v2/`, 作为 backup
+- **memory 是软链接共享** — v2 和 v3 都指向同一个 `~/.claude/projects/.../memory/`, 改任何一边的 memory 互通
+- v3 改 SKILL.md / 加新 lessons / 调整 steps/ 内某 S 文件, 都不影响 v2
+
+## 借鉴来源
+
+参考 `/Users/red/Desktop/macos-native-app/` skill 结构, 借鉴这些元素:
+
+- ✅ SKILL.md 顶层入口 + frontmatter (触发关键词)
+- ✅ ASCII 流程图概览
+- ✅ lessons/ 跨步骤踩坑归档
+- ✅ 通用铁律集中化 (10 条)
+- ✅ 工程默认值表
+- ✅ 阶段路由表 (用户说 X → 加载 Y)
+
+保留我们项目的内核:
+
+- 🔴 严格流水线 (S1-S11 顺序不能跳, 不是 macOS 那种任务路由)
+- 🔴 memory 机制 (项目专属先验 + ui_pattern 11 个)
+- 🔴 component_extractor 外部脚本依赖

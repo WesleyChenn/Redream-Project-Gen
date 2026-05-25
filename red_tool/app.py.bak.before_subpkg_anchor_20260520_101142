@@ -131,14 +131,9 @@ FONTSTYLE_DEFINITIONS = [
 ]
 
 def ensure_fontstyle_in_redproj(proj_path):
-    """把 fontStyle 数组写进 .redproj 文件.
+    """把 fontStyle 数组写进 .redproj 文件 (如果还是空数组).
     Redream 加载 CCLabelPlus 时查 labelConfig.style 在 fontStyle 里的定义,
-    空数组 = 查不到 → NULL 解引用 → 闪退;
-    缺语言 (例如只有 'en') = 该语言外都 fallback 系统 TTF.
-
-    v2 (2026-05-21): 改为强制覆盖. 之前"已有 > 0 就跳过"会被 Redream CLI 脚手架
-    写入的残缺 fontStyle 阻断 — Redream 自己用 lans 第一项 (默认 'en') 当 key 取 fnt,
-    其他语言全 fallback TTF (Helvetica). 改成每次以 FONTSTYLE_DEFINITIONS 为真值覆盖.
+    空数组 = 查不到 → NULL 解引用 → 闪退.
     """
     if not os.path.exists(proj_path):
         return (False, f'.redproj 不存在: {proj_path}')
@@ -146,17 +141,22 @@ def ensure_fontstyle_in_redproj(proj_path):
         d = plistlib.load(open(proj_path, 'rb'))
     except Exception as e:
         return (False, f'读 .redproj 失败: {e}')
+    existing = d.get('fontStyle')
+    if existing and len(existing) > 0:
+        return (True, f'fontStyle 已有 {len(existing)} 条, 不覆盖')
     d['fontStyle'] = FONTSTYLE_DEFINITIONS
     with open(proj_path, 'wb') as f:
         plistlib.dump(d, f)
-    return (True, f'已覆盖写入 {len(FONTSTYLE_DEFINITIONS)} 条 fontStyle 定义 (3 style × 12 语言)')
+    return (True, f'已写入 {len(FONTSTYLE_DEFINITIONS)} 条 fontStyle 定义')
 
 # 2026-05-19: resourcePaths 补到 res_juice_pro 真值(引用 SCAFFOLD 文件; 缺则回退内嵌真值副本).
-# v2 (2026-05-21) 修订: 删掉原 4 条 ../res_fruitmajiang_common/* 跨工程引用 (同事确认废止),
-#   字体/plist/通用组件全打进本工程. 加 'font' 让 Redream 在 <output>/font/<语言>/ 找到 fnt.
+# 后 4 条 ../res_fruitmajiang_common/* 是跨工程引用 — 真值如此, 输出工程须与该 common 同级.
 _RESOURCE_PATHS_FALLBACK = [
     'ccb', '_img_single', '_img_plist', '_language', '_wise_安卓',
-    'font',
+    '../res_fruitmajiang_common/font',
+    '../res_fruitmajiang_common/plist',
+    '../res_fruitmajiang_common/ccb/模版_通用组件/C5资源栏',
+    '../res_fruitmajiang_common/wise_安卓',
     '_spine',
 ]
 def ensure_resourcepaths_in_redproj(proj_path):
@@ -726,26 +726,6 @@ def make_ccnode(name, px, py, ux, uy, w, h, uw, uh, ax, ay, children=None):
         p_ignoreAP(), p_opacity(), p_color(),
     ], children)
 
-def make_ccscrollview(name, px, py, ux, uy, w, h, uw, uh, ax, ay,
-                      direction=2, bounces=True, clips=True, container_red='',
-                      children=None):
-    """CCScrollView 节点: 可滚动容器.
-    direction: IntegerLabeled — 1=Horizontal, 2=Vertical, 3=Both.
-    contentSize: 视口尺寸(与 w/h 同步).
-    bounces / clipsToBounds: 默认开.
-    container: 内容可用 REDFile 引用外部 .red, 或 inline 当 children.
-    """
-    return make_node('CCScrollView', name, [
-        p_pos(px, py, ux, uy),
-        p_size(w, h, uw, uh),   # contentSize: 同时充当视口尺寸 setViewSize()
-        p_anchor(ax, ay),
-        p_ignoreAP(), p_opacity(), p_color(),
-        {'name':'direction',    'type':'IntegerLabeled', 'value': direction},
-        {'name':'bounces',      'type':'Check',          'value': bool(bounces)},
-        {'name':'clipsToBounds','type':'Check',          'value': bool(clips)},
-        {'name':'container',    'type':'REDFile',        'value': container_red or ''},
-    ], children)
-
 def make_ccsprite(name, px, py, ux, uy, w, h, image=None, ax=0.5, ay=0.5, uw=0, uh=0):
     # 🔴 铁律: CCSprite = 渲染一张图的节点, 没 displayFrame 等于没意义.
     # image 没传 (None) → 自动 lookup_image(name) 按命名前缀 + 当前 scene/variant 算 plist 路径.
@@ -1225,31 +1205,19 @@ def make_ccbutton(name, px, py, ux, uy, w, h, children=None, ax=0.5, ay=0.5, uw=
 #   引擎渲染字号 = FNT_NATIVE × node.scale. 令 scale = font_size/FNT_NATIVE,
 #   引擎字号即 = scene.json font_size (= Figma 字号, 1080×2400 设计稿空间, 用户确认可直接用).
 #   ⚠️ 仅对拉丁语 .fnt(size=100)成立; 若将来用 size≠100 的字体需按字体取 native.
-FNT_NATIVE = 100  # 拉丁语 fnt 烘焙 size=100 (实测 归档/font/拉丁语/*.fnt), scale=font_size/100
+FNT_NATIVE = 100
 
-def _detect_text_lang(text):
-    """检测文本语言, 决定走哪套 fnt 字体集.
-    汉字范围 \\u4e00-\\u9fff (CJK Unified Ideographs) → 繁体中文
-    其他 (英文/数字/标点) → 拉丁语
-    混合文本含汉字 → 繁体中文 (繁体中文 fnt 通常也含 ASCII)
-    """
-    if any('一' <= c <= '鿿' for c in text or ''):
-        return '繁体中文'
-    return '拉丁语'
-
-def make_cclabel(name, px, py, ux, uy, text='', font_size=None, ax=0.5, ay=0.5,
-                 dim_w=0.0, dim_h=0.0):
-    # v2 (2026-05-21 再再修订): 回到 CCLabelPlus (用户要求), 保留新的 scale=1 + dimensions 模型.
-    # 字号控制 (用户在编辑器属性面板验证):
-    #   - 尺寸 (dimensions) = 字号大小, 等于 figma 设计稿 w/h
-    #   - 缩放 (scale) 固定 1.0
-    # labelConfig 3 层 (纯白主字 + 描边深棕 + 描边更深) 保留, 描边视觉跟生产 res_juice_pro 一致.
-    # localizationV2 字段保留 (不启用本地化).
-    # v2 (2026-05-22): 加汉字检测自动切 fnt — 拉丁语 fnt 不含汉字会显示空白.
-    lang = _detect_text_lang(text)
+def make_cclabel(name, px, py, ux, uy, text='', font_size=None, ax=0.5, ay=0.5):
+    # [v20.7.x+ 2026-05-15] CCLabelPlus 完整对齐生产 res_juice_pro 2.
+    # 完整 3 配套都在位:
+    #   1. .redproj.fontStyle 数组 (3 style × 12 lang) - ensure_fontstyle_in_redproj 写入
+    #   2. labelConfig = array of 3 dict (纯白主字 + 描边深色 + 描边更深, 跟生产一样)
+    #   3. 多语言字体文件 - ensure_font_in_project 拷到 Resources/<语言>/
+    # 之前 inspect_check 工具报 "LabelConfig is VECTOR, must be object" 是它自己的 bug,
+    # 引擎运行时实际接受 array (生产 .red 也是 array, 编辑器能打开).
     label_config = [
         {
-            'fntFile':   f'{lang}/通用_字体_{lang}_纯白字体.fnt',
+            'fntFile':   '拉丁语/通用_字体_拉丁语_纯白字体.fnt',
             'fontColor': [255, 255, 255],
             'name':      '',
             'offset':    [0.0, 0.0],
@@ -1257,31 +1225,34 @@ def make_cclabel(name, px, py, ux, uy, text='', font_size=None, ax=0.5, ay=0.5,
             'style':     '纯白样式',
         },
         {
-            'fntFile':   f'{lang}/通用_字体_{lang}_描边字体.fnt',
-            'fontColor': [139, 59, 8],
+            'fntFile':   '拉丁语/通用_字体_拉丁语_描边字体.fnt',
+            'fontColor': [139, 59, 8],     # 跟生产 res_juice_pro 一致, 深棕色描边
             'name':      '',
             'offset':    [0.0, 0.0],
             'opacity':   255,
             'style':     '描边样式',
         },
         {
-            'fntFile':   f'{lang}/通用_字体_{lang}_描边字体.fnt',
-            'fontColor': [103, 40, 0],
+            'fntFile':   '拉丁语/通用_字体_拉丁语_描边字体.fnt',
+            'fontColor': [103, 40, 0],     # 更深棕色, 做阴影
             'name':      '',
             'offset':    [0.0, 0.0],
             'opacity':   255,
             'style':     '描边样式',
         },
     ]
+    # [2026-05-18] 字号一致: 引擎渲染 = FNT_NATIVE(100) × scale, 令 scale=font_size/100
+    #   → 引擎字号 = scene.json font_size = Figma 字号. font_size 缺省回退 1.0(=旧100px行为).
+    s = round(font_size / FNT_NATIVE, 4) if font_size else 1.0
     return make_node('CCLabelPlus', name, [
         p_visible(True),
         p_pos(px, py, ux, uy),
         p_anchor(ax, ay),
-        {'name':'scale',               'type':'ScaleLock',      'value':[1.0, 1.0, True]},
+        {'name':'scale',               'type':'ScaleLock',      'value':[s, s, True]},
         p_opacity(),
         {'name':'labelConfig',         'type':'LabelConfig',    'value': label_config},
         {'name':'blendFunc',           'type':'Blendmode',      'value':[1]},
-        {'name':'dimensions',          'type':'Size',           'value':[float(dim_w),float(dim_h),0,0,False,False]},
+        {'name':'dimensions',          'type':'Size',           'value':[0.0,0.0,0,0,False,False]},
         {'name':'horizontalAlignment', 'type':'IntegerLabeled', 'value':1},
         {'name':'verticalAlignment',   'type':'IntegerLabeled', 'value':1},
         {'name':'string',              'type':'Text',           'value':text},
@@ -1390,13 +1361,9 @@ def build_child(n, parent_w, parent_h, parent_is_fullwidth,
     if name == '遮罩_背景' or name == '底板_遮罩':
         return None
 
-    # v2 (2026-05-21 修订): 内部小组锚点 (0.5, 1.0) 顶中心, 位置 = figma 顶中心绝对像素.
-    #   原因: 用百分比定位时, scroll 等可变高父节点一缩放, 内部子节点跟着挤压/拉伸;
-    #   改成 anchor 顶 + u=0 绝对像素, 子节点与父顶距离恒定 = figma 设计稿一致.
-    # v2 (2026-05-21 修订): 内部小组 + 叶子节点统一中心锚 (0.5, 0.5).
-    # 坐标 (Cocos Y-up): bbox 中心 = (figma_x + w/2, parent_h - figma_y - h/2)
+    # 坐标
     cx = fx + w / 2.0
-    cy = parent_h - fy - h / 2.0   # bbox 中心 y (anchor 0.5,0.5 落点)
+    cy = parent_h - fy - h / 2.0
     if parent_is_fullwidth:
         px = cx / parent_w * 100.0
         py = cy
@@ -1405,14 +1372,24 @@ def build_child(n, parent_w, parent_h, parent_is_fullwidth,
         px = cx
         py = cy
         ux, uy = 0, 0
-    ax, ay, uw, uh = 0.5, 0.5, 0, 0   # v2 内部小组+叶子铁律: 中心锚 (0.5, 0.5)
+    ax, ay, uw, uh = 0.5, 0.5, 0, 0   # 默认: 无约束 = 刚性内部, 行为完全不变(不回归)
 
-    # v2 (2026-05-21 再修订): build_child 内部小组 **完全忽略 constraints**.
-    # 按 v2 SKILL 铁律: "完整子节点的内部 layer 一律不输出 constraints 字段" +
-    # "完整子节点整体不可拉伸". figma 端如果错写了 SCALE/SCALE 在内部节点上,
-    # 引擎不应该尊崇 (会把小角标/小图标拉成父的 100% → 视觉错乱).
-    # 所有内部节点统一: 中心锚 (0.5, 0.5) + figma 原始 x/y/w/h 绝对像素.
-    # constraint 字段读出来仅用于 v2 SKILL 自检报警 (不影响渲染), 但目前不报错.
+    # 2026-05-19: 嵌套层也按约束做贴边锚+百分比 (与 build_top_layer 同口径).
+    #   有(已入口归一)约束 = 完整子节点外侧 / 手改约束 → 钉边/居中 + 百分比;
+    #   无约束 → 上面默认不变. 这样 Figma 手改约束在任意层级都生效.
+    _c  = n.get('constraints') or {}
+    _hc = str(_c.get('horizontal','')).upper()
+    _vc = str(_c.get('vertical','')).upper()
+    if _hc in ('LEFT','RIGHT','CENTER','SCALE') and parent_w > 0:
+        if   _hc == 'LEFT':   px, ux, ax = fx / parent_w * 100.0, 2, 0.0
+        elif _hc == 'RIGHT':  px, ux, ax = (fx + w) / parent_w * 100.0, 2, 1.0
+        elif _hc == 'CENTER': px, ux, ax = (fx + w / 2.0) / parent_w * 100.0, 2, 0.5
+        else:                 px, ux, ax, uw, w = 50.0, 2, 0.5, 2, 100.0
+    if _vc in ('TOP','BOTTOM','CENTER','SCALE') and parent_h > 0:
+        if   _vc == 'TOP':    py, uy, ay = (parent_h - fy) / parent_h * 100.0, 2, 1.0
+        elif _vc == 'BOTTOM': py, uy, ay = (parent_h - fy - h) / parent_h * 100.0, 2, 0.0
+        elif _vc == 'CENTER': py, uy, ay = (parent_h - fy - h / 2.0) / parent_h * 100.0, 2, 0.5
+        else:                 py, uy, ay, uh, h = 50.0, 2, 0.5, 2, 100.0
 
     # [v20.7.x+ 2026-05-15] 预制 frame 拦截 — name 命中 PREFAB_NAMES 且已注册
     # (_collect_prefab_refs 已扫到并注册到 _COMPONENT_VARIANT_SEQID), 不管 type 是什么,
@@ -1477,25 +1454,9 @@ def build_child(n, parent_w, parent_h, parent_is_fullwidth,
         return make_ccnode(name, px, py, ux, uy, w, h, uw, uh, ax, ay,[])
 
     # 文本
-    # v2 (2026-05-21): 给 CCLabelPlus 加 dimensions 防"飞".
-    # 两种情况:
-    #   (A) figma 有 w/h (设计师明确尺寸) → 按 figma 值, 中心锚, 位置 = bbox 中心 (沿用 build_child 默认)
-    #   (B) figma 无 w/h (auto-layout FILL/HUG, 没 x/y/w/h 字段) → 直接当作"填满父并居中":
-    #       pos = parent 中心, dimensions = parent w/h, anchor (0.5, 0.5)
-    #       不然 cx=fx+w/2=0 会把文字锚在父左边, 文字长起来一半飞出左/右两边.
     if t == 'TEXT' or name.startswith(('文本_','文字_')):
-        if w <= 0 and h <= 0 and fx == 0 and fy == 0:
-            # auto-layout FILL 情况
-            return make_cclabel(name, parent_w / 2.0, parent_h / 2.0, 0, 0,
-                                text=n.get('content',''),
-                                font_size=n.get('font_size'),
-                                ax=0.5, ay=0.5,
-                                dim_w=parent_w, dim_h=parent_h)
-        dim_w = w if w > 0 else parent_w
-        dim_h = h if h > 0 else 0.0
         return make_cclabel(name, px, py, ux, uy, text=n.get('content',''),
-                            font_size=n.get('font_size'), ax=ax, ay=ay,
-                            dim_w=dim_w, dim_h=dim_h)
+                            font_size=n.get('font_size'), ax=ax, ay=ay)
 
     # REDNodeButton（兼容新老命名）
     if is_btn_layer(name, t):
@@ -1516,34 +1477,13 @@ def build_child(n, parent_w, parent_h, parent_is_fullwidth,
             return [progress_node] + siblings
         return progress_node
 
-    # CCSprite / CCLayerColor 分流
-    # v2 (2026-05-21): 收紧 RECTANGLE catch-all + 增加色块兜底
-    #   原逻辑 "所有 RECTANGLE 都当 CCSprite" → 没贴图就 missing texture; 改 CCNode 又透明看不见.
-    #   新规则:
-    #     1. sprite 前缀 RECTANGLE + lookup_image 命中 → CCSprite (跟以前一样)
-    #     2. sprite 前缀 RECTANGLE 但贴图没导出 → CCLayerColor 色块兜底
-    #     3. 非 sprite 前缀 RECTANGLE (无 children, 非按钮非滚动, 如 底盘_xxx) → CCLayerColor
-    #   色: 优先读 figma fill (#RRGGBB), 没色用默认浅灰 (180,180,180)
+    # CCSprite
     sprite_pfx = ('图片_','图标_','背景_','插图_','特效_')
     is_rect_底板 = (name.startswith('底板_') and t == 'RECTANGLE'
                     and not name.endswith('形状'))
-    if name.startswith(sprite_pfx) or is_rect_底板:
-        img = lookup_image(name)
-        if img and (img[0] or img[1]):
-            return make_ccsprite(name, px, py, ux, uy, w, h, image=img, ax=ax, ay=ay, uw=uw, uh=uh)
-        # fall through 走 CCLayerColor 色块 (下面的 RECTANGLE 兜底块)
-
-    # CCLayerColor 兜底: RECTANGLE 无 children + 不在按钮/滚动路径上 → 色块 (跟 figma 视觉一致)
-    # 触发条件覆盖: (a) sprite 前缀但贴图缺失 (b) 非 sprite 前缀的纯色 RECT (如 底盘_xxx)
-    if t == 'RECTANGLE' and not n.get('children'):
-        fill_str = n.get('fill') or ''
-        color = _parse_fill_color(fill_str) if fill_str else [180, 180, 180]
-        return make_node('CCLayerColor', name, [
-            p_pos(px, py, ux, uy),
-            p_size(w, h, uw, uh),
-            p_anchor(ax, ay),
-            p_ignoreAP(), p_opacity(), p_color(*color),
-        ])
+    if (name.startswith(sprite_pfx) or is_rect_底板
+            or (t=='RECTANGLE' and not name.startswith(('切图_底板_','底板_')))):
+        return make_ccsprite(name, px, py, ux, uy, w, h, image=lookup_image(name), ax=ax, ay=ay, uw=uw, uh=uh)
 
     # CCNode 容器
     all_kids = build_children(n.get('children',[]), w, h, False)
@@ -1566,8 +1506,6 @@ def build_child(n, parent_w, parent_h, parent_is_fullwidth,
             btn_node['children'].extend(other_kids)
             return make_ccnode(name, px, py, ux, uy, w, h, uw, uh, ax, ay,[btn_node])
 
-    # v2 (2026-05-21): CCScrollView 暂关 (自研 ScrollView 有 bug)
-    # — 滚动节点跟普通容器一样走 CCNode 兜底, 等 ScrollView 修好再切回
     return make_ccnode(name, px, py, ux, uy, w, h, uw, uh, ax, ay,all_kids)
 
 # ═══════════════════════════════════════════════════
@@ -1676,25 +1614,13 @@ def build_top_layer(info, sw, sh):
     # [2026-05-14 新增] 屏幕顶层 RECTANGLE 命中 sprite 命名前缀 + 无 children → 生成 CCSprite
     #   之前一律按 wrapper CCNode 处理 → 顶层 底板_浮层 / 图片_xxx / 背景_xxx 等没 displayFrame
     #   修复: 让它走 CCSprite, 用屏幕坐标中心 + 百分比定位 (跟其他顶层节点统一)
-    # v2 (2026-05-21): lookup_image 返回空回退 CCLayerColor 色块 (跟 build_child 同口径)
     if (t == 'RECTANGLE' and name.startswith(SPRITE_NAME_PREFIXES)
             and not n.get('children')):
         cx_world = info['x'] + w / 2.0
         cy_world = sh - info['y'] - h / 2.0
         px_sp = cx_world / sw * 100.0
         py_sp = cy_world / sh * 100.0
-        img = lookup_image(name)
-        if img and (img[0] or img[1]):
-            return make_ccsprite(name, px_sp, py_sp, 2, 2, w, h, image=img)
-        # 贴图缺失 → CCLayerColor 色块
-        fill_str = n.get('fill') or ''
-        color = _parse_fill_color(fill_str) if fill_str else [180, 180, 180]
-        return make_node('CCLayerColor', name, [
-            p_pos(px_sp, py_sp, 2, 2),
-            p_size(w, h, 0, 0),
-            p_anchor(0.5, 0.5),
-            p_ignoreAP(), p_opacity(), p_color(*color),
-        ])
+        return make_ccsprite(name, px_sp, py_sp, 2, 2, w, h, image=lookup_image(name))
 
     # v20: 顶层节点如果本身是触控层（按钮_XXX FRAME），生成 REDNodeButton
     is_self_btn = is_btn_layer(name, t)
@@ -1751,103 +1677,71 @@ def build_top_layer(info, sw, sh):
     if is_self_btn:
         return make_ccbutton(name, px, py, ux, uy, w, h, kids, ax=ax, ay=ay)
     auto_btn(name, w, h, kids)
-    # v2 (2026-05-21): CCScrollView 暂关 (自研 ScrollView 有 bug)
-    # — 顶层节点统一走 CCNode 兜底, 等 ScrollView 修好再切回
     return make_ccnode(name, px, py, ux, uy, w, h, 0, 0, ax, ay, kids)
 
 # ═══════════════════════════════════════════════════
 #  多节点合并
 # ═══════════════════════════════════════════════════
 def merge_edge_nodes(infos, sw, sh, stick):
-    """
-    v2 算法 (2026-05-21): 平铺 sibling + figma 绝对 Y 保留间距
-    - wrapper.h 写死 u=0 像素:
-        TOP   = max(figma_y + h)        屏顶到最下端 frame 底边
-        BOTTOM= sh - min(figma_y)       屏底到最上端 frame 顶边
-    - wrapper anchor:
-        TOP   = (0.5, 1.0)  贴屏顶
-        BOTTOM= (0.5, 0.0)  贴屏底
-    - 内部子节点平铺 (不嵌套), anchor 同 wrapper, pos.y 用 figma 绝对像素:
-        TOP   子 pos.y = H_w - figma_y     (Cocos Y-up: 子顶 = wrapper 顶下 figma_y)
-        BOTTOM子 pos.y = sh - figma_y - h  (Cocos Y-up: 子底 = 屏底上 (sh-figma_y-h))
-    - 大组团不可 SCALE; 横向按 hc 出值 (LEFT/RIGHT/CENTER/SCALE 4 种)
-    - REDFile-aware: INSTANCE 进组走 make_redfile 保 redFile/animation 引用
-    """
-    if not infos:
-        return None
+    if len(infos) == 1:
+        return build_top_layer(infos[0], sw, sh)
 
-    ay_edge = 1.0 if stick == 'TOP' else 0.0
-    if stick == 'TOP':
-        H_w = max(r['y'] + r['h'] for r in infos)
-    else:
-        H_w = sh - min(r['y'] for r in infos)
+    infos_sorted = sorted(infos,
+        key=lambda r: r['top'] if stick == 'TOP' else r['bottom'])
+    total_h = sum(r['h'] for r in infos_sorted)
 
     kids = []
-    for r in infos:
-        n  = r['node']
-        w  = r['w']
-        h  = r['h']
-        fx = r['x']
-        fy = r['y']
-        hc = r.get('hc', '')
-        nm = n.get('name', '')
-
-        # 横向 pos.x + anchor.x (按 hc 出值; SCALE 撑 100%)
-        is_h_scale = (hc == 'SCALE')
-        if is_h_scale:
-            cx, ax_in, ux_in = 50.0, 0.5, 2
-            w_out, uw_out    = 100.0, 2
-        elif hc == 'LEFT':
-            cx, ax_in, ux_in = fx / sw * 100.0, 0.0, 2
-            w_out, uw_out    = w, 0
-        elif hc == 'RIGHT':
-            cx, ax_in, ux_in = (fx + w) / sw * 100.0, 1.0, 2
-            w_out, uw_out    = w, 0
-        else:  # CENTER / 缺省 / 未识别
-            cx, ax_in, ux_in = (fx + w / 2.0) / sw * 100.0, 0.5, 2
-            w_out, uw_out    = w, 0
-
-        # 纵向 pos.y (在 wrapper Cocos Y-up coord 内, u=0 绝对像素)
+    cursor = 0.0
+    # 2026-05-20 分工: 组(打包frame)外层 anchor(0.5,1/0)+pos百分比 扛响应式;
+    #   组内内容 anchor(0.5,0.5)+pos 中心绝对 — 距顶/距底恒定不变. 两套各司其职.
+    #   REDFile-aware(2026-05-20): INSTANCE 进组时走 make_redfile, 保 redFile/animation
+    #   引用; 用 INSTANCE 自己的 w/h(不拉伸=完整子节点不可拉)+ 绝对 x 中心(保留原位置).
+    for r in infos_sorted:
+        n = r['node']
+        w = r['w']
+        h = r['h']
         if stick == 'TOP':
-            cy = H_w - fy                # 子顶贴 wrapper 顶下方 fy 像素
+            cy = total_h - cursor - h / 2.0   # 组内子中心 y(绝对, Cocos Y-up)
         else:
-            cy = sh - fy - h             # 子底贴屏底上方 (sh-fy-h) 像素 (= wrapper 底)
+            cy = cursor + h / 2.0
+        cursor += h
+        nm = n.get('name','')
 
         if n.get('type') == 'INSTANCE':
+            # INSTANCE 分支: 保 REDFile, 不拉伸, 绝对 x 中心 + 绝对 y 中心
             comp_name = n.get('component_name', 'unknown')
             variant   = n.get('variant', '常态')
+            cx_in_grp = float(n.get('x', 0.0)) + w / 2.0
             if comp_name not in _COMPONENT_VARIANT_SEQID:
-                kids.append(make_ccnode(nm, cx, cy, ux_in, 0,
-                                        w_out, h, uw_out, 0,
-                                        ax_in, ay_edge, []))
+                # 降级空 CCNode(同 build_top_layer 兜底)
+                kids.append(make_ccnode(nm, cx_in_grp, cy, 0, 0, w, h, 0, 0, 0.5, 0.5, []))
             else:
                 red_file_path = (f'{_CURRENT_MODULE_NAME}/{comp_name}.red'
                                  if _CURRENT_MODULE_NAME else f'{comp_name}.red')
                 seq_id = lookup_variant_seqid(comp_name, variant)
-                kids.append(make_redfile(nm, cx, cy, ux_in, 0,
-                                         w_out, h,
+                kids.append(make_redfile(nm, cx_in_grp, cy, 0, 0, w, h,
                                          red_file_path=red_file_path,
                                          variant_name=variant,
                                          sequence_id=seq_id,
                                          component_display_name=comp_name,
-                                         ax=ax_in, ay=ay_edge))
+                                         ax=0.5, ay=0.5))
         else:
-            # FRAME 分支: 大组团本体, 不可拉伸 (除非 hc=SCALE 全宽容器)
-            node_kids = build_children(n.get('children',[]), w, h, is_h_scale)
-            auto_btn(nm, w, h, node_kids, ux_in, 0)
+            # FRAME 分支(原行为): 全宽拉伸 100%, 居中横向
+            node_kids = build_children(n.get('children',[]), w, h, True)
+            auto_btn(nm, w, h, node_kids, 2, 0)
             kids.append(make_ccnode(
-                nm, cx, cy, ux_in, 0,
-                w_out, h, uw_out, 0, ax_in, ay_edge, node_kids
+                nm, 50.0, cy, 2, 0,
+                100.0, h, 2, 0, 0.5, 0.5, node_kids
             ))
 
     wrap_name = '组_顶部合并' if stick == 'TOP' else '组_底部合并'
     if stick == 'TOP':
-        px, py, ux, uy, ax_w, ay_w = 50.0, 100.0, 2, 2, 0.5, 1.0
+        px, py, ux, uy, ax, ay = 50.0, 100.0, 2, 2, 0.5, 1.0
     else:
-        px, py, ux, uy, ax_w, ay_w = 50.0, 0.0, 2, 2, 0.5, 0.0
+        px, py, ux, uy, ax, ay = 50.0, 0.0, 2, 2, 0.5, 0.0
 
     return make_ccnode(wrap_name, px, py, ux, uy,
-                       100.0, H_w, 2, 0, ax_w, ay_w, kids)
+                       100.0, total_h, 2, 0, ax, ay, kids)
 
 # ═══════════════════════════════════════════════════
 #  主生成函数（返回 .red dict）
@@ -1870,11 +1764,6 @@ def generate_red(screen):
                      and float(l.get('w',0)) >= sw - 5
                      and float(l.get('h',0)) >= sh - 5), None)
 
-    # v2 (2026-05-21 再修订): 删掉滚动区特殊识别 — 全部按 vc 统一分类.
-    #   贴顶 (vc=TOP) → top_infos → merge_edge_nodes TOP
-    #   贴底 (vc=BOTTOM) → bottom_infos → merge_edge_nodes BOTTOM
-    #   其余 (vc=CENTER/SCALE/缺省) → other_infos → build_top_layer 各自处理
-    # 滚动 (容器_列表滚动区 等) 在 figma 端给什么 vc 就走什么路径, 不做名字嗅探.
     classified = classify_top_layers(
         [l for l in layers
          if l.get('name') != '遮罩_背景'
@@ -2612,33 +2501,21 @@ def api_update_image():
             return jsonify({'ok': False,
                             'error': f'输出目录里没有 _img_plist/ 文件夹: {image_root} (先跑过 /api/generate_red?)'})
 
-        # v2 (2026-05-25): 不再用 figma_export 全部子目录 (会触发多 bin 改名导致 .red 引用断).
-        # 改读 _pack_manifest.json (generate_red 时写入), 用跟当时打包一模一样的 source_names 重打.
-        manifest_path = os.path.join(output_path, '_pack_manifest.json')
-        manifest = {}
-        if os.path.exists(manifest_path):
-            try:
-                with open(manifest_path, 'r', encoding='utf-8') as f:
-                    manifest = json.load(f)
-            except Exception as e:
-                return jsonify({'ok': False,
-                                'error': f'读 _pack_manifest.json 失败: {e}'})
-        scenes_map = manifest.get('scenes') or {}
-        if not scenes_map:
-            return jsonify({'ok': False,
-                            'error': f'_pack_manifest.json 不存在或为空 ({manifest_path}). 需要先跑一次完整 /api/generate_red 把 manifest 写进去, 才能用增量 update_image.'})
-
-        # 受影响判定: 只重打 source_names 里包含被改 source 的那些 scene
-        affected_scenes = [s for s, srcs in scenes_map.items() if source in srcs]
-        if not affected_scenes:
-            # 不在任何 scene 的 source list 里 — 可能是新加的 source, 给个警告
-            return jsonify({'ok': False,
-                            'error': f'source={source} 不在 manifest 任何 scene 的 source_names 里 (manifest scenes: {list(scenes_map)}). 可能需要重跑 /api/generate_red.'})
+        # 收集 figma_export 下所有 source 子目录 (主屏 + 全 components)
+        # 给每个 scene 重打 (按界面合并模式)
+        all_sources = []
+        if os.path.isdir(DEFAULT_FIGMA_EXPORT):
+            for d in os.listdir(DEFAULT_FIGMA_EXPORT):
+                if os.path.isdir(os.path.join(DEFAULT_FIGMA_EXPORT, d)) and not d.startswith('.'):
+                    all_sources.append(d)
 
         rebuilt = []
-        for scene in affected_scenes:
-            source_names = scenes_map[scene]
-            r = process_images(scene, source_names, project_resources_root)
+        for scene in sorted(os.listdir(image_root)):
+            scene_dir = os.path.join(image_root, scene)
+            if not os.path.isdir(scene_dir): continue
+            # 受影响判定: 该 scene 的图集里 frame 名以 "<source>_" 开头, 就是受影响
+            # 简化: 一律重打 (我们的场景通常只有 1 个 scene)
+            r = process_images(scene, all_sources, project_resources_root)
             if not r.get('missing'):
                 rebuilt.append(scene)
 
@@ -2840,24 +2717,13 @@ def api_generate_red():
         comp_names_all = [c.get('name','') for c in (components or []) if c.get('name')]
         log_lines.append('')
         log_lines.append('━━━ 图片打包 (按界面合并图集) ━━━')
-        # v2 (2026-05-25): 写 manifest 记录每个 scene 对应的 source_names,
-        # 让 /api/update_image 读回来用同款打包, 不再瞎拿 figma_export 全部子目录
-        # (那样会让 .red 引用的 plist 名跟实际打出来的对不上, 因为多了 PNG 会触发多 bin 改名)
-        _manifest = {'scenes': {}}
         for screen in screens:
             sname = screen.get('name', '未命名')
             # 简化策略: 每个屏幕图集 = 屏幕自己 + 所有 components 的 PNG.
             # (即使该屏幕只引用部分 component, 全合并也无害, 冗余但保证完整)
             source_names = [sname] + comp_names_all
-            _manifest['scenes'][sname] = source_names
             img_res = process_images(sname, source_names, resources_root)
             log_lines.append(f"  🖼  {img_res['msg']}")
-        # 写 manifest 到 output 根目录
-        try:
-            with open(os.path.join(output_path, '_pack_manifest.json'), 'w', encoding='utf-8') as f:
-                json.dump(_manifest, f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            log_lines.append(f"  ⚠️  写 _pack_manifest.json 失败: {e}")
 
         # [v20.7.x+ 2026-05-15] 预制处理 — 独立于 components 循环, 只要 scene 里 INSTANCE
         # 引用了 PREFAB_NAMES 里的 component 就拷预制 (.red + .plist + .webp), 不需要 scene.json

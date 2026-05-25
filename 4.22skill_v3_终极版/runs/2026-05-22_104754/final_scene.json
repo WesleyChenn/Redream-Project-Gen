@@ -1,0 +1,422 @@
+{
+  "screens": [
+    {
+      "name": "浮层_Jungle_Treasure",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "RECTANGLE",
+          "name": "遮罩_浮层背景",
+          "x": 0, "y": 0, "w": 1080, "h": 2400,
+          "element_class": "static",
+          "constraints": { "horizontal": "SCALE", "vertical": "SCALE" }
+        },
+        {
+          "type": "FRAME",
+          "name": "组_顶部HUD",
+          "x": 50, "y": 80, "w": 980, "h": 140,
+          "layoutMode": "NONE",
+          "constraints": { "horizontal": "CENTER", "vertical": "TOP" },
+          "children": [
+            { "type": "FRAME", "name": "组_倒计时",
+              "x": 0, "y": 25, "w": 230, "h": 100,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 10,
+              "paddingLeft": 25, "paddingRight": 25,
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_沙漏", "w": 45, "h": 55, "element_class": "static" },
+                { "type": "TEXT", "name": "文本_倒计时", "content": "3d 5h",
+                  "element_class": "dynamic",
+                  "font_size": 38, "font_weight": 700,
+                  "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
+                  "layoutSizingHorizontal": "HUG", "layoutSizingVertical": "HUG" }
+              ]
+            },
+            { "type": "FRAME", "name": "组_currency1",
+              "x": 280, "y": 25, "w": 130, "h": 100, "layoutMode": "NONE",
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_currency1", "x": 10, "y": 20, "w": 55, "h": 55, "element_class": "static" },
+                { "type": "TEXT", "name": "文本_currency1", "content": "Free",
+                  "element_class": "dynamic", "x": 70, "y": 30, "font_size": 30 }
+              ]
+            },
+            { "type": "FRAME", "name": "组_currency2",
+              "x": 415, "y": 25, "w": 130, "h": 100, "layoutMode": "NONE",
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_currency2", "x": 10, "y": 20, "w": 55, "h": 55, "element_class": "static" },
+                { "type": "TEXT", "name": "文本_currency2", "content": "Full",
+                  "element_class": "dynamic", "x": 70, "y": 30, "font_size": 30 }
+              ]
+            },
+            { "type": "FRAME", "name": "组_currency3",
+              "x": 550, "y": 25, "w": 130, "h": 100, "layoutMode": "NONE",
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_currency3", "x": 10, "y": 20, "w": 55, "h": 55, "element_class": "static" },
+                { "type": "TEXT", "name": "文本_currency3", "content": "2",
+                  "element_class": "dynamic", "x": 70, "y": 30, "font_size": 30 }
+              ]
+            },
+            { "type": "FRAME", "name": "组_currency4",
+              "x": 685, "y": 25, "w": 130, "h": 100, "layoutMode": "NONE",
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_currency4", "x": 35, "y": 20, "w": 60, "h": 60, "element_class": "static" }
+              ]
+            },
+            { "type": "FRAME", "name": "按钮_关闭",
+              "x": 850, "y": 5, "w": 130, "h": 130, "layoutMode": "NONE",
+              "children": [
+                { "type": "RECTANGLE", "name": "底板_关闭",
+                  "x": 0, "y": 0, "w": 130, "h": 130, "corner_radius": 65, "element_class": "static" },
+                { "type": "RECTANGLE", "name": "图标_X",
+                  "x": 35, "y": 35, "w": 60, "h": 60, "element_class": "static" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "RECTANGLE",
+          "name": "图片_装饰头",
+          "x": 220, "y": 250, "w": 640, "h": 250,
+          "element_class": "static",
+          "constraints": { "horizontal": "CENTER", "vertical": "TOP" }
+        },
+        {
+          "type": "FRAME",
+          "name": "组_标题",
+          "x": 60, "y": 480, "w": 960, "h": 170,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": 30,
+          "constraints": { "horizontal": "CENTER", "vertical": "TOP" },
+          "children": [
+            { "type": "TEXT", "name": "文本_主标题", "content": "Jungle Treasure",
+              "element_class": "static",
+              "font_size": 88, "font_weight": 900,
+              "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
+              "layoutSizingHorizontal": "HUG", "layoutSizingVertical": "HUG" },
+            { "type": "TEXT", "name": "文本_副标题",
+              "content": "Claim each offer to unlock free rewards!",
+              "element_class": "static",
+              "font_size": 36, "font_weight": 500,
+              "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
+              "layoutSizingHorizontal": "HUG", "layoutSizingVertical": "HUG" }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_卡片区",
+          "x": 60, "y": 680, "w": 960, "h": 1290,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": 40,
+          "constraints": { "horizontal": "CENTER", "vertical": "TOP" },
+          "children": [
+            { "type": "FRAME", "name": "组_行1",
+              "w": 960, "h": 400,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 60,
+              "children": [
+                { "type": "INSTANCE", "name": "列表项_offer_1",
+                  "component_name": "列表项_offer", "variant": "默认",
+                  "w": 450, "h": 400,
+                  "overrides": {
+                    "组_奖励物": { "variant": "多" },
+                    "组_单个奖励物_1": { "variant": "道具", "文本_数量": "x1" },
+                    "组_单个奖励物_2": { "variant": "金币", "文本_数量": "3000" },
+                    "组_单个奖励物_3": { "variant": "道具", "文本_数量": "x1" },
+                    "按钮_offer": { "文本_按钮": "£2.99", "图标_小锁": { "visible": false } },
+                    "角标_锁": { "variant": "空" }
+                  }
+                },
+                { "type": "INSTANCE", "name": "列表项_offer_2",
+                  "component_name": "列表项_offer", "variant": "默认",
+                  "w": 450, "h": 400,
+                  "overrides": {
+                    "组_奖励物": { "variant": "单" },
+                    "组_单个奖励物_1": { "variant": "金币", "文本_数量": "200" },
+                    "按钮_offer": { "文本_按钮": "FREE" },
+                    "角标_锁": { "variant": "锁" }
+                  }
+                }
+              ]
+            },
+            { "type": "FRAME", "name": "组_行2",
+              "w": 960, "h": 400,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 60,
+              "children": [
+                { "type": "INSTANCE", "name": "列表项_offer_3",
+                  "component_name": "列表项_offer", "variant": "默认",
+                  "w": 450, "h": 400,
+                  "overrides": {
+                    "组_奖励物": { "variant": "单" },
+                    "组_单个奖励物_1": { "variant": "道具", "文本_数量": "x1" },
+                    "按钮_offer": { "文本_按钮": "FREE" },
+                    "角标_锁": { "variant": "锁" }
+                  }
+                },
+                { "type": "INSTANCE", "name": "列表项_offer_4",
+                  "component_name": "列表项_offer", "variant": "默认",
+                  "w": 450, "h": 400,
+                  "overrides": {
+                    "组_奖励物": { "variant": "多" },
+                    "组_单个奖励物_1": { "variant": "道具", "文本_数量": "x2" },
+                    "组_单个奖励物_2": { "variant": "道具", "文本_数量": "x2" },
+                    "组_单个奖励物_3": { "variant": "道具", "文本_数量": "x2" },
+                    "按钮_offer": { "文本_按钮": "FREE" },
+                    "角标_锁": { "variant": "锁" }
+                  }
+                }
+              ]
+            },
+            { "type": "FRAME", "name": "组_行3",
+              "w": 960, "h": 400,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 60,
+              "children": [
+                { "type": "INSTANCE", "name": "列表项_offer_5",
+                  "component_name": "列表项_offer", "variant": "默认",
+                  "w": 450, "h": 400,
+                  "overrides": {
+                    "组_奖励物": { "variant": "单" },
+                    "组_单个奖励物_1": { "variant": "道具", "文本_数量": "x1" },
+                    "按钮_offer": { "文本_按钮": "FREE" },
+                    "角标_锁": { "variant": "锁" }
+                  }
+                },
+                { "type": "INSTANCE", "name": "列表项_offer_6",
+                  "component_name": "列表项_offer", "variant": "默认",
+                  "w": 450, "h": 400,
+                  "overrides": {
+                    "组_奖励物": { "variant": "单" },
+                    "组_单个奖励物_1": { "variant": "道具", "文本_数量": "x1" },
+                    "按钮_offer": { "文本_按钮": "FREE" },
+                    "角标_锁": { "variant": "锁" }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "flow": []
+    }
+  ],
+
+  "components": [
+    {
+      "name": "组_单个奖励物",
+      "w": 120, "h": 200,
+      "variant_property": "类型",
+      "variants": [
+        {
+          "name": "金币",
+          "is_default": true,
+          "layers": [
+            { "type": "FRAME", "name": "组_inner",
+              "x": 0, "y": 0, "w": 120, "h": 200,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 5,
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_奖励", "w": 110, "h": 140, "element_class": "dynamic" },
+                { "type": "TEXT", "name": "文本_数量", "content": "200",
+                  "element_class": "dynamic",
+                  "font_size": 36, "font_weight": 800,
+                  "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
+                  "layoutSizingHorizontal": "HUG", "layoutSizingVertical": "HUG" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "道具",
+          "layers": [
+            { "type": "FRAME", "name": "组_inner",
+              "x": 0, "y": 0, "w": 120, "h": 200,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 5,
+              "children": [
+                { "type": "RECTANGLE", "name": "图标_奖励", "w": 110, "h": 140, "element_class": "dynamic" },
+                { "type": "TEXT", "name": "文本_数量", "content": "x1",
+                  "element_class": "dynamic",
+                  "font_size": 32, "font_weight": 800,
+                  "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER",
+                  "layoutSizingHorizontal": "HUG", "layoutSizingVertical": "HUG" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "组_奖励物",
+      "w": 410, "h": 230,
+      "variant_property": "数量",
+      "variants": [
+        {
+          "name": "单",
+          "is_default": true,
+          "layers": [
+            { "type": "INSTANCE", "name": "组_单个奖励物_1",
+              "component_name": "组_单个奖励物", "variant": "金币",
+              "x": 145, "y": 15, "w": 120, "h": 200 }
+          ]
+        },
+        {
+          "name": "多",
+          "layers": [
+            { "type": "FRAME", "name": "组_横排",
+              "x": 0, "y": 15, "w": 410, "h": 200,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 15,
+              "children": [
+                { "type": "INSTANCE", "name": "组_单个奖励物_1",
+                  "component_name": "组_单个奖励物", "variant": "道具",
+                  "w": 120, "h": 200 },
+                { "type": "INSTANCE", "name": "组_单个奖励物_2",
+                  "component_name": "组_单个奖励物", "variant": "金币",
+                  "w": 120, "h": 200 },
+                { "type": "INSTANCE", "name": "组_单个奖励物_3",
+                  "component_name": "组_单个奖励物", "variant": "道具",
+                  "w": 120, "h": 200 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "按钮_offer",
+      "w": 400, "h": 110,
+      "variant_property": "占位",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            { "type": "RECTANGLE", "name": "底板_按钮",
+              "x": 0, "y": 0, "w": 400, "h": 110, "corner_radius": 55,
+              "element_class": "static" },
+            { "type": "TEXT", "name": "文本_按钮", "content": "FREE",
+              "element_class": "dynamic",
+              "x": 0, "y": 25, "w": 400, "h": 60,
+              "font_size": 50, "font_weight": 900,
+              "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER" },
+            { "type": "RECTANGLE", "name": "图标_小锁",
+              "x": 320, "y": 30, "w": 50, "h": 50,
+              "element_class": "static" }
+          ]
+        },
+        {
+          "name": "dummy",
+          "layers": [
+            { "type": "RECTANGLE", "name": "底板_按钮",
+              "x": 0, "y": 0, "w": 400, "h": 110, "corner_radius": 56,
+              "element_class": "static" },
+            { "type": "TEXT", "name": "文本_按钮", "content": "FREE",
+              "element_class": "dynamic",
+              "x": 0, "y": 25, "w": 400, "h": 60,
+              "font_size": 50, "font_weight": 900,
+              "textAlignHorizontal": "CENTER", "textAlignVertical": "CENTER" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "角标_锁",
+      "w": 110, "h": 110,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "锁",
+          "is_default": true,
+          "layers": [
+            { "type": "RECTANGLE", "name": "底板_角标锁",
+              "x": 0, "y": 0, "w": 110, "h": 110, "corner_radius": 55,
+              "element_class": "static" },
+            { "type": "RECTANGLE", "name": "图标_锁",
+              "x": 30, "y": 30, "w": 50, "h": 50,
+              "element_class": "static" }
+          ]
+        },
+        {
+          "name": "空",
+          "layers": []
+        }
+      ]
+    },
+
+    {
+      "name": "列表项_offer",
+      "w": 450, "h": 400,
+      "variant_property": "占位",
+      "variants": [
+        {
+          "name": "默认",
+          "is_default": true,
+          "layers": [
+            { "type": "RECTANGLE", "name": "底板_offer卡",
+              "x": 0, "y": 0, "w": 450, "h": 400, "corner_radius": 30,
+              "element_class": "static" },
+            { "type": "INSTANCE", "name": "组_奖励物",
+              "component_name": "组_奖励物", "variant": "单",
+              "x": 20, "y": 50, "w": 410, "h": 230 },
+            { "type": "INSTANCE", "name": "按钮_offer",
+              "component_name": "按钮_offer", "variant": "默认",
+              "x": 25, "y": 290, "w": 400, "h": 110 },
+            { "type": "INSTANCE", "name": "角标_锁",
+              "component_name": "角标_锁", "variant": "锁",
+              "x": 340, "y": 0, "w": 110, "h": 110 }
+          ]
+        },
+        {
+          "name": "dummy",
+          "layers": [
+            { "type": "RECTANGLE", "name": "底板_offer卡",
+              "x": 0, "y": 0, "w": 450, "h": 400, "corner_radius": 31,
+              "element_class": "static" }
+          ]
+        }
+      ]
+    }
+  ]
+}

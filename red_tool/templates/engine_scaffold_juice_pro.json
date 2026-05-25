@@ -1,0 +1,22 @@
+{
+  "_provenance": "蒸馏自我们域真实上线工程 res_juice_pro(/Users/red/Desktop/res_juice_pro/M8P_总工程.redproj),2026-05-19 实测。app.py 生成时引用本文件为单一真源;改真值改这里,勿散落硬编码。台账见 4.22skill_v3/templates/蒸馏_res_juice_pro.md。",
+  "screen_currentResolution": 0,
+  "screen_resolutions": [
+    {"additionalScale": 2.0, "centeredOrigin": false, "height": 2400, "mainScale": 2.0, "name": "设计分辨率", "resourceScale": 2.0, "scale": 2.0, "width": 1080},
+    {"additionalScale": 2.0, "centeredOrigin": false, "height": 2080, "mainScale": 2.0, "name": "正常分辨率", "resourceScale": 2.0, "scale": 2.0, "width": 1080},
+    {"additionalScale": 2.0, "centeredOrigin": false, "height": 2080, "mainScale": 2.0, "name": "偏宽分辨率", "resourceScale": 2.0, "scale": 2.0, "width": 1560},
+    {"additionalScale": 2.0, "centeredOrigin": false, "height": 2800, "mainScale": 2.0, "name": "偏高分辨率", "resourceScale": 2.0, "scale": 2.0, "width": 1080},
+    {"additionalScale": 2.0, "centeredOrigin": false, "height": 0, "mainScale": 2.0, "name": "Node分辨率", "resourceScale": 2.0, "scale": 2.0, "width": 0}
+  ],
+  "skeleton_dirs": [
+    "ccb", "_ccbi", "_img_plist", "_img_single", "_language",
+    "_spine", "spine", "image", "_wise_安卓", "cfg", "资源打包",
+    "_公共资源", "_公共资源/_img_single"
+  ],
+  "_resource_paths_note": "v2 (2026-05-21) 修订: 删掉原 4 条 ../res_fruitmajiang_common/* 跨工程引用 — 同事确认不再走跨工程, 字体/plist/通用组件全打进本工程. 剩下都是本工程相对路径, Redream 启动不再报缺失.",
+  "redproj_resource_paths": [
+    "ccb", "_img_single", "_img_plist", "_language", "_wise_安卓",
+    "font",
+    "_spine"
+  ]
+}

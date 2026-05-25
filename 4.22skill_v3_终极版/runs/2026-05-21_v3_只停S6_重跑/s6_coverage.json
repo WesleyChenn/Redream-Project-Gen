@@ -1,0 +1,25 @@
+{
+  "screen": "界面_团队宝藏",
+  "source_video": "/Users/red/Desktop/微信视频2026-05-20_185156_150.mp4",
+  "decisions": [
+    {"id":1,"group":"按钮_关闭候选","pattern":"ui_pattern_单图标_无角标 子类A","read":"ui_pattern_单图标_无角标.md","conclusion":"按钮_关闭 FRAME, 优先 component_ref:圆形按钮_关闭 (无库则手搓)","abstract_ccb":false,"variant_axes":[]},
+    {"id":2,"group":"按钮_信息候选","pattern":"ui_pattern_单图标_无角标 子类A","read":"ui_pattern_单图标_无角标.md","conclusion":"按钮_信息 FRAME, 优先 component_ref:圆形按钮_信息 (无库则手搓)","abstract_ccb":false,"variant_axes":[]},
+    {"id":3,"group":"海盗插画","pattern":"无","read":null,"conclusion":"图片_海盗插画 占位 RECT","abstract_ccb":false,"variant_axes":[]},
+    {"id":4,"group":"组_倒计时","pattern":"ui_pattern_横排徽章_左图右文","read":"ui_pattern_横排徽章_左图右文.md","conclusion":"组_倒计时 FRAME 含图标_钟表+底板_倒计时+文本_倒计时+图片_金币堆装饰","abstract_ccb":false,"variant_axes":[]},
+    {"id":5,"group":"Choisss玩家行","pattern":"ui_pattern_横排徽章_左图右文(放大变体)","read":"ui_pattern_横排徽章_左图右文.md","conclusion":"组_Choisss行 FRAME","abstract_ccb":false,"variant_axes":[]},
+    {"id":6,"group":"团队进度组团(父ccb)","pattern":"ui_pattern_进度条_多节点 子类B底部文本式","read":"ui_pattern_进度条_多节点.md","conclusion":"组_团队进度 FRAME (整条不可点, 用户Q1c) — 子级单独可点","abstract_ccb":true,"variant_axes":[]},
+    {"id":"6.1","group":"进度条本体三层","pattern":"ui_pattern_进度条_多节点 本体","read":"ui_pattern_进度条_多节点.md","conclusion":"组_进度_团队+底板_团队进度+进度条_团队进度 双层RECT","abstract_ccb":false,"variant_axes":[]},
+    {"id":7,"group":"子ccb 宝箱","pattern":"ui_pattern_进度条_多节点 节点icon子ccb","read":"ui_pattern_进度条_多节点.md","conclusion":"组_宝箱 Component 3 Variants; 3 INSTANCE 各外包按钮_宝箱_N (做法B, 用户Q1c)","abstract_ccb":true,"variant_axes":[{"name":"宝箱档位","values":["金","银","铜"]}]},
+    {"id":8,"group":"子ccb 状态","pattern":"ui_pattern_进度条_多节点 数字标记子ccb + ui_pattern_角标_状态 + ui_pattern_icon_带底部文本(C按钮型)","read":"ui_pattern_进度条_多节点.md+ui_pattern_角标_状态.md+ui_pattern_icon_带底部文本.md","conclusion":"组_状态 Component 3 Variants. 可领取Variant内层含按钮_claim (用户Q1c)","abstract_ccb":true,"variant_axes":[{"name":"领取状态","values":["已完成","未完成","可领取"]}]},
+    {"id":9,"group":"列表项_行(父ccb)","pattern":"无明确pattern (大CCB复合)","read":null,"conclusion":"组_列表项行 Component 2 Variants 整行不可点 (用户Q2b)","abstract_ccb":true,"variant_axes":[{"name":"行状态","values":["常态","当前用户"]}]},
+    {"id":10,"group":"子ccb 排名号","pattern":"参考 ui_pattern_角标_状态 同位置多内容","read":"ui_pattern_角标_状态.md","conclusion":"组_排名号 Component 4 Variants 金/银/铜/普通","abstract_ccb":true,"variant_axes":[{"name":"排名档位","values":["金","银","铜","普通"]}]},
+    {"id":11,"group":"子ccb 头像","pattern":"ui_pattern_单图标_无角标 + ui_pattern_角标_状态(装饰)","read":"ui_pattern_单图标_无角标.md+ui_pattern_角标_状态.md","conclusion":"组_头像 Component 2 Variants 带装饰/无装饰","abstract_ccb":true,"variant_axes":[{"name":"框装饰","values":["带装饰","无装饰"]}]},
+    {"id":12,"group":"子ccb 装饰前","pattern":"ui_pattern_角标_状态 (同位置有/空)","read":"ui_pattern_角标_状态.md","conclusion":"组_装饰前 Component 2 Variants 有/空","abstract_ccb":true,"variant_axes":[{"name":"显示状态","values":["有","空"]}]},
+    {"id":13,"group":"子ccb 道具","pattern":"ui_pattern_横排徽章_左图右文","read":"ui_pattern_横排徽章_左图右文.md","conclusion":"组_道具 Component 2 Variants 常态/空 (用户Q3修订)","abstract_ccb":true,"variant_axes":[{"name":"显示状态","values":["常态","空"]}]},
+    {"id":14,"group":"子ccb 收集物数量","pattern":"ui_pattern_横排徽章_左图右文","read":"ui_pattern_横排徽章_左图右文.md","conclusion":"组_收集物数量 Component 1 Variant","abstract_ccb":true,"variant_axes":[]}
+  ],
+  "user_answers": {"Q1":"c 子级单独可点 (按钮_宝箱_N + 可领取variant内按钮_claim)","Q2":"b 整行不可点 (组_列表项行)","Q3":"a 占位RECT + 空variant (2 Variants 常态/空)"},
+  "user_confirmed": true,
+  "from_exemplar_guarded": true,
+  "exemplar_isolated": "runs/2026-05-21_TeamProgressRanking 已隔离, 新run独立重推"
+}

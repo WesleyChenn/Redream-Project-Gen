@@ -1,0 +1,879 @@
+{
+  "screens": [
+    {
+      "name": "浮层_日常任务",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "RECTANGLE",
+          "name": "遮罩_浮层背景",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 2400,
+          "element_class": "static",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "容器_面板",
+          "x": 49,
+          "y": 238,
+          "w": 985,
+          "h": 1742,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "CENTER"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_面板",
+              "x": 0,
+              "y": 42,
+              "w": 985,
+              "h": 1700,
+              "corner_radius": 60,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_标题胶囊",
+              "x": 132,
+              "y": 0,
+              "w": 714,
+              "h": 210,
+              "corner_radius": 90,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_日常任务",
+              "x": 132,
+              "y": 0,
+              "w": 714,
+              "h": 210,
+              "content": "日常任務",
+              "font_size": 80,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "组_顶部奖励组",
+              "x": 63,
+              "y": 302,
+              "w": 820,
+              "h": 180,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_倒计时",
+                  "x": 0,
+                  "y": 30,
+                  "w": 90,
+                  "h": 90,
+                  "corner_radius": 45,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_倒计时",
+                  "x": 95,
+                  "y": 30,
+                  "w": 250,
+                  "h": 90,
+                  "content": "09:49:17",
+                  "font_size": 48,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "LEFT",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "dynamic",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "FRAME",
+                  "name": "组_进度_奖励",
+                  "x": 0,
+                  "y": 65,
+                  "w": 670,
+                  "h": 95,
+                  "layoutMode": "NONE",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_奖励",
+                      "x": 0,
+                      "y": 0,
+                      "w": 670,
+                      "h": 95,
+                      "corner_radius": 47,
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "进度条_奖励",
+                      "x": 10,
+                      "y": 10,
+                      "w": 650,
+                      "h": 75,
+                      "corner_radius": 37,
+                      "element_class": "static",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_奖励_进度",
+                  "x": 0,
+                  "y": 80,
+                  "w": 670,
+                  "h": 70,
+                  "content": "2/4",
+                  "font_size": 52,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "dynamic",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图片_宝箱",
+                  "x": 690,
+                  "y": 25,
+                  "w": 130,
+                  "h": 145,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "容器_任务列表",
+              "x": 30,
+              "y": 636,
+              "w": 925,
+              "h": 1044,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_任务",
+                  "component_name": "列表项_任务",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 0,
+                  "w": 925,
+                  "h": 250,
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "文本_任务描述": "登錄1次",
+                    "文本_任务_进度": "1/1",
+                    "文本_奖励数": "20",
+                    "组_状态": "已完成"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_任务",
+                  "component_name": "列表项_任务",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 258,
+                  "w": 925,
+                  "h": 250,
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "文本_任务描述": "使用強化道具1次",
+                    "文本_任务_进度": "1/1",
+                    "文本_奖励数": "1",
+                    "组_状态": "已完成"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_任务",
+                  "component_name": "列表项_任务",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 516,
+                  "w": 925,
+                  "h": 250,
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "文本_任务描述": "匹配150個物品",
+                    "文本_任务_进度": "10/150",
+                    "文本_奖励数": "1",
+                    "组_状态": "待开始"
+                  }
+                },
+                {
+                  "type": "INSTANCE",
+                  "name": "列表项_任务",
+                  "component_name": "列表项_任务",
+                  "variant": "常态",
+                  "x": 0,
+                  "y": 774,
+                  "w": 925,
+                  "h": 250,
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  },
+                  "overrides": {
+                    "文本_任务描述": "完成5關卡",
+                    "文本_任务_进度": "2/5",
+                    "文本_奖励数": "50",
+                    "组_状态": "待开始"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_关闭",
+              "x": 895,
+              "y": 51,
+              "w": 90,
+              "h": 108,
+              "layoutMode": "NONE",
+              "visible": true,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_关闭",
+                  "x": 0,
+                  "y": 0,
+                  "w": 90,
+                  "h": 108,
+                  "corner_radius": 45,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "flow": []
+    }
+  ],
+  "components": [
+    {
+      "name": "组_奖励方块",
+      "w": 150,
+      "h": 220,
+      "variant_property": "状态",
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_奖励方块",
+              "x": 0,
+              "y": 0,
+              "w": 150,
+              "h": 220,
+              "corner_radius": 25,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_奖励",
+              "x": 25,
+              "y": 25,
+              "w": 100,
+              "h": 100,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_奖励数",
+              "x": 0,
+              "y": 145,
+              "w": 150,
+              "h": 60,
+              "content": "20",
+              "font_size": 42,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "dummy",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_奖励方块",
+              "x": 0,
+              "y": 0,
+              "w": 150,
+              "h": 220,
+              "corner_radius": 26,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_奖励",
+              "x": 25,
+              "y": 25,
+              "w": 100,
+              "h": 100,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_奖励数",
+              "x": 0,
+              "y": 145,
+              "w": 150,
+              "h": 60,
+              "content": "20",
+              "font_size": 42,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "组_进度_任务",
+      "w": 460,
+      "h": 65,
+      "variant_property": "状态",
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_任务",
+              "x": 0,
+              "y": 0,
+              "w": 460,
+              "h": 65,
+              "corner_radius": 32,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "进度条_任务",
+              "x": 10,
+              "y": 10,
+              "w": 440,
+              "h": 45,
+              "corner_radius": 22,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "dummy",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_任务",
+              "x": 0,
+              "y": 0,
+              "w": 460,
+              "h": 65,
+              "corner_radius": 33,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "进度条_任务",
+              "x": 10,
+              "y": 10,
+              "w": 440,
+              "h": 45,
+              "corner_radius": 22,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "组_状态",
+      "w": 170,
+      "h": 170,
+      "variant_property": "状态",
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "已完成",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_对勾",
+              "x": 15,
+              "y": 25,
+              "w": 140,
+              "h": 120,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "可领取",
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮_领取",
+              "x": 0,
+              "y": 5,
+              "w": 170,
+              "h": 160,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_领取",
+                  "x": 0,
+                  "y": 0,
+                  "w": 170,
+                  "h": 160,
+                  "corner_radius": 50,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_领取",
+                  "x": 0,
+                  "y": 0,
+                  "w": 170,
+                  "h": 160,
+                  "content": "領取",
+                  "font_size": 50,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "待开始",
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮_开始",
+              "x": 0,
+              "y": 5,
+              "w": 170,
+              "h": 160,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_开始",
+                  "x": 0,
+                  "y": 0,
+                  "w": 170,
+                  "h": 160,
+                  "corner_radius": 50,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_开始",
+                  "x": 0,
+                  "y": 0,
+                  "w": 170,
+                  "h": 160,
+                  "content": "開始",
+                  "font_size": 50,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "LEFT",
+                    "vertical": "TOP"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "列表项_任务",
+      "w": 925,
+      "h": 250,
+      "variant_property": "状态",
+      "property_name": "状态",
+      "variants": [
+        {
+          "name": "常态",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "组_奖励方块",
+              "component_name": "组_奖励方块",
+              "variant": "常态",
+              "x": 40,
+              "y": 15,
+              "w": 150,
+              "h": 220,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "容器_任务信息",
+              "x": 215,
+              "y": 15,
+              "w": 460,
+              "h": 220,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "MIN",
+              "itemSpacing": 18,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "TEXT",
+                  "name": "文本_任务描述",
+                  "w": 460,
+                  "h": 60,
+                  "content": "登錄1次",
+                  "font_size": 42,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "LEFT",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "dynamic"
+                },
+                {
+                  "type": "FRAME",
+                  "name": "容器_行内进度",
+                  "w": 460,
+                  "h": 65,
+                  "layoutMode": "NONE",
+                  "children": [
+                    {
+                      "type": "INSTANCE",
+                      "name": "组_进度_任务",
+                      "component_name": "组_进度_任务",
+                      "variant": "常态",
+                      "x": 0,
+                      "y": 0,
+                      "w": 460,
+                      "h": 65,
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_任务_进度",
+                      "x": 0,
+                      "y": 0,
+                      "w": 460,
+                      "h": 65,
+                      "content": "1/1",
+                      "font_size": 38,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER",
+                      "element_class": "dynamic",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_状态",
+              "component_name": "组_状态",
+              "variant": "已完成",
+              "x": 700,
+              "y": 40,
+              "w": 170,
+              "h": 170,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        },
+        {
+          "name": "dummy",
+          "is_default": false,
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "组_奖励方块",
+              "component_name": "组_奖励方块",
+              "variant": "常态",
+              "x": 40,
+              "y": 15,
+              "w": 150,
+              "h": 220,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "opacity": 0.99
+            },
+            {
+              "type": "FRAME",
+              "name": "容器_任务信息",
+              "x": 215,
+              "y": 15,
+              "w": 460,
+              "h": 220,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "MIN",
+              "itemSpacing": 18,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "TEXT",
+                  "name": "文本_任务描述",
+                  "w": 460,
+                  "h": 60,
+                  "content": "登錄1次",
+                  "font_size": 42,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "LEFT",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "dynamic"
+                },
+                {
+                  "type": "FRAME",
+                  "name": "容器_行内进度",
+                  "w": 460,
+                  "h": 65,
+                  "layoutMode": "NONE",
+                  "children": [
+                    {
+                      "type": "INSTANCE",
+                      "name": "组_进度_任务",
+                      "component_name": "组_进度_任务",
+                      "variant": "常态",
+                      "x": 0,
+                      "y": 0,
+                      "w": 460,
+                      "h": 65,
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_任务_进度",
+                      "x": 0,
+                      "y": 0,
+                      "w": 460,
+                      "h": 65,
+                      "content": "1/1",
+                      "font_size": 38,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER",
+                      "element_class": "dynamic",
+                      "constraints": {
+                        "horizontal": "LEFT",
+                        "vertical": "TOP"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_状态",
+              "component_name": "组_状态",
+              "variant": "已完成",
+              "x": 700,
+              "y": 40,
+              "w": 170,
+              "h": 170,
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "_meta": {
+    "video": "微信视频2026-05-20_185156_150.mp4",
+    "screen": "界面_Team_Treasure",
+    "memory_path": "/Users/red/.claude/projects/-Users-red-Desktop-4-22--skill/memory",
+    "note": "用户在 S3 已锁定 2 父 ccb + 8 子 ccb 结构 (含 #2.6 等级 + #2.4 装饰物后 2 variant 修正). S6 命中以 memory 为参考, 实际以视频 + 用户锁定为准."
+  },
+  "groupings": [
+    {
+      "group": "顶banner区",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_浮层_活动入口",
+      "read_evidence": "ui_pattern_浮层_活动入口.md",
+      "subclass_or_note": "整屏 layout 参考 (顶部 i + X + 主装饰 + 标题 + 倒计时 / 当前案例倒计时='2d 1h' 在海盗装饰区内), 屏幕本身是界面_ 非浮层_ (S5 已锁定)",
+      "conclusion": "整屏视觉框架参考此 pattern, 但顶 banner 区本身 = 装饰底板+标题+X 关闭, 手搓"
+    },
+    {
+      "group": "banner底板",
+      "scanned_A_table": true,
+      "pattern_hit": "无(手搓)",
+      "read_evidence": "",
+      "subclass_or_note": "木质拱形装饰底板, 1 实例, Step A 不通过 (复用<3 且非动态/独立)",
+      "conclusion": "手搓 RECT, 命名 底板_banner 或 图片_banner (数据驱动占位 RECT)"
+    },
+    {
+      "group": "标题Team_Treasure",
+      "scanned_A_table": true,
+      "pattern_hit": "无(手搓)",
+      "read_evidence": "",
+      "subclass_or_note": "艺术字标题 TEXT, 1 实例",
+      "conclusion": "手搓 TEXT, content='Team Treasure'"
+    },
+    {
+      "group": "X关闭按钮",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标",
+      "read_evidence": "ui_pattern_单图标_无角标.md",
+      "subclass_or_note": "子类 A 按钮型 (红圆+白X), 命中库 圆形按钮_关闭 (5.1 按钮判定 ✓)",
+      "conclusion": "component_ref 圆形按钮_关闭 (或手搓 按钮_关闭 FRAME), 引擎 REDNodeButton"
+    },
+    {
+      "group": "海盗装饰区",
+      "scanned_A_table": true,
+      "pattern_hit": "无(手搓)",
+      "read_evidence": "",
+      "subclass_or_note": "自由布局装饰区 (海盗主图+副手+桶+狗+i+时间徽章+金币堆), Step A 不通过, NONE 容器",
+      "conclusion": "组_海盗装饰 空 FRAME, 内含子节点手搓 / 占位"
+    },
+    {
+      "group": "海盗主图",
+      "scanned_A_table": true,
+      "pattern_hit": "无(数据驱动占位)",
+      "read_evidence": "",
+      "subclass_or_note": "大型装饰图, 数据驱动 (不抽 Component)",
+      "conclusion": "占位 RECT, 命名 图片_海盗主图"
+    },
+    {
+      "group": "副手桶狗装饰",
+      "scanned_A_table": true,
+      "pattern_hit": "无(数据驱动占位)",
+      "read_evidence": "",
+      "subclass_or_note": "装饰元素 (副手/木桶/狗), 数据驱动单实例",
+      "conclusion": "占位 RECT, 命名 图片_装饰_副手 / 图片_装饰_桶 / 图片_装饰_狗 (或合并为 图片_装饰_海盗船)"
+    },
+    {
+      "group": "i信息按钮",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标",
+      "read_evidence": "ui_pattern_单图标_无角标.md",
+      "subclass_or_note": "子类 A 按钮型 (蓝圆+i), 命中库 圆形按钮_信息 (5.1 按钮判定 ✓)",
+      "conclusion": "component_ref 圆形按钮_信息 (或手搓 按钮_信息 FRAME), 引擎 REDNodeButton"
+    },
+    {
+      "group": "时间徽章",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_横排徽章_左图右文",
+      "read_evidence": "ui_pattern_横排徽章_左图右文.md",
+      "subclass_or_note": "沙漏 icon + '2d 1h' TEXT + 米色长胶囊底板, 子类: 单实例无 Variant",
+      "conclusion": "组_时间徽章 FRAME, 内含 底板_徽章 + 图标_沙漏 + 文本_时间; 1 实例不抽 ccb (Step A 不通过)"
+    },
+    {
+      "group": "金币堆装饰",
+      "scanned_A_table": true,
+      "pattern_hit": "user_visual_priors_金币堆 (待 Read 验证)",
+      "read_evidence": "user_visual_priors_金币堆.md",
+      "subclass_or_note": "项目专属先验 (金币堆装饰), 装饰区单实例不抽 ccb",
+      "conclusion": "占位 RECT, 命名 图片_装饰_金币堆"
+    },
+    {
+      "group": "Choisss总进度行",
+      "scanned_A_table": true,
+      "pattern_hit": "无(手搓)",
+      "read_evidence": "",
+      "subclass_or_note": "玩家自己进度行, 视觉=绿胶囊底板+左半身组(盾头像+名字)+右数字组(舵轮+'1906/5000'); 内部数字组命中横排徽章; 整行 1 实例",
+      "conclusion": "组_Choisss总进度行 FRAME (空 FRAME, HORIZONTAL+弹性缝隙), 手搓"
+    },
+    {
+      "group": "头像名wrapper",
+      "scanned_A_table": true,
+      "pattern_hit": "无(手搓)",
+      "read_evidence": "",
+      "subclass_or_note": "盾形头像 + Choisss TEXT 横排, 1 实例无 Variant",
+      "conclusion": "组_头像名 FRAME (HORIZONTAL), 手搓; 盾形头像视为占位 RECT (图片_盾头像)"
+    },
+    {
+      "group": "数字组wrapper",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_横排徽章_左图右文",
+      "read_evidence": "ui_pattern_横排徽章_左图右文.md",
+      "subclass_or_note": "舵轮 icon + '1906/5000' TEXT, 内有米色椭圆胶囊底板; 1 实例无 Variant; icon 在底板内 (跟典型 pattern '左溢出'略不同, 以视频为准)",
+      "conclusion": "组_数字进度 FRAME, 内含 底板_数字进度 + 图标_舵轮 + 文本_进度; 1 实例不抽 ccb"
+    },
+    {
+      "group": "进度条父ccb1",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_进度条_多节点",
+      "read_evidence": "ui_pattern_进度条_多节点.md",
+      "subclass_or_note": "B 底部文本式 (节点跨条上 + 下方挂状态标签); ⚠️ 用户结构 (并列 宝箱ccb + 状态ccb 各 3 instance) 跟 memory 教学 (2026-05-18 修正: 节点=第一层ccb 内含 icon+状态 2 子 ccb) 不一致, 按 S6 元规则 #1 '以用户/视频为准' 采纳用户结构, 但需用户在表 H 后确认",
+      "conclusion": "组_进度条与宝箱 父 ccb (空 FRAME, NONE), 内含 起点装饰+进度条本体+宝箱子ccb×3+状态子ccb×3"
+    },
+    {
+      "group": "起点装饰大舵轮",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标",
+      "read_evidence": "ui_pattern_单图标_无角标.md",
+      "subclass_or_note": "子类 B 纯物品 (金色舵轮 icon, 进度条起点装饰, 1 实例)",
+      "conclusion": "占位 RECT, 命名 图标_进度起点_舵轮 或 图片_进度起点"
+    },
+    {
+      "group": "进度条本体",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_进度条_多节点 + 07c 进度条三层铁律",
+      "read_evidence": "ui_pattern_进度条_多节点.md",
+      "subclass_or_note": "三层结构: 组_进度_团队 包 底板_团队 + 进度条_团队 (双层 RECT, 100% 满模板, 引擎 CCProgressTimer); 5.2 进度条独立判定: 用户已锁定父 ccb 非按钮 → 整条不可点 (组_xxx 外层), 待用户确认",
+      "conclusion": "组_进度_团队 (FRAME) 包 底板_团队 (RECT) + 进度条_团队 (RECT), 不抽 Component"
+    },
+    {
+      "group": "宝箱子ccb1.1",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标 (子类 B 纯物品)",
+      "read_evidence": "ui_pattern_单图标_无角标.md",
+      "subclass_or_note": "⚠️ 用户锁定 1 ccb + 3 variant (金/银/铜), 但 memory 教学 (06 #3 例外 1 + 06a) 说: 此类奖励物 (宝箱) 通常用占位 RECT 数据驱动, 不抽 Variant. Step A 复用 3 次 ✓ (满足复用阈值), Step C 视频实际看到 3 视觉签名差异 (金/银/铜 icon 不同) → 严格按视频枚举 3 variant 也合理 (旧 00d 阈值 N≤5 枚举); 接受用户结构, 但需确认: 是否要保留 3 variant 还是改占位 RECT",
+      "conclusion": "宝箱 ccb (1 实例定义) + 3 variant (金/银/铜), 每 variant 内: 占位 RECT 单元素 (NONE)"
+    },
+    {
+      "group": "状态子ccb1.2",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_icon_带底部文本",
+      "read_evidence": "ui_pattern_icon_带底部文本.md",
+      "subclass_or_note": "命中 B 子形态 (圆角矩形数字标签 '3000'/'5000') + C 子形态 (按钮型 'claim') + D 子形态 (纯文本 ✓); 用户锁定 3 多态 (已完成/未完成/可领取) ✓",
+      "conclusion": "状态 ccb (1 实例定义) + 3 variant: 已完成(✓ RECT) / 未完成(底板+数字 TEXT) / 可领取(claim 按钮 FRAME)"
+    },
+    {
+      "group": "列表滚动区",
+      "scanned_A_table": true,
+      "pattern_hit": "无(滚动 FRAME 包装)",
+      "read_evidence": "",
+      "subclass_or_note": "中间组团 / 滚动容器, 06 #4 中间组团绝对不抽",
+      "conclusion": "组_列表滚动 FRAME (VERTICAL + 滚动), 内含 N 个列表项 INSTANCE"
+    },
+    {
+      "group": "列表项父ccb2",
+      "scanned_A_table": true,
+      "pattern_hit": "无(大组团手搓)",
+      "read_evidence": "",
+      "subclass_or_note": "Step A 复用 ≥3 ✓ (视频内观察到 ≥13 个用户), Step B 抽到最小变化粒度 → 列表项本身复用必抽 ccb (06a #2 标准1 复用); 用户锁定 2 variant (常态/当前用户); 06a '父级 ≥3 必抽 ccb, 可 0 多态' → 2 variant 也接受",
+      "conclusion": "列表项 ccb (1 实例定义) + 2 variant (常态/当前用户); 内含 6 子 ccb + 名字 TEXT + 名字组 wrapper"
+    },
+    {
+      "group": "排名子ccb2.1",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标 (子类 A 按钮型 - 圆底) + 数据驱动 TEXT",
+      "read_evidence": "ui_pattern_单图标_无角标.md",
+      "subclass_or_note": "金/银/铜底板+数字 = 按钮型圆 icon 变体; 普通=纯文本 (无底板); 用户锁定 4 多态 ✓",
+      "conclusion": "排名 ccb (1 实例定义) + 4 variant: 金底/银底/铜底/普通; 金/银/铜 variant 内含 底板_排名_金银铜 RECT + 文本_排名 TEXT, 普通 variant 内含 文本_排名 TEXT 单元素"
+    },
+    {
+      "group": "头像子ccb2.2",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标 (子类 B 纯物品)",
+      "read_evidence": "ui_pattern_单图标_无角标.md",
+      "subclass_or_note": "头像图占位 + 可选红色帘子装饰; 用户锁定 2 variant (带装饰/不带装饰); 头像本身数据驱动占位 RECT, 装饰是固定视觉",
+      "conclusion": "头像 ccb (1 实例定义) + 2 variant: 带装饰 (头像框占位 + 红帘装饰 RECT) / 不带装饰 (头像框占位 单元素)"
+    },
+    {
+      "group": "装饰物前子ccb2.3",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_单图标_无角标 (子类 B 纯物品) + 元规则 4 (隐藏用 visible:false)",
+      "read_evidence": "ui_pattern_单图标_无角标.md, ui_pattern_使用通则.md",
+      "subclass_or_note": "数据驱动装饰物 (草帽/土星/紫帽等); 用户锁定 2 variant (有/空)",
+      "conclusion": "装饰物前 ccb (1 实例定义) + 2 variant: 有 (装饰 RECT 占位 单元素) / 空 (layers=[])"
+    },
+    {
+      "group": "名字组wrapper",
+      "scanned_A_table": true,
+      "pattern_hit": "无(空 FRAME 包装)",
+      "read_evidence": "",
+      "subclass_or_note": "wrapper FRAME (VERTICAL) 包装 名字 TEXT + 等级 ccb INSTANCE, 满足 #3.1 layout 单一化, 不抽 ccb",
+      "conclusion": "组_名字 空 FRAME (VERTICAL), 内含 名字 TEXT + 等级 INSTANCE"
+    },
+    {
+      "group": "名字TEXT",
+      "scanned_A_table": true,
+      "pattern_hit": "无(数据驱动 TEXT)",
+      "read_evidence": "",
+      "subclass_or_note": "玩家名字, dynamic 文本 (S11 自动收集成 overrides)",
+      "conclusion": "TEXT, content='视频实际值'(maila/onon/Choy/luk/Kkk/mmmmm/Csl/Arthur/TTeresa/hshen/Cassandra/cyrax/789 等)"
+    },
+    {
+      "group": "等级子ccb2.6",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_按钮_文本加icon (layout 横排 文本+icon) — 但用户锁定3多态 不严格命中",
+      "read_evidence": "ui_pattern_按钮_文本加icon.md",
+      "subclass_or_note": "⚠️ 用户锁定 3 多态 (Knight/Grand Knight/空), 但 memory 元规则 #5 说: 文本内容差异 (Knight vs Grand Knight) 是 dynamic 不该做 Variant; 严格按 memory 应为 2 variant (有/空) + TEXT.content 区分 Knight vs Grand Knight. 接受用户结构但需确认",
+      "conclusion": "等级 ccb (1 实例定义) + 3 variant: Knight (TEXT='Knight'+紫盾 RECT, HORIZONTAL) / Grand Knight (TEXT='Grand Knight'+紫盾, HORIZONTAL) / 空 (layers=[])"
+    },
+    {
+      "group": "装饰物后子ccb2.4",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_横排徽章_左图右文 (变体: 无底板, 仅图+文本横排) + 元规则 4",
+      "read_evidence": "ui_pattern_横排徽章_左图右文.md, ui_pattern_使用通则.md",
+      "subclass_or_note": "道具图片 + '×N' 文本横排, 无底板 (跟典型 pattern '左溢出+底板' 略不同, 以视频为准); 用户锁定 2 variant (有/空) ✓",
+      "conclusion": "装饰物后 ccb (1 实例定义) + 2 variant: 有 (道具 RECT + ×N TEXT, HORIZONTAL) / 空 (layers=[])"
+    },
+    {
+      "group": "收集物数量子ccb2.5",
+      "scanned_A_table": true,
+      "pattern_hit": "ui_pattern_横排徽章_左图右文",
+      "read_evidence": "ui_pattern_横排徽章_左图右文.md",
+      "subclass_or_note": "椭圆底板 + 舵轮 icon + 数字 TEXT, 命中典型形态 (icon 左 + 数字右), 用户锁定 1 variant ✓",
+      "conclusion": "收集物数量 ccb (1 实例定义) + 1 variant: 底板_收集物 RECT + 图标_舵轮 RECT + 文本_数量 TEXT (NONE: 底板 underlay + icon/数字 横排)"
+    }
+  ]
+}

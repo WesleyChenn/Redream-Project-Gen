@@ -1,0 +1,982 @@
+{
+  "screens": [
+    {
+      "name": "浮层_Journey_Offer",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "flow": [
+        {
+          "trigger": "ON_CLICK",
+          "from": "浮层_Journey_Offer",
+          "from_node": "按钮_关闭",
+          "to": "",
+          "animation": "CLOSE",
+          "_note": "S4/S5 视频未观察到点击, 按浮层 X 按钮默认 CLOSE flow"
+        }
+      ],
+      "layers": [
+        {
+          "type": "RECTANGLE",
+          "name": "遮罩_浮层背景",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 2400,
+          "element_class": "static",
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        {
+          "type": "FRAME",
+          "name": "弹窗_Journey_Offer",
+          "x": 76,
+          "y": 162,
+          "w": 928,
+          "h": 2080,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "CENTER"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_弹窗",
+              "x": 0,
+              "y": 0,
+              "w": 928,
+              "h": 2080,
+              "corner_radius": 40,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "组_标题条",
+              "x": 214,
+              "y": 3,
+              "w": 500,
+              "h": 110,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_标题条",
+                  "x": 0,
+                  "y": 0,
+                  "w": 500,
+                  "h": 110,
+                  "corner_radius": 20,
+                  "element_class": "static"
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_标题",
+                  "x": 0,
+                  "y": 0,
+                  "w": 500,
+                  "h": 110,
+                  "content": "Journey Offer",
+                  "font_size": 64,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "static"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_计时器",
+              "x": 304,
+              "y": 123,
+              "w": 320,
+              "h": 70,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 8,
+              "paddingLeft": 15,
+              "paddingRight": 15,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_计时器",
+                  "x": 0,
+                  "y": 0,
+                  "w": 320,
+                  "h": 70,
+                  "corner_radius": 35,
+                  "element_class": "static",
+                  "layoutPositioning": "ABSOLUTE"
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_钟表",
+                  "w": 50,
+                  "h": 50,
+                  "element_class": "static"
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_倒计时",
+                  "content": "04:51:54",
+                  "font_size": 38,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "dynamic"
+                }
+              ]
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_主视觉_Journey_Offer",
+              "x": 19,
+              "y": 198,
+              "w": 890,
+              "h": 590,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              }
+            },
+            {
+              "type": "FRAME",
+              "name": "角标_90OFF",
+              "x": 14,
+              "y": 558,
+              "w": 200,
+              "h": 200,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_90OFF",
+                  "x": 0,
+                  "y": 0,
+                  "w": 200,
+                  "h": 200,
+                  "corner_radius": 30,
+                  "element_class": "static"
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_90OFF",
+                  "x": 0,
+                  "y": 30,
+                  "w": 200,
+                  "h": 140,
+                  "content": "90%\nOFF",
+                  "font_size": 56,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "static"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_推广位",
+              "x": 19,
+              "y": 808,
+              "w": 890,
+              "h": 175,
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 20,
+              "paddingLeft": 30,
+              "paddingRight": 30,
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_推广位",
+                  "x": 0,
+                  "y": 0,
+                  "w": 890,
+                  "h": 175,
+                  "corner_radius": 30,
+                  "element_class": "static",
+                  "layoutPositioning": "ABSOLUTE"
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_推广",
+                  "content": "Unlock the offer to\nearn up to 5000 coins!",
+                  "font_size": 38,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "LEFT",
+                  "textAlignVertical": "CENTER",
+                  "layoutSizingHorizontal": "FILL",
+                  "element_class": "static"
+                },
+                {
+                  "type": "FRAME",
+                  "name": "按钮_£099",
+                  "w": 340,
+                  "h": 145,
+                  "layoutMode": "NONE",
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_£099",
+                      "x": 0,
+                      "y": 0,
+                      "w": 340,
+                      "h": 145,
+                      "corner_radius": 30,
+                      "element_class": "static"
+                    },
+                    {
+                      "type": "TEXT",
+                      "name": "文本_按钮_£099",
+                      "x": 0,
+                      "y": 0,
+                      "w": 340,
+                      "h": 145,
+                      "content": "£ 0.99",
+                      "font_size": 56,
+                      "font_weight": "Bold",
+                      "textAlignHorizontal": "CENTER",
+                      "textAlignVertical": "CENTER",
+                      "element_class": "static"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "容器_列表滚动区",
+              "x": 19,
+              "y": 1023,
+              "w": 890,
+              "h": 1040,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "clip_content": true,
+              "overflow": "VERTICAL",
+              "constraints": {
+                "horizontal": "CENTER",
+                "vertical": "SCALE"
+              },
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "组_列表内容",
+                  "w": 890,
+                  "layoutMode": "VERTICAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "CENTER",
+                  "layoutSizingHorizontal": "FIXED",
+                  "layoutSizingVertical": "HUG",
+                  "itemSpacing": 25,
+                  "children": [
+                    {
+                      "type": "INSTANCE",
+                      "name": "列表项_奖励_1",
+                      "component_name": "列表项",
+                      "variant": "默认",
+                      "w": 890,
+                      "h": 190,
+                      "element_class": "static",
+                      "overrides": {
+                        "组_底板_行": "未完成",
+                        "组_内容": "claim",
+                        "组_金币堆": "小",
+                        "组_角标": "空"
+                      }
+                    },
+                    {
+                      "type": "INSTANCE",
+                      "name": "列表项_奖励_2",
+                      "component_name": "列表项",
+                      "variant": "默认",
+                      "w": 890,
+                      "h": 190,
+                      "element_class": "static",
+                      "overrides": {
+                        "组_底板_行": "未完成",
+                        "组_内容": "文本进度条",
+                        "组_金币堆": "小",
+                        "组_角标": "锁"
+                      }
+                    },
+                    {
+                      "type": "INSTANCE",
+                      "name": "列表项_奖励_3",
+                      "component_name": "列表项",
+                      "variant": "默认",
+                      "w": 890,
+                      "h": 190,
+                      "element_class": "static",
+                      "overrides": {
+                        "组_底板_行": "未完成",
+                        "组_内容": "文本进度条",
+                        "组_金币堆": "中",
+                        "组_角标": "锁"
+                      }
+                    },
+                    {
+                      "type": "INSTANCE",
+                      "name": "列表项_奖励_4",
+                      "component_name": "列表项",
+                      "variant": "默认",
+                      "w": 890,
+                      "h": 190,
+                      "element_class": "static",
+                      "overrides": {
+                        "组_底板_行": "未完成",
+                        "组_内容": "文本进度条",
+                        "组_金币堆": "大",
+                        "组_角标": "锁"
+                      }
+                    },
+                    {
+                      "type": "INSTANCE",
+                      "name": "列表项_奖励_5",
+                      "component_name": "列表项",
+                      "variant": "默认",
+                      "w": 890,
+                      "h": 190,
+                      "element_class": "static",
+                      "overrides": {
+                        "组_底板_行": "未完成",
+                        "组_内容": "文本进度条",
+                        "组_金币堆": "极大",
+                        "组_角标": "锁"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_关闭",
+              "x": 794,
+              "y": 13,
+              "w": 130,
+              "h": 130,
+              "layoutMode": "NONE",
+              "constraints": {
+                "horizontal": "LEFT",
+                "vertical": "TOP"
+              },
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_关闭",
+                  "x": 0,
+                  "y": 0,
+                  "w": 130,
+                  "h": 130,
+                  "corner_radius": 65,
+                  "element_class": "static"
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "图标_X",
+                  "x": 35,
+                  "y": 35,
+                  "w": 60,
+                  "h": 60,
+                  "element_class": "static"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "角标",
+      "w": 60,
+      "h": 90,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "锁",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_角标",
+              "x": 0,
+              "y": 15,
+              "w": 60,
+              "h": 60,
+              "corner_radius": 30,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_锁",
+              "x": 12,
+              "y": 27,
+              "w": 36,
+              "h": 36,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "对勾",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_角标",
+              "x": 0,
+              "y": 15,
+              "w": 60,
+              "h": 60,
+              "corner_radius": 30,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图标_对勾",
+              "x": 12,
+              "y": 27,
+              "w": 36,
+              "h": 36,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "空",
+          "layers": []
+        }
+      ]
+    },
+    {
+      "name": "底板",
+      "w": 670,
+      "h": 190,
+      "variant_property": "状态",
+      "variants": [
+        {
+          "name": "未完成",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_行",
+              "x": 0,
+              "y": 0,
+              "w": 670,
+              "h": 190,
+              "corner_radius": 30,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        },
+        {
+          "name": "已完成",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "底板_行",
+              "x": 0,
+              "y": 0,
+              "w": 670,
+              "h": 190,
+              "corner_radius": 31,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "金币堆",
+      "w": 200,
+      "h": 190,
+      "variant_property": "堆量",
+      "variants": [
+        {
+          "name": "小",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_金币堆",
+              "x": 25,
+              "y": 0,
+              "w": 150,
+              "h": 130,
+              "corner_radius": 30,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_丝带",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "corner_radius": 5,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_数量",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "content": "250",
+              "font_size": 40,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic"
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "中",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_金币堆",
+              "x": 25,
+              "y": 0,
+              "w": 150,
+              "h": 130,
+              "corner_radius": 31,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_丝带",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "corner_radius": 5,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_数量",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "content": "750",
+              "font_size": 40,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic"
+            }
+          ]
+        },
+        {
+          "name": "大",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_金币堆",
+              "x": 25,
+              "y": 0,
+              "w": 150,
+              "h": 130,
+              "corner_radius": 32,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_丝带",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "corner_radius": 5,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_数量",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "content": "1000",
+              "font_size": 40,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic"
+            }
+          ]
+        },
+        {
+          "name": "极大",
+          "layers": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_金币堆",
+              "x": 25,
+              "y": 0,
+              "w": 150,
+              "h": 130,
+              "corner_radius": 33,
+              "element_class": "dynamic",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "底板_丝带",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "corner_radius": 5,
+              "element_class": "static",
+              "constraints": {
+                "horizontal": "SCALE",
+                "vertical": "SCALE"
+              }
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_数量",
+              "x": 0,
+              "y": 100,
+              "w": 200,
+              "h": 60,
+              "content": "2000",
+              "font_size": 40,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "内容",
+      "w": 510,
+      "h": 140,
+      "variant_property": "类型",
+      "variants": [
+        {
+          "name": "文本进度条",
+          "is_default": true,
+          "layers": [
+            {
+              "type": "TEXT",
+              "name": "文本_行标题",
+              "x": 0,
+              "y": 5,
+              "w": 510,
+              "h": 55,
+              "content": "Win 25 Levels",
+              "font_size": 44,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic"
+            },
+            {
+              "type": "FRAME",
+              "name": "组_进度_等级",
+              "x": 0,
+              "y": 75,
+              "w": 510,
+              "h": 60,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_等级",
+                  "x": 0,
+                  "y": 0,
+                  "w": 510,
+                  "h": 60,
+                  "corner_radius": 30,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "RECTANGLE",
+                  "name": "进度条_等级",
+                  "x": 10,
+                  "y": 10,
+                  "w": 490,
+                  "h": 40,
+                  "corner_radius": 20,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "TEXT",
+              "name": "文本_等级_进度",
+              "x": 0,
+              "y": 75,
+              "w": 510,
+              "h": 60,
+              "content": "20/25",
+              "font_size": 36,
+              "font_weight": "Bold",
+              "textAlignHorizontal": "CENTER",
+              "textAlignVertical": "CENTER",
+              "element_class": "dynamic"
+            }
+          ]
+        },
+        {
+          "name": "claim",
+          "layers": [
+            {
+              "type": "FRAME",
+              "name": "按钮_Claim",
+              "x": 0,
+              "y": 0,
+              "w": 510,
+              "h": 140,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_Claim",
+                  "x": 0,
+                  "y": 0,
+                  "w": 510,
+                  "h": 140,
+                  "corner_radius": 35,
+                  "element_class": "static",
+                  "constraints": {
+                    "horizontal": "SCALE",
+                    "vertical": "SCALE"
+                  }
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_按钮_Claim",
+                  "x": 0,
+                  "y": 0,
+                  "w": 510,
+                  "h": 140,
+                  "content": "Claim",
+                  "font_size": 64,
+                  "font_weight": "Bold",
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER",
+                  "element_class": "static"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "列表项",
+      "w": 890,
+      "h": 190,
+      "variant_property": "样式",
+      "variants": [
+        {
+          "name": "默认",
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "组_底板_行",
+              "component_name": "底板",
+              "variant": "未完成",
+              "x": 0,
+              "y": 0,
+              "w": 670,
+              "h": 190,
+              "element_class": "static"
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_内容",
+              "component_name": "内容",
+              "variant": "文本进度条",
+              "x": 80,
+              "y": 25,
+              "w": 510,
+              "h": 140,
+              "element_class": "static"
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_金币堆",
+              "component_name": "金币堆",
+              "variant": "小",
+              "x": 680,
+              "y": 0,
+              "w": 200,
+              "h": 190,
+              "element_class": "static"
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_角标",
+              "component_name": "角标",
+              "variant": "锁",
+              "x": 905,
+              "y": 30,
+              "w": 60,
+              "h": 90,
+              "element_class": "static"
+            }
+          ],
+          "is_default": true
+        },
+        {
+          "name": "已完成态",
+          "layers": [
+            {
+              "type": "INSTANCE",
+              "name": "组_底板_行",
+              "component_name": "底板",
+              "variant": "已完成",
+              "x": 0,
+              "y": 0,
+              "w": 670,
+              "h": 190,
+              "element_class": "static"
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_内容",
+              "component_name": "内容",
+              "variant": "claim",
+              "x": 80,
+              "y": 25,
+              "w": 510,
+              "h": 140,
+              "element_class": "static"
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_金币堆",
+              "component_name": "金币堆",
+              "variant": "极大",
+              "x": 680,
+              "y": 0,
+              "w": 200,
+              "h": 190,
+              "element_class": "static"
+            },
+            {
+              "type": "INSTANCE",
+              "name": "组_角标",
+              "component_name": "角标",
+              "variant": "对勾",
+              "x": 905,
+              "y": 30,
+              "w": 60,
+              "h": 90,
+              "element_class": "static"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

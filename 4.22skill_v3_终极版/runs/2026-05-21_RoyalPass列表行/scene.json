@@ -1,0 +1,2010 @@
+{
+  "screens": [
+    {
+      "name": "界面_RoyalPass",
+      "type": "FRAME",
+      "w": 1080,
+      "h": 2400,
+      "layers": [
+        {
+          "type": "FRAME",
+          "name": "组_顶部装饰",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 410,
+          "layoutMode": "NONE",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "背景_顶部装饰",
+              "x": 0,
+              "y": 0,
+              "w": 1080,
+              "h": 410
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_装饰_宝箱堆",
+              "x": 0,
+              "y": 30,
+              "w": 1080,
+              "h": 220
+            },
+            {
+              "type": "RECTANGLE",
+              "name": "图片_装饰_金宝箱中央",
+              "x": 380,
+              "y": 100,
+              "w": 320,
+              "h": 280
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_顶部HUD",
+          "x": 0,
+          "y": 410,
+          "w": 1080,
+          "h": 110,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "paddingLeft": 30,
+          "paddingRight": 30,
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "FRAME",
+              "name": "按钮_信息",
+              "w": 80,
+              "h": 80,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_按钮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 40
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_i",
+                  "content": "i",
+                  "x": 0,
+                  "y": 15,
+                  "h": 50,
+                  "font_size": 44,
+                  "font_weight": 700,
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_标题",
+              "w": 600,
+              "h": 110,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 4,
+              "children": [
+                {
+                  "type": "TEXT",
+                  "name": "文本_标题",
+                  "content": "Royal Pass",
+                  "h": 50,
+                  "font_size": 44,
+                  "font_weight": 700,
+                  "textAlignHorizontal": "CENTER"
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_倒计时",
+                  "content": "23d 22h",
+                  "h": 36,
+                  "font_size": 28,
+                  "textAlignHorizontal": "CENTER"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_关闭",
+              "w": 80,
+              "h": 80,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_按钮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 80,
+                  "h": 80,
+                  "corner_radius": 40
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_X",
+                  "content": "X",
+                  "x": 0,
+                  "y": 15,
+                  "h": 50,
+                  "font_size": 44,
+                  "font_weight": 700,
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "组_主进度条",
+          "x": 0,
+          "y": 520,
+          "w": 1080,
+          "h": 130,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": 12,
+          "paddingLeft": 30,
+          "paddingRight": 30,
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "TOP"
+          },
+          "children": [
+            {
+              "type": "RECTANGLE",
+              "name": "图片_钥匙",
+              "w": 100,
+              "h": 100
+            },
+            {
+              "type": "FRAME",
+              "name": "组_进度面板_主",
+              "w": 380,
+              "h": 80,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "组_进度_主",
+                  "x": 0,
+                  "y": 0,
+                  "w": 380,
+                  "h": 80,
+                  "layoutMode": "NONE",
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_主",
+                      "x": 0,
+                      "y": 0,
+                      "w": 380,
+                      "h": 80,
+                      "corner_radius": 40
+                    },
+                    {
+                      "type": "RECTANGLE",
+                      "name": "进度条_主",
+                      "x": 10,
+                      "y": 10,
+                      "w": 360,
+                      "h": 60,
+                      "corner_radius": 30
+                    }
+                  ]
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_进度",
+                  "content": "39/40",
+                  "x": 0,
+                  "y": 20,
+                  "w": 380,
+                  "h": 40,
+                  "font_size": 36,
+                  "font_weight": 700,
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "组_节点",
+              "w": 110,
+              "h": 120,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "组_底板菱形",
+                  "x": 0,
+                  "y": 0,
+                  "w": 110,
+                  "h": 120,
+                  "layoutMode": "NONE",
+                  "children": [
+                    {
+                      "type": "RECTANGLE",
+                      "name": "底板_菱形",
+                      "x": 0,
+                      "y": 0,
+                      "w": 110,
+                      "h": 120,
+                      "corner_radius": 10
+                    }
+                  ]
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_关卡号",
+                  "content": "21",
+                  "x": 0,
+                  "y": 35,
+                  "h": 50,
+                  "font_size": 44,
+                  "font_weight": 700,
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            },
+            {
+              "type": "FRAME",
+              "name": "按钮_Activate",
+              "w": 280,
+              "h": 100,
+              "layoutMode": "NONE",
+              "children": [
+                {
+                  "type": "RECTANGLE",
+                  "name": "底板_按钮",
+                  "x": 0,
+                  "y": 0,
+                  "w": 280,
+                  "h": 100,
+                  "corner_radius": 25
+                },
+                {
+                  "type": "TEXT",
+                  "name": "文本_按钮",
+                  "content": "Activate",
+                  "x": 0,
+                  "y": 30,
+                  "w": 280,
+                  "h": 40,
+                  "font_size": 36,
+                  "font_weight": 700,
+                  "textAlignHorizontal": "CENTER",
+                  "textAlignVertical": "CENTER"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "FRAME",
+          "name": "容器_列表滚动区",
+          "x": 0,
+          "y": 650,
+          "w": 1080,
+          "h": 1750,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "clip_content": true,
+          "overflow": "VERTICAL",
+          "constraints": {
+            "horizontal": "CENTER",
+            "vertical": "SCALE"
+          },
+          "children": [
+            {
+              "type": "FRAME",
+              "name": "组_滚动内容",
+              "w": 1080,
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "layoutSizingHorizontal": "FIXED",
+              "layoutSizingVertical": "HUG",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "itemSpacing": 12,
+              "children": [
+                {
+                  "type": "FRAME",
+                  "name": "列表项_关卡奖励",
+                  "w": 1080,
+                  "h": 362,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "SPACE_BETWEEN",
+                  "counterAxisAlignItems": "CENTER",
+                  "paddingLeft": 70,
+                  "paddingRight": 70,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_左",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "x1",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": true
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_节点",
+                      "w": 110,
+                      "h": 120,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板菱形",
+                          "x": 0,
+                          "y": 0,
+                          "w": 110,
+                          "h": 120,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_菱形",
+                              "x": 0,
+                              "y": 0,
+                              "w": 110,
+                              "h": 120,
+                              "corner_radius": 10
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_关卡号",
+                          "content": "20",
+                          "x": 0,
+                          "y": 35,
+                          "h": 50,
+                          "font_size": 44,
+                          "font_weight": 700,
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_右",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "x2",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": true
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_关卡奖励",
+                  "w": 1080,
+                  "h": 362,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "SPACE_BETWEEN",
+                  "counterAxisAlignItems": "CENTER",
+                  "paddingLeft": 70,
+                  "paddingRight": 70,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_左",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": false
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_节点",
+                      "w": 110,
+                      "h": 120,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板菱形",
+                          "x": 0,
+                          "y": 0,
+                          "w": 110,
+                          "h": 120,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_菱形",
+                              "x": 0,
+                              "y": 0,
+                              "w": 110,
+                              "h": 120,
+                              "corner_radius": 10
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_关卡号",
+                          "content": "21",
+                          "x": 0,
+                          "y": 35,
+                          "h": 50,
+                          "font_size": 44,
+                          "font_weight": 700,
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_右",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "x1",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": true
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_关卡奖励",
+                  "w": 1080,
+                  "h": 362,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "SPACE_BETWEEN",
+                  "counterAxisAlignItems": "CENTER",
+                  "paddingLeft": 70,
+                  "paddingRight": 70,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_左",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "x1",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": true
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_节点",
+                      "w": 110,
+                      "h": 120,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板菱形",
+                          "x": 0,
+                          "y": 0,
+                          "w": 110,
+                          "h": 120,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_菱形",
+                              "x": 0,
+                              "y": 0,
+                              "w": 110,
+                              "h": 120,
+                              "corner_radius": 10
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_关卡号",
+                          "content": "25",
+                          "x": 0,
+                          "y": 35,
+                          "h": 50,
+                          "font_size": 44,
+                          "font_weight": 700,
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_右",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": false
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_关卡奖励",
+                  "w": 1080,
+                  "h": 362,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "SPACE_BETWEEN",
+                  "counterAxisAlignItems": "CENTER",
+                  "paddingLeft": 70,
+                  "paddingRight": 70,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_左",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "x1",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": true
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_节点",
+                      "w": 110,
+                      "h": 120,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板菱形",
+                          "x": 0,
+                          "y": 0,
+                          "w": 110,
+                          "h": 120,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_菱形",
+                              "x": 0,
+                              "y": 0,
+                              "w": 110,
+                              "h": 120,
+                              "corner_radius": 10
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_关卡号",
+                          "content": "23",
+                          "x": 0,
+                          "y": 35,
+                          "h": 50,
+                          "font_size": 44,
+                          "font_weight": 700,
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_右",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 101
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "x1",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": true
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "FRAME",
+                  "name": "列表项_关卡奖励",
+                  "w": 1080,
+                  "h": 362,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "SPACE_BETWEEN",
+                  "counterAxisAlignItems": "CENTER",
+                  "paddingLeft": 70,
+                  "paddingRight": 70,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "children": [
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_左",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": false
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": false,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "组_节点",
+                      "w": 110,
+                      "h": 120,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板菱形",
+                          "x": 0,
+                          "y": 0,
+                          "w": 110,
+                          "h": 120,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_菱形",
+                              "x": 0,
+                              "y": 0,
+                              "w": 110,
+                              "h": 120,
+                              "corner_radius": 11
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TEXT",
+                          "name": "文本_关卡号",
+                          "content": "40",
+                          "x": 0,
+                          "y": 35,
+                          "h": 50,
+                          "font_size": 44,
+                          "font_weight": 700,
+                          "textAlignHorizontal": "CENTER",
+                          "textAlignVertical": "CENTER"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FRAME",
+                      "name": "气泡_右",
+                      "w": 363,
+                      "h": 205,
+                      "layoutMode": "NONE",
+                      "children": [
+                        {
+                          "type": "FRAME",
+                          "name": "组_底板气泡",
+                          "x": 0,
+                          "y": 0,
+                          "w": 363,
+                          "h": 205,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_气泡",
+                              "x": 0,
+                              "y": 0,
+                              "w": 363,
+                              "h": 205,
+                              "corner_radius": 100
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "组_奖励物",
+                          "x": 91,
+                          "y": 25,
+                          "w": 180,
+                          "h": 140,
+                          "layoutMode": "NONE",
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_金",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": true
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_银",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_铜",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图片_奖励物_道具",
+                              "x": 0,
+                              "y": 0,
+                              "w": 180,
+                              "h": 140,
+                              "visible": false
+                            },
+                            {
+                              "type": "TEXT",
+                              "name": "文本_数量",
+                              "content": "",
+                              "x": 0,
+                              "y": 100,
+                              "h": 35,
+                              "font_size": 32,
+                              "font_weight": 700,
+                              "textAlignHorizontal": "CENTER",
+                              "textAlignVertical": "BOTTOM",
+                              "visible": false
+                            }
+                          ]
+                        },
+                        {
+                          "type": "FRAME",
+                          "name": "角标_状态",
+                          "x": 273,
+                          "y": 115,
+                          "w": 80,
+                          "h": 80,
+                          "layoutMode": "NONE",
+                          "visible": true,
+                          "children": [
+                            {
+                              "type": "RECTANGLE",
+                              "name": "底板_圆角标",
+                              "x": 0,
+                              "y": 0,
+                              "w": 80,
+                              "h": 80,
+                              "corner_radius": 40
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_锁",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_对勾",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": false
+                            },
+                            {
+                              "type": "RECTANGLE",
+                              "name": "图标_可领取",
+                              "x": 15,
+                              "y": 15,
+                              "w": 50,
+                              "h": 50,
+                              "visible": true
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "flow": []
+    }
+  ],
+  "components": []
+}
